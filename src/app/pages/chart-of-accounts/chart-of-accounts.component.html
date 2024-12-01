@@ -1,0 +1,56 @@
+<div class="p-6 bg-white rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold text-gray-700">Chart of Accounts</h2>
+      <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+        Add Account
+      </button>
+    </div>
+  
+    <div class="mb-4">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch(searchQuery)"
+        placeholder="Search accounts..."
+        class="w-full px-4 py-2 border rounded-md focus:outline-none"
+      />
+    </div>
+  
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-500 border-collapse">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 cursor-pointer" (click)="sortBy('name')">Account Name</th>
+            <th class="px-6 py-3 cursor-pointer" (click)="sortBy('accountType')">Account Type</th>
+            <th class="px-6 py-3 cursor-pointer text-right" (click)="sortBy('currentBalance')">
+              Balance
+            </th>
+            <th class="px-6 py-3">Currency</th>
+            <th class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let account of getAccountsToDisplay()">
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-3 flex items-center" [ngStyle]="{'padding-left': (account.subLevel * 20) + 'px'}">
+                <button *ngIf="isParentAccount(account)" (click)="toggleExpand(account)" class="mr-2">
+                  <mat-icon>{{ account.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </button>
+                {{ account.name }}
+              </td>
+              <td class="px-6 py-3">{{ account.accountType }}</td>
+              <td class="px-6 py-3 text-right">
+                {{ account.currentBalance | currency: account.currencyCode }}
+              </td>
+              <td class="px-6 py-3">{{ account.currencyCode }}</td>
+              <td class="px-6 py-3">
+                <button (click)="editAccount(account)" class="text-blue-600 hover:underline mr-2">Edit</button>
+                <button (click)="deleteAccount(account)" class="text-red-600 hover:underline">Delete</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
