@@ -32,7 +32,6 @@
           <th class="px-3 py-2">Account Number</th>
           <th class="px-3 py-2">Account Name</th>
           <th class="px-3 py-2">Account Type</th>
-          <th class="px-3 py-2">groupCode</th>
 
           <th class="px-3 py-2 text-right">Balance</th>
           <th class="px-3 py-2 text-center">Actions</th>
@@ -41,17 +40,15 @@
       <tbody>
         <ng-container *ngFor="let account of displayedAccounts">
           <tr class="hover:bg-gray-50">
-            <td class="px-3 py-2">{{ account.accountNumber }}</td>
+            <td class="px-3 py-2">{{ account.hierarchyCode }}</td>
             <td class="px-3 py-2">{{ account.name }}</td>
             <td class="px-3 py-2">{{ account.accountType }}</td>
-            <td>{{ account.groupCode }}</td> <!-- Display group code -->
 
             <td class="px-3 py-2 text-right">
               {{ account.currentBalance | currency: 'JOD' }}
             </td>
             <td class="px-3 py-2 text-center">
               <button class="text-blue-600 hover:underline mr-2">Run History</button>
-              <button class="text-red-600 hover:underline">Delete</button>
             </td>
           </tr>
         </ng-container>

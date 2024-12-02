@@ -52,7 +52,7 @@ export class JournalEntryComponent implements OnInit {
       next: (data) => {
         this.accounts = data.map((acc: any) => ({
           id: acc.id,
-          accountNumber: acc.accountNumber,
+          accountNumber: acc.hierarchyCode,
           name: acc.name,
         }));
         this.loading = false;

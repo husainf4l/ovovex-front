@@ -24,8 +24,7 @@ export interface Client {
 
 export interface Account {
     id: string;
-    accountNumber: string;
-    groupCode: string;
+    hierarchyCode: string;
     name: string;
     accountType: string;
     openingBalance: number;
