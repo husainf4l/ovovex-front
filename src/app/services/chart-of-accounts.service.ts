@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account } from '../models/interfaces.model';
+import { environment } from '../enviroments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChartOfAccountsService {
-  private baseUrl = 'http://localhost:3000/api/chart-of-accounts';
+  private baseUrl = `${environment.apiUrl}/chart-of-accounts`;
 
   constructor(private http: HttpClient) { }
 

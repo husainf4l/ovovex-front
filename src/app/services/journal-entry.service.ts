@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../enviroments/environment';
 
 
 export interface Transaction {
@@ -23,7 +24,8 @@ export interface JournalEntryPayload {
   providedIn: 'root',
 })
 export class JournalEntryService {
-  private apiUrl = 'http://localhost:3000/api/journal-entry'; // Replace with your NestJS backend URL
+  private apiUrl = `${environment.apiUrl}/journal-entry`;
+
 
   constructor(private http: HttpClient) { }
 
