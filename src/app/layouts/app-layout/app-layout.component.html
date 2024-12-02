@@ -1,15 +1,17 @@
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300" 
-     [ngStyle]="{'width': isSidebarOpen ? 'calc(100% - 16rem)' : '100%', 'left': isSidebarOpen ? '16rem' : '0'}">
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300"
+    [ngStyle]="{'width': isSidebarOpen ? 'calc(100% - 16rem)' : '100%', 'left': isSidebarOpen ? '16rem' : '0'}">
     <div class="px-4 py-3 flex items-center justify-between">
         <!-- Menu Toggle -->
-    <div class="flex items-center gap-2">
-        <button (click)="toggleSidebar()" aria-controls="logo-sidebar" type="button"
-        class="inline-flex items-center">
-        <span class="sr-only">Toggle menu</span>
-        <mat-icon>menu</mat-icon>
-    </button>
-    <p>Papaya Trading</p>
-    </div>
+        <div class="flex items-center gap-2">
+            <button (click)="toggleSidebar()" aria-controls="logo-sidebar" type="button"
+                class="inline-flex items-center">
+                <span class="sr-only">Toggle menu</span>
+                <mat-icon>menu</mat-icon>
+            </button>
+            <p>Papaya Trading</p>
+
+
+        </div>
 
         <!-- User Profile -->
         <div class="relative flex items-center">
@@ -29,21 +31,21 @@
             </div>
 
             <div *ngIf="isDropdownOpen" id="dropdown-user"
-            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-200"
-            style="top: calc(100% + 0.5rem); right: 1rem;">
-            <ul class="py-1 text-gray-700">
-                <li>
-                    <a routerLink="/app" class="block px-4 py-2 text-sm hover:bg-gray-100">Dashboard</a>
-                </li>
-                <li>
-                    <a routerLink="/settings" class="block px-4 py-2 text-sm hover:bg-gray-100">Settings</a>
-                </li>
-                <li>
-                    <a routerLink="/logout" class="block px-4 py-2 text-sm hover:bg-gray-100">Sign out</a>
-                </li>
-            </ul>
-        </div>
-        
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-200"
+                style="top: calc(100% + 0.5rem); right: 1rem;">
+                <ul class="py-1 text-gray-700">
+                    <li>
+                        <a routerLink="/app" class="block px-4 py-2 text-sm hover:bg-gray-100">Dashboard</a>
+                    </li>
+                    <li>
+                        <a routerLink="/settings" class="block px-4 py-2 text-sm hover:bg-gray-100">Settings</a>
+                    </li>
+                    <li>
+                        <a routerLink="/logout" class="block px-4 py-2 text-sm hover:bg-gray-100">Sign out</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>
@@ -57,9 +59,10 @@
     class="fixed top-0 left-0 z-40 w-64 h-full transition-transform bg-neutral-100 border-r border-gray-200 shadow-lg">
     <div class="h-full px-4 py-6 flex flex-col">
         <!-- Logo -->
-        <a routerLink="/" class="flex items-center mb-10">
-            <mat-icon class="text-primary-600 text-3xl mr-2">storefront</mat-icon>
-            <span class="text-xl font-semibold text-gray-700">NUVEX</span>
+        <a routerLink="/" class="flex items-center justify-center mb-10">
+            <div class="border-4 border-sky-600 px-4 py-2 text-sky-600 rounded-lg shadow-lg font-semibold text-lg">
+                <div>ovovex</div>
+            </div>
         </a>
 
         <!-- Navigation Menu -->
@@ -89,7 +92,8 @@
                             class="flex items-center text-gray-700 hover:text-primary-600 transition">
                             <mat-icon>inventory</mat-icon>
                             <span class="ml-3">Transactions</span>
-                            <mat-icon class="ml-auto text-gray-500 group-hover:text-primary-600">chevron_right</mat-icon>
+                            <mat-icon
+                                class="ml-auto text-gray-500 group-hover:text-primary-600">chevron_right</mat-icon>
                         </a>
                         <!-- Submenu for Transactions -->
                         <ul *ngIf="isTransactionHover"
@@ -102,7 +106,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a routerLink="/journal-entry" routerLinkActive="text-primary-600"
+                                <a routerLink="journal-entry" routerLinkActive="text-primary-600"
                                     class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
                                     <mat-icon class="text-gray-500 mr-2">edit_note</mat-icon>
                                     Journal Entry
@@ -113,7 +117,7 @@
 
                     <!-- Sales -->
                     <li>
-                        <a routerLink="/billing" routerLinkActive="text-primary-600"
+                        <a routerLink="invoice" routerLinkActive="text-primary-600"
                             class="flex items-center text-gray-700 hover:text-primary-600 transition">
                             <mat-icon>receipt</mat-icon>
                             <span class="ml-3">Sales</span>
@@ -152,9 +156,8 @@
 
 
 <!-- Main Content -->
-<div [ngClass]="{'lg:ml-64': isSidebarOpen}" 
-     [ngStyle]="{'margin-left': isSidebarOpen ? '16rem' : '0'}"
-     class="p-4 transition-all duration-300">
+<div [ngClass]="{'lg:ml-64': isSidebarOpen}" [ngStyle]="{'margin-left': isSidebarOpen ? '16rem' : '0'}"
+    class="p-4 transition-all duration-300">
     <div class="p-4 mt-12">
         <router-outlet></router-outlet>
     </div>

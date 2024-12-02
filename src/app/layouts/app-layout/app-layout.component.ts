@@ -5,33 +5,33 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-app-layout',
-  imports: [RouterOutlet, CommonModule, RouterLink , NgClass, MatIconModule],
-  standalone:true,
+  imports: [RouterOutlet, CommonModule, RouterLink, NgClass, MatIconModule],
+  standalone: true,
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.css'
 })
 export class AppLayoutComponent {
-  isSidebarOpen = true;
+  isSidebarOpen = false;
   isMenueOpen = true;
   isDropdownOpen = false;
   isTransactionHover = false;
 
 
   toggleSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen;
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 
   toggleAppDropdown() {
-      this.isMenueOpen = !this.isMenueOpen;
+    this.isMenueOpen = !this.isMenueOpen;
   }
 
-    toggleTransactionHover(state: boolean) {
-        this.isTransactionHover = state;
-    }
+  toggleTransactionHover(state: boolean) {
+    this.isTransactionHover = state;
+  }
 
 
   toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
 

@@ -1,0 +1,22 @@
+<div class="p-16">
+    <h2 mat-dialog-title class="text-xl font-bold text-gray-800 ">Add New Customer</h2>
+    <div mat-dialog-content>
+        <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-600">Customer Name</label>
+            <input type="text" [(ngModel)]="newCustomer.name" placeholder="Enter customer name"
+                class="w-full mt-2 px-4 py-2 border rounded-md focus:ring focus:ring-green-300" />
+        </div>
+        <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-600">Contact Number</label>
+            <input type="text" [(ngModel)]="newCustomer.contact" placeholder="Enter contact number"
+                class="w-full mt-2 px-4 py-2 border rounded-md focus:ring focus:ring-green-300" />
+        </div>
+    </div>
+    <div mat-dialog-actions class="flex justify-end mt-6">
+        <button mat-button (click)="closeDialog()" class="px-4 py-2 mr-2 text-gray-700">Cancel</button>
+        <button mat-button (click)="addCustomer()"
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            Add Customer
+        </button>
+    </div>
+</div>

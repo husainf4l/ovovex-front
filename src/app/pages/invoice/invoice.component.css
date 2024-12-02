@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  th {
+    background-color: #f7fafc;
+    font-weight: bold;
+  }
+  
+  input {
+    outline: none;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  

@@ -3,6 +3,8 @@ import { WebsiteLayoutComponent } from './layouts/website-layout/website-layout.
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ChartOfAccountsComponent } from './pages/chart-of-accounts/chart-of-accounts.component';
+import { InvoiceComponent } from './pages/invoice/invoice.component';
+import { JournalEntryComponent } from './pages/journal-entry/journal-entry.component';
 
 export const routes: Routes = [
 
@@ -12,7 +14,7 @@ export const routes: Routes = [
         component: WebsiteLayoutComponent,
         children: [
             { path: '', component: WebsiteLayoutComponent },
-           
+
 
 
 
@@ -24,6 +26,9 @@ export const routes: Routes = [
         children: [
             { path: '', component: DashboardComponent },
             { path: 'chartofaccounts', component: ChartOfAccountsComponent },
+            { path: 'invoice', component: InvoiceComponent },
+            { path: 'journal-entry', component: JournalEntryComponent },
+
         ],
     },
     // { path: '404', component: NotFoundComponent },

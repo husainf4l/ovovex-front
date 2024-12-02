@@ -1,56 +1,61 @@
-<div class="p-6 bg-white rounded-lg shadow-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-semibold text-gray-700">Chart of Accounts</h2>
-      <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-        Add Account
-      </button>
-    </div>
-  
-    <div class="mb-4">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        (input)="onSearch(searchQuery)"
-        placeholder="Search accounts..."
-        class="w-full px-4 py-2 border rounded-md focus:outline-none"
-      />
-    </div>
-  
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left text-gray-500 border-collapse">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-6 py-3 cursor-pointer" (click)="sortBy('name')">Account Name</th>
-            <th class="px-6 py-3 cursor-pointer" (click)="sortBy('accountType')">Account Type</th>
-            <th class="px-6 py-3 cursor-pointer text-right" (click)="sortBy('currentBalance')">
-              Balance
-            </th>
-            <th class="px-6 py-3">Currency</th>
-            <th class="px-6 py-3">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let account of getAccountsToDisplay()">
-            <tr class="hover:bg-gray-50">
-              <td class="px-6 py-3 flex items-center" [ngStyle]="{'padding-left': (account.subLevel * 20) + 'px'}">
-                <button *ngIf="isParentAccount(account)" (click)="toggleExpand(account)" class="mr-2">
-                  <mat-icon>{{ account.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-                </button>
-                {{ account.name }}
-              </td>
-              <td class="px-6 py-3">{{ account.accountType }}</td>
-              <td class="px-6 py-3 text-right">
-                {{ account.currentBalance | currency: account.currencyCode }}
-              </td>
-              <td class="px-6 py-3">{{ account.currencyCode }}</td>
-              <td class="px-6 py-3">
-                <button (click)="editAccount(account)" class="text-blue-600 hover:underline mr-2">Edit</button>
-                <button (click)="deleteAccount(account)" class="text-red-600 hover:underline">Delete</button>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
+<div class="bg-white rounded-lg shadow-md">
+  <!-- Header -->
+  <div class="flex justify-between items-center px-4 py-4 border-b">
+    <h2 class="text-xl font-semibold text-gray-700">Chart of Accounts</h2>
+    <button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Add Account</button>
   </div>
-  
+
+  <!-- Search Bar -->
+  <div class="px-4 py-3 border-b flex items-center gap-2">
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearch(searchQuery)" placeholder="Search accounts..."
+      class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none" />
+    <button *ngIf="searchQuery" (click)="clearSearch()" class="text-red-500 hover:text-red-700 text-sm">
+      Clear
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="px-4 py-3 text-red-600 text-sm">
+    {{ error }}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="px-4 py-3 text-center text-gray-500 text-sm">
+    Loading accounts...
+  </div>
+
+  <!-- Accounts Table -->
+  <div *ngIf="!loading && !error" class="overflow-x-auto">
+    <table class="w-full text-sm text-left text-gray-500 border-t">
+      <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
+        <tr>
+          <th class="px-3 py-2">Account Number</th>
+          <th class="px-3 py-2">Account Name</th>
+          <th class="px-3 py-2">Account Type</th>
+          <th class="px-3 py-2">groupCode</th>
+
+          <th class="px-3 py-2 text-right">Balance</th>
+          <th class="px-3 py-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let account of displayedAccounts">
+          <tr class="hover:bg-gray-50">
+            <td class="px-3 py-2">{{ account.accountNumber }}</td>
+            <td class="px-3 py-2">{{ account.name }}</td>
+            <td class="px-3 py-2">{{ account.accountType }}</td>
+            <td>{{ account.groupCode }}</td> <!-- Display group code -->
+
+            <td class="px-3 py-2 text-right">
+              {{ account.currentBalance | currency: 'JOD' }}
+            </td>
+            <td class="px-3 py-2 text-center">
+              <button class="text-blue-600 hover:underline mr-2">Run History</button>
+              <button class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
