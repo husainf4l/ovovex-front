@@ -5,6 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ChartOfAccountsComponent } from './pages/chart-of-accounts/chart-of-accounts.component';
 import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { JournalEntryComponent } from './pages/journal-entry/journal-entry.component';
+import { AccountStatementComponent } from './pages/account-statement/account-statement.component';
 
 export const routes: Routes = [
 
@@ -28,6 +29,8 @@ export const routes: Routes = [
             { path: 'chartofaccounts', component: ChartOfAccountsComponent },
             { path: 'invoice', component: InvoiceComponent },
             { path: 'journal-entry', component: JournalEntryComponent },
+            { path: 'account-statement/:accountId', component: AccountStatementComponent },
+
 
         ],
     },
