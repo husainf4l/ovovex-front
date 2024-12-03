@@ -3,7 +3,7 @@ export interface Item {
     id: string;
     barcode: string;
     name: string;
-    price: number;
+    salesPrice: number;
 }
 
 export interface InvoiceItem {
@@ -11,7 +11,7 @@ export interface InvoiceItem {
     barcode: string;
     description: string;
     quantity: number;
-    price: number;
+    salesPrice: number;
     total: number;
 }
 

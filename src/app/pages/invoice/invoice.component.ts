@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCustomerDialogComponent } from '../../dialogs/add-customer-dialog/add-customer-dialog.component';
 import { Client, InvoiceItem, Item } from '../../models/interfaces.model';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-invoice',
@@ -11,9 +12,14 @@ import { Client, InvoiceItem, Item } from '../../models/interfaces.model';
   styleUrls: ['./invoice.component.css'],
   imports: [FormsModule, CommonModule]
 })
-export class InvoiceComponent {
+export class InvoiceComponent implements OnInit{
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private productsService:ProductsService) { }
+
+  ngOnInit(): void {
+    this.fetchItems();
+  }
+
 
   openAddCustomerDialog(): void {
     const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
@@ -23,10 +29,11 @@ export class InvoiceComponent {
     dialogRef.afterClosed().subscribe((newCustomer) => {
       if (newCustomer) {
         this.clients.push({ id: Math.random().toString(), ...newCustomer });
-        this.filterClients(); // Refresh the filtered list
+        this.filterClients(); 
         this.selectedClient = newCustomer; // Automatically select the new customer
       }
     });
+   
   }
 
 
@@ -35,15 +42,27 @@ export class InvoiceComponent {
     { id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', phone: '0987654321' },
     { id: '3', name: 'Acme Corp', email: 'contact@acmecorp.com', phone: '1122334455' },
   ];
+
   filteredClients: Client[] = [...this.clients]; // Copy for filtering
   selectedClient: Client | null = null; // Selected client
   searchQuery: string = ''; // Search input
 
-  items: Item[] = [
-    { id: '1', barcode: '123456', name: 'Item A', price: 50 },
-    { id: '2', barcode: '654321', name: 'Item B', price: 100 },
-    { id: '3', barcode: '987654', name: 'Item C', price: 200 },
-  ];
+  items: Item[] = [];
+
+  
+  fetchItems(): void {
+
+    this.productsService.getInvoiceProducts().subscribe({
+      next: (data) => {
+        this.items = data; // Flat structure
+        
+      },
+      error: (err) => {
+        console.error('Error fetching accounts:', err);
+       
+      },
+    });
+  }
 
   filteredItems: Item[] = [...this.items];
   itemSearchQuery: string = '';
@@ -90,8 +109,8 @@ export class InvoiceComponent {
       barcode: item.barcode,
       description: item.name,
       quantity: 1,
-      price: item.price,
-      total: item.price,
+      salesPrice: item.salesPrice,
+      total: item.salesPrice,
     });
     this.itemSearchQuery = '';
     this.filteredItems = [];
@@ -104,7 +123,7 @@ export class InvoiceComponent {
   }
 
   updateTotal(item: InvoiceItem): void {
-    item.total = item.quantity * item.price;
+    item.total = item.quantity * item.salesPrice;
     this.updateTotals();
   }
 

@@ -22,3 +22,29 @@ table {
     cursor: pointer;
   }
   
+  #printableInvoice {
+    position: relative;
+    min-height: 297mm;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid #000000;
+    background-color: white;
+}
+
+@media print {
+    #printableInvoice {
+        page-break-after: always;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+}
