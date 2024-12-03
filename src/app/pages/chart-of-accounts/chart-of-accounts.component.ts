@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Account } from '../../models/interfaces.model';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-chart-of-accounts',
   templateUrl: './chart-of-accounts.component.html',
   styleUrls: ['./chart-of-accounts.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule, RouterLink],
   providers: [ChartOfAccountsService],
 })
 export class ChartOfAccountsComponent implements OnInit {
@@ -55,4 +56,6 @@ export class ChartOfAccountsComponent implements OnInit {
     this.searchQuery = '';
     this.displayedAccounts = [...this.chartOfAccounts];
   }
+
+
 }
