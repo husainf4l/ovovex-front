@@ -6,6 +6,10 @@ import { ChartOfAccountsComponent } from './pages/chart-of-accounts/chart-of-acc
 import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { JournalEntryComponent } from './pages/journal-entry/journal-entry.component';
 import { AccountStatementComponent } from './pages/account-statement/account-statement.component';
+import { LoginComponent } from './web-site-pages/login/login.component';
+import { SignupComponent } from './web-site-pages/signup/signup.component';
+import { AuthGuard } from './services/auth/auth.guard';
+import { HomePageComponent } from './web-site-pages/home-page/home-page.component';
 
 export const routes: Routes = [
 
@@ -14,16 +18,18 @@ export const routes: Routes = [
         path: '',
         component: WebsiteLayoutComponent,
         children: [
-            { path: '', component: WebsiteLayoutComponent },
-
-
-
-
+            { path: '', component: HomePageComponent },
+            { path: 'login', component: LoginComponent },
+            { path: 'signup', component: SignupComponent },
         ],
     },
+
+
+
     {
         path: 'app',
         component: AppLayoutComponent,
+        canActivate: [AuthGuard],
         children: [
             { path: '', component: DashboardComponent },
             { path: 'chartofaccounts', component: ChartOfAccountsComponent },

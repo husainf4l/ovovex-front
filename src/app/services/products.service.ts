@@ -14,9 +14,6 @@ import {  Observable } from 'rxjs';
   
     constructor(private http: HttpClient) { }
   
-    getInvoiceProducts(): Observable<any[]> {
-        return this.http.get<any>(`${this.apiUrl}/invoice-products`);
-    }
 
 }
 

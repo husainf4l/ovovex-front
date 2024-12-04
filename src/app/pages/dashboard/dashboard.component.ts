@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
+import { InitiateService } from '../../services/inisiate/initiate.service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  
 
+
+
+  
 }

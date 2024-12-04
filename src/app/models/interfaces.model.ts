@@ -1,12 +1,12 @@
 
-export interface Item {
+export interface Product {
     id: string;
     barcode: string;
     name: string;
     salesPrice: number;
 }
 
-export interface InvoiceItem {
+export interface InvoiceProduct {
     id: string;
     barcode: string;
     description: string;
@@ -68,4 +68,10 @@ export interface JournalEntry {
     debit: number;
     credit: number;
     notes: string;
+}
+
+
+export interface AccountManager {
+    id:string,
+    displayName:string
 }
