@@ -26,8 +26,7 @@
                 <button type="button" (click)="toggleDropdown()"
                     class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 hover:ring-gray-400">
                     <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full"
-                        src="{{ userData?.userData.profileImage }}" alt="user photo">
+                    <img class="w-8 h-8 rounded-full" src="{{ userData?.userData.profileImage }}" alt="user photo">
                 </button>
             </div>
 
@@ -61,7 +60,7 @@
     <div class="h-full px-4 py-6 flex flex-col">
         <!-- Logo -->
         <a routerLink="/" class="flex items-center justify-center mb-10">
-            <img src="assets\logo\vovovex-logo.jpeg"  class="h-12" alt="Vovovex Logo">
+            <img src="assets\logo\vovovex-logo.jpeg" class="h-12" alt="Vovovex Logo">
         </a>
 
         <!-- Navigation Menu -->
@@ -98,10 +97,10 @@
                         <ul *ngIf="isTransactionHover"
                             class="absolute top-0 left-full w-48 bg-neutral-200 rounded-md shadow-lg border">
                             <li>
-                                <a routerLink="chartofaccounts" routerLinkActive="text-primary-600"
+                                <a routerLink="journal-list" routerLinkActive="text-primary-600"
                                     class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
                                     <mat-icon class="text-gray-500 mr-2">account_balance</mat-icon>
-                                    Chart of Accounts
+                                    Journal List
                                 </a>
                             </li>
                             <li>
@@ -122,8 +121,16 @@
                             <span class="ml-3">Sales</span>
                         </a>
                     </li>
+                    <li>
+                        <a routerLink="chartofaccounts" routerLinkActive="text-primary-600"
+                            class="flex items-center text-gray-700 hover:text-primary-600 transition">
+                            <mat-icon>account_balance</mat-icon>
+                            <span class="ml-3"> Chart of Accounts
+                            </span>
+                        </a>
+                    </li>
 
-                    <!-- Expenses -->
+
                     <li>
                         <a routerLink="/invoice" routerLinkActive="text-primary-600"
                             class="flex items-center text-gray-700 hover:text-primary-600 transition">

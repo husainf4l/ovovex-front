@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountService } from '../../services/account.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-account-statement',

@@ -36,7 +36,8 @@
                         class="w-full px-3 py-1.5 border rounded-md text-sm focus:ring focus:ring-green-200" />
                     <ul *ngIf="filteredAccountManagers.length > 0 && accountManagerSearchQuery"
                         class="absolute z-10 bg-white border rounded-md shadow-md mt-1 w-full max-h-32 overflow-y-auto text-sm">
-                        <li *ngFor="let accountManager of filteredAccountManagers" (click)="selectAccountManager(accountManager)"
+                        <li *ngFor="let accountManager of filteredAccountManagers"
+                            (click)="selectAccountManager(accountManager)"
                             class="px-3 py-1 hover:bg-gray-100 cursor-pointer">
                             {{ accountManager.displayName }}
                         </li>
@@ -69,8 +70,8 @@
                 <label class="block text-sm font-medium text-gray-700">Payment</label>
                 <select [(ngModel)]="paymentMode"
                     class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm focus:ring focus:ring-green-200">
-                    <option value="Cash">Cash</option>
-                    <option value="Accounts Receivable">Accounts Receivable</option>
+                    <option value="CASH">Cash</option>
+                    <option value="ACCOUNTS_RECEIVABLE">Accounts Receivable</option>
                 </select>
             </div>
 

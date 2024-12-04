@@ -33,7 +33,7 @@ export interface Account {
     parentAccountId: string | null;
     parentAccount?: Account | null; // Optional reference to parent account
     children?: Account[]; // Optional array of child accounts
-    transactions?: Transaction[]; // Array of related transactions
+    transactions?: transactions[]; // Array of related transactions
     leases?: Lease[]; // Array of related leases
     createdAt: string;
     updatedAt: string;
@@ -42,14 +42,16 @@ export interface Account {
     level?: number; // To track nesting level
 
 }
-export interface Transaction {
+export interface transactions {
     id: string;
     accountId: string;
-    amount: number;
+    debit?: number;
+    credit?: number;
     currency: string;
     notes?: string;
     journalEntryId?: string;
     createdAt: string;
+    account?: Account
 }
 
 export interface Lease {
@@ -64,6 +66,7 @@ export interface Lease {
 
 
 export interface JournalEntry {
+    accountId: string;
     account: string;
     debit: number;
     credit: number;
@@ -72,6 +75,14 @@ export interface JournalEntry {
 
 
 export interface AccountManager {
-    id:string,
-    displayName:string
+    id: string,
+    displayName: string
 }
+
+
+export interface Journals {
+    id: string,
+    date: Date,
+    transactions: transactions[];
+}
+

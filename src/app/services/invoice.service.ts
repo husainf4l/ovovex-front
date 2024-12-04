@@ -5,24 +5,29 @@ import { Observable } from 'rxjs';
 
 
 interface InvoiceData {
-    products: any[]; 
-    clients: any[]; 
-    accountManager:any[];
-    invoiceNumber:number;
-  }
+  products: any[];
+  clients: any[];
+  accountManager: any[];
+  invoiceNumber: number;
+}
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class InvoiceService {
-    private apiUrl = `${environment.apiUrl}/invoice`;
+  private apiUrl = `${environment.apiUrl}/invoice`;
 
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getInvoiceData(): Observable<InvoiceData> {
-  return this.http.get<InvoiceData>(`${this.apiUrl}/invoice-data`);
-}
+  getInvoiceData(): Observable<InvoiceData> {
+    return this.http.get<InvoiceData>(`${this.apiUrl}/invoice-data`);
+  }
+
+
+  createInvoice(invoiceData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/create`, invoiceData);
+  }
 
 
 }

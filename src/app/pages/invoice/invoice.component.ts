@@ -30,14 +30,14 @@ export class InvoiceComponent implements OnInit {
   grandTotal: number = 0;
   taxRate: number = 16;
   bonus: number = 0;
-  paymentMode: string = 'Cash';
+  paymentMode: string = 'CASH';
   customerName: string = '';
-  invoiceDate: string = new Date().toISOString().split('T')[0];
+  invoiceDate: string = new Date().toISOString();
   invoiceNumber: number = 0;
   userData: any;
 
 
-  constructor(private dialog: MatDialog, private invoiceService: InvoiceService) {}
+  constructor(private dialog: MatDialog, private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -90,7 +90,7 @@ export class InvoiceComponent implements OnInit {
 
   selectProduct(product: Product): void {
     this.invoiceProducts.push({
-      id: Math.random().toString(36).substring(2),
+      id: product.id,
       barcode: product.barcode,
       description: product.name,
       quantity: 1,
@@ -149,15 +149,47 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveInvoice(): void {
-    console.log('Invoice saved:', {
-      customer: this.selectedClient,
-      accountManager: this.selectedAccountManager,
+    if (!this.selectedClient || !this.selectedAccountManager || this.invoiceProducts.length === 0) {
+      alert('Please complete all required fields before saving the invoice.');
+      return;
+    }
+
+    const invoiceData = {
+      clientId: this.selectedClient.id,
+      clientName: this.selectedClient.name,
+      accountManagerId: this.selectedAccountManager.id,
       date: this.invoiceDate,
-      products: this.invoiceProducts,
-      total: this.grandTotal,
+      invoiceNumber: this.invoiceNumber,
+      invoiceItems: this.invoiceProducts.map(product => ({
+        productId: product.id,
+        quantity: product.quantity,
+        unitPrice: product.salesPrice,
+        taxAmount: 16,
+        discount: 0,
+        totalAmount: product.total,
+      })),
+      total: this.subtotal,
+      taxAmount: this.vatAmount,
+      grandTotal: this.grandTotal,
       paymentMode: this.paymentMode,
+      bonus: this.bonus,
+    };
+
+    this.invoiceService.createInvoice(invoiceData).subscribe({
+      next: (response) => {
+        console.log('Invoice submitted successfully:', response);
+        alert('Invoice saved successfully.');
+        // Optionally clear the form or navigate to another page
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error('Error saving invoice:', err);
+        alert('Failed to save the invoice. Please try again.');
+      },
     });
   }
+
+
 
   printInvoice(): void {
     const printContents = document.getElementById('printableInvoice')?.innerHTML;

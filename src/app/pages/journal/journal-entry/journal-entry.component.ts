@@ -1,16 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
-import { JournalEntryPayload, JournalEntryService } from '../../services/journal-entry.service';
+import { ChartOfAccountsService } from '../../../services/chart-of-accounts.service';
+import { JournalEntryPayload, JournalEntryService } from '../../../services/journal-entry.service';
+import { JournalEntry } from '../../../models/interfaces.model';
 
-interface JournalEntry {
-  accountId: string;
-  account: string;
-  debit: number;
-  credit: number;
-  notes: string;
-}
+
 
 @Component({
   selector: 'app-journal-entry',
