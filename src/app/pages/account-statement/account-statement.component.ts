@@ -14,7 +14,6 @@ export class AccountStatementComponent implements OnInit {
   accountId!: string;
   accountDetails: any;
   transactions: any[] = [];
-  invoices: any[] = [];
   pagination = { currentPage: 1, totalPages: 0, totalRecords: 0 };
   filters = { startDate: '', endDate: '' };
   loading = false;
@@ -51,8 +50,7 @@ export class AccountStatementComponent implements OnInit {
       .subscribe(
         (data) => {
           this.accountDetails = data.accountDetails;
-          this.transactions = data.transactions;
-          this.invoices = data.invoices;
+          this.transactions = data.transactions || [];
           this.pagination = data.pagination || {
             currentPage: 1,
             totalPages: 0,
@@ -96,34 +94,44 @@ export class AccountStatementComponent implements OnInit {
     if (printContents) {
       const printWindow = window.open('', '_blank', 'width=800,height=600');
       printWindow?.document.write(`
-            <html>
-                <head>
-                    <title>Account Statement</title>
-                    <style>
-                        /* Add any custom styles here for printing */
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 20px;
-                        }
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid #ddd;
-                            padding: 8px;
-                        }
-                        th {
-                            background-color: #f4f4f4;
-                        }
-                    </style>
-                </head>
-                <body>${printContents}</body>
-            </html>
-        `);
+        <html>
+          <head>
+            <title>Account Statement</title>
+            <style>
+              @media print {
+                body {
+                  font-family: Arial, sans-serif;
+                  margin: 20px;
+                }
+                table {
+                  width: 100%;
+                  border-collapse: collapse;
+                }
+                th, td {
+                  border: 1px solid #ddd;
+                  padding: 8px;
+                }
+                th {
+                  background-color: #f4f4f4;
+                }
+                footer {
+                  position: fixed;
+                  bottom: 0;
+                  text-align: center;
+                  font-size: 0.8rem;
+                  width: 100%;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            ${printContents}
+            <footer>Company Address: 123 Business Street, City, Country</footer>
+          </body>
+        </html>
+      `);
       printWindow?.document.close();
       printWindow?.print();
     }
   }
-
 }

@@ -28,8 +28,8 @@
 
             <!-- Vendor Section -->
             <div>
-                <label class="block text-sm font-medium text-gray-700">Vendor</label>
-                <input type="text" [(ngModel)]="vendorName" placeholder="Vendor name"
+                <label class="block text-sm font-medium text-gray-700">Account Manager</label>
+                <input type="text" [(ngModel)]="accountManager" placeholder="Account Manager"
                     class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm focus:ring focus:ring-green-200" />
             </div>
 
@@ -150,14 +150,14 @@
             <div class="flex items-center justify-between">
                 <img src="assets/logo/company-logo.png" class="w-44">
                 <p class="text-5xl">INVOICE</p>
-             </div>
+            </div>
         </div>
         <hr class=" border-black my-5 ">
 
         <div class="grid grid-cols-2 text-sm mb-6">
             <div>
                 <p><strong>Customer:</strong> {{ selectedClient?.name }}</p>
-                <p><strong>Account Manager:</strong> {{ vendorName }}</p>
+                <p><strong>Account Manager:</strong> {{ accountManager }}</p>
                 <p><strong>Payment Mode:</strong> {{ paymentMode }}</p>
                 <p><strong>Tax Number:</strong>129341371</p>
 
@@ -203,8 +203,8 @@
     </div>
 
     <div class="footer flex flex-col justify-start items-start text-sm">
-        <p class="font-bold ">Papaya Trading </p> 
-        <p>  Address: 95 Brother's complex - Yajouz St -  Amman - Jordan </p>
+        <p class="font-bold ">Papaya Trading </p>
+        <p> Address: 95 Brother's complex - Yajouz St - Amman - Jordan </p>
         <p>Phone: +962 79 805 5 229 | Email: al-hussein&#64;papayatrading.com</p>
     </div>
 

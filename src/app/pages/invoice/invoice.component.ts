@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCustomerDialogComponent } from '../../dialogs/add-customer-dialog/add-customer-dialog.component';
 import { Client, InvoiceItem, Item } from '../../models/interfaces.model';
 import { ProductsService } from '../../services/products.service';
+import { ClientsService } from '../../services/clients.service';
 
 @Component({
   selector: 'app-invoice',
@@ -12,64 +13,79 @@ import { ProductsService } from '../../services/products.service';
   styleUrls: ['./invoice.component.css'],
   imports: [FormsModule, CommonModule]
 })
-export class InvoiceComponent implements OnInit{
+export class InvoiceComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private productsService:ProductsService) { }
+  constructor(private dialog: MatDialog, private productsService: ProductsService, private clientsService: ClientsService) { }
 
   ngOnInit(): void {
+    this.fetchClients();
     this.fetchItems();
   }
-
 
   openAddCustomerDialog(): void {
     const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
       width: '400px',
+      disableClose: true, // Prevent closing the dialog by clicking outside
+      data: {} // Pass any data if needed
     });
 
-    dialogRef.afterClosed().subscribe((newCustomer) => {
-      if (newCustomer) {
-        this.clients.push({ id: Math.random().toString(), ...newCustomer });
-        this.filterClients(); 
-        this.selectedClient = newCustomer; // Automatically select the new customer
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Customer added:', result);
+
+        // Add the new client to the clients list
+        this.clients.push(result.client.account);
+
+        // Set the new client as the selected client
+        this.selectClient(result.client.account);
       }
     });
-   
   }
 
 
-  clients: Client[] = [
-    { id: '1', name: 'John Doe', email: 'john.doe@example.com', phone: '1234567890' },
-    { id: '2', name: 'Jane Smith', email: 'jane.smith@example.com', phone: '0987654321' },
-    { id: '3', name: 'Acme Corp', email: 'contact@acmecorp.com', phone: '1122334455' },
-  ];
-
+  clients: Client[] = [];
   filteredClients: Client[] = [...this.clients]; // Copy for filtering
   selectedClient: Client | null = null; // Selected client
   searchQuery: string = ''; // Search input
 
   items: Item[] = [];
 
-  
+
   fetchItems(): void {
 
     this.productsService.getInvoiceProducts().subscribe({
       next: (data) => {
-        this.items = data; // Flat structure
-        
+        this.items = data;
+
       },
       error: (err) => {
         console.error('Error fetching accounts:', err);
-       
+
       },
     });
   }
+
+  fetchClients(): void {
+
+    this.clientsService.getIvoiceClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+
+      },
+      error: (err) => {
+        console.error('Error fetching accounts:', err);
+
+      },
+    });
+  }
+
 
   filteredItems: Item[] = [...this.items];
   itemSearchQuery: string = '';
 
   bonus = 0;
 
-  vendorName = '';
+  accountManager = '';
   paymentMode = 'Cash';
 
   customerName: string = '';
@@ -136,7 +152,7 @@ export class InvoiceComponent implements OnInit{
   saveInvoice(): void {
     console.log('Invoice saved:', {
       customer: this.selectedClient,
-      vendor: this.vendorName,
+      accountManager: this.accountManager,
       date: this.invoiceDate,
       items: this.invoiceItems,
       total: this.grandTotal,
