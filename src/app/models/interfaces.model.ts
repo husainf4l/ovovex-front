@@ -39,6 +39,7 @@ export interface Account {
     updatedAt: string;
     currency?: string;
     expanded?: boolean;
+    mainAccount: boolean;
     level?: number; // To track nesting level
 
 }
