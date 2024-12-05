@@ -33,7 +33,6 @@ export const routes: Routes = [
         ],
     },
 
-    // App layout routes with lazy loading
     {
         path: 'app',
         component: AppLayoutComponent,
