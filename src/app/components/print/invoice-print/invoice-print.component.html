@@ -1,0 +1,64 @@
+<div id="printableInvoice">
+    <div class="invoice-container">
+        <!-- Header -->
+        <div class="invoice-header">
+            <div class="logo-title">
+                <img [src]="companyData?.logoImage" alt="Company Logo" class="logo">
+                <p class="title">INVOICE</p>
+            </div>
+        </div>
+        <hr class="separator">
+
+        <!-- Customer and Invoice Info -->
+        <div class="invoice-info">
+            <div>
+                <p><strong>Customer:</strong> {{ invoiceData?.customerName }}</p>
+                <p><strong>Account Manager:</strong> {{ invoiceData?.accountManagerName }}</p>
+                <p><strong>Payment Mode:</strong> {{ invoiceData?.paymentMode }}</p>
+            </div>
+            <div>
+                <p><strong>Invoice Date:</strong> {{ invoiceData?.date }}</p>
+                <p><strong>Invoice #:</strong> {{ invoiceData?.invoiceNumber }}</p>
+                <p><strong>Tax Number:</strong> {{ companyData?.taxNumber }}</p>
+            </div>
+        </div>
+        <hr class="separator">
+
+        <!-- Product Table -->
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Barcode</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of invoiceData?.invoiceItems">
+                    <td>{{ product.barcode }}</td>
+                    <td>{{ product.description }}</td>
+                    <td class="text-center">{{ product.quantity }}</td>
+                    <td class="text-center">{{ product.salesPrice | currency }}</td>
+                    <td class="text-center">{{ product.total | currency }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr class="separator">
+
+        <!-- Totals -->
+        <div class="totals">
+            <p><strong>Subtotal:</strong> {{ invoiceData?.subtotal | currency }}</p>
+            <p><strong>VAT ({{ invoiceData?.taxRate }}%):</strong> {{ invoiceData?.vatAmount | currency }}</p>
+            <p class="grand-total"><strong>Grand Total:</strong> {{ invoiceData?.grandTotal | currency }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="company-name">{{ companyData?.name }}</p>
+            <p>Address: {{ companyData?.address }}</p>
+            <p>Phone: {{ companyData?.phone }} | Email: {{ companyData?.email }}</p>
+        </div>
+    </div>
+</div>

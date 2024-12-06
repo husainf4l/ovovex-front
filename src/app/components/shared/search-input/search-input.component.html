@@ -1,0 +1,12 @@
+<div class="relative">
+    <label *ngIf="label" class="block text-sm font-medium text-gray-700">{{ label }}</label>
+    <input type="text" [(ngModel)]="query" (input)="onSearch()" [placeholder]="placeholder"
+        class="w-full px-3 py-1.5 border rounded-md text-sm focus:ring focus:ring-green-200" />
+    <ul *ngIf="filteredItems.length > 0 && query"
+        class="absolute z-10 bg-white border rounded-md shadow-md mt-1 w-full max-h-32 overflow-y-auto text-sm">
+        <li *ngFor="let item of filteredItems" (click)="selectItem(item)"
+            class="px-3 py-1 hover:bg-gray-100 cursor-pointer">
+            {{ item[displayKey] }}
+        </li>
+    </ul>
+</div>

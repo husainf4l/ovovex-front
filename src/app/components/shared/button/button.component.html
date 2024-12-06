@@ -1,0 +1,9 @@
+<div class="mt-4 text-right">
+    <button [type]="buttonType" class="px-4 py-2 rounded-md text-white" [ngClass]="buttonClasses"
+        [disabled]="isDisabled" (click)="onClick.emit()">
+        {{ buttonText }}
+    </button>
+    <div *ngIf="errorMessage" class="text-red-600 text-sm mt-2">
+        {{ errorMessage }}
+    </div>
+</div>

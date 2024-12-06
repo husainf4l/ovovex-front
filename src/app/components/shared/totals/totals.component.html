@@ -1,0 +1,7 @@
+<div class="flex justify-end mt-10">
+    <div class="text-left">
+        <p class="text-sm">Subtotal: {{ subtotal | currency:'JD ' }}</p>
+        <p class="text-sm">VAT ({{ taxRate }}%): {{ vatAmount | currency:'JD ' }}</p>
+        <p class="text-lg font-semibold">Grand Total: {{ grandTotal | currency:'JD ' }}</p>
+    </div>
+</div>

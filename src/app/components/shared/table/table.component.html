@@ -1,0 +1,23 @@
+<table class="w-full text-sm text-left text-gray-500 border-collapse">
+    <thead class="bg-gray-100">
+        <tr>
+            <th *ngFor="let col of columns" class="px-4 py-3">{{ col.label }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of data" class="hover:bg-gray-50">
+            <td *ngFor="let col of columns" class="px-4 py-3">
+                <ng-container *ngIf="col.key !== 'actions'; else actionsCell">
+                    {{ row[col.key] }}
+                </ng-container>
+                <ng-template #actionsCell>
+                    <button *ngFor="let action of row[col.key]" (click)="action.handler()"
+                        class="px-2 py-1 rounded text-white"
+                        [ngClass]="action.style || 'bg-blue-600 hover:bg-blue-700'">
+                        {{ action.label }}
+                    </button>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</table>

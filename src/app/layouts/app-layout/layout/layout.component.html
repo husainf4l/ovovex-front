@@ -1,0 +1,7 @@
+<app-navbar [userData]="userData" [isSidebarOpen]="isSidebarOpen" (toggleSidebar)="toggleSidebar()">
+</app-navbar>
+<app-sidebar [isOpen]="isSidebarOpen"></app-sidebar>
+<div [ngClass]="{ 'lg:ml-64': isSidebarOpen }"
+    class="transition-all duration-300  mt-14 pt-8 px-8 max-w-full mx-auto  ">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,69 @@
+<h1 class="text-2xl font-bold text-gray-800 mb-6">Journal Entry</h1>
+
+<app-error-alert [message]="error"></app-error-alert>
+
+<form (ngSubmit)="submitEntry()" *ngIf="!loading && !error" class="space-y-6">
+    <!-- Journal Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Journal ID -->
+        <div>
+            <label for="journalId" class="block text-sm font-medium text-gray-700">Journal ID</label>
+            <input id="journalId" type="text" [(ngModel)]="journalId" name="journalId" readonly
+                class="w-full mt-1 px-3 py-2 border rounded-md bg-gray-100 cursor-not-allowed" />
+        </div>
+        <!-- Journal Date -->
+        <div>
+            <app-date-selector [label]="'Date'" [(selectedDate)]="journalDate"></app-date-selector>
+        </div>
+    </div>
+
+
+    <div>
+        <app-search-input [items]="accounts" [displayKey]="'name'" placeholder="Search account" [label]="'Add Entry'"
+            (selected)="selectAccount($event)"></app-search-input>
+
+        <div class="flex items-center gap-4 mt-4">
+            <!-- Debit -->
+            <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700">Debit</label>
+                <input type="number" [(ngModel)]="newEntry.debit" name="debit" placeholder="0.00"
+                    class="w-full mt-1 px-3 py-2 border rounded-md" />
+            </div>
+            <!-- Credit -->
+            <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700">Credit</label>
+                <input type="number" [(ngModel)]="newEntry.credit" name="credit" placeholder="0.00"
+                    class="w-full mt-1 px-3 py-2 border rounded-md" />
+            </div>
+            <!-- Notes -->
+            <div class="flex-2">
+                <label class="block text-sm font-medium text-gray-700">Notes</label>
+                <input type="text" [(ngModel)]="newEntry.notes" name="notes" placeholder="Optional notes"
+                    class="w-full mt-1 px-3 py-2 border rounded-md" />
+            </div>
+            <!-- Add Button -->
+            <button type="button" (click)="addEntry()"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 mt-6">
+                Add
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="mt-6">
+        <app-data-table [columns]="[
+            { label: 'Account', key: 'account' },
+            { label: 'Debit', key: 'debit' },
+            { label: 'Credit', key: 'credit' },
+            { label: 'Notes', key: 'notes' },
+            { label: 'Actions', key: 'actions' }
+          ]" [data]="formattedJournalEntries"></app-data-table>
+    </div>
+
+    <!-- Submission Button -->
+    <app-button [isDisabled]="journalEntries.length === 0 || totalDebit !== totalCredit"
+        [buttonText]="'Submit Journal Entry'" [buttonType]="'submit'"
+        [errorMessage]="totalDebit !== totalCredit ? 'Debit and Credit totals must be equal to submit!' : null"></app-button>
+
+</form>

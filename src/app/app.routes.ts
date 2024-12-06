@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { WebsiteLayoutComponent } from './layouts/website-layout/website-layout.component';
-import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
+import { LayoutComponent } from './layouts/app-layout/layout/layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
 
 export const routes: Routes = [
@@ -35,13 +35,13 @@ export const routes: Routes = [
 
     {
         path: 'app',
-        component: AppLayoutComponent,
+        component: LayoutComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 loadComponent: () =>
-                    import('./pages/dashboard/dashboard.component').then(
+                    import('./app-pages/dashboard/dashboard.component').then(
                         (m) => m.DashboardComponent
                     ),
             },
@@ -49,27 +49,27 @@ export const routes: Routes = [
                 path: 'chartofaccounts',
                 loadComponent: () =>
                     import(
-                        './pages/accounts/chart-of-accounts/chart-of-accounts.component'
+                        './app-pages/accounts/chart-of-accounts/chart-of-accounts.component'
                     ).then((m) => m.ChartOfAccountsComponent),
             },
             {
                 path: 'invoice',
                 loadComponent: () =>
-                    import('./pages/invoice/invoice.component').then(
+                    import('./app-pages/invoice/invoice.component').then(
                         (m) => m.InvoiceComponent
                     ),
             },
             {
                 path: 'journal-entry',
                 loadComponent: () =>
-                    import('./pages/journal/journal-entry/journal-entry.component').then(
+                    import('./app-pages/journal/journal-entry/journal-entry.component').then(
                         (m) => m.JournalEntryComponent
                     ),
             },
             {
                 path: 'journal-list',
                 loadComponent: () =>
-                    import('./pages/journal/journal-list/journal-list.component').then(
+                    import('./app-pages/journal/journal-list/journal-list.component').then(
                         (m) => m.JournalListComponent
                     ),
             },
@@ -77,7 +77,7 @@ export const routes: Routes = [
                 path: 'account-statement/:accountId',
                 loadComponent: () =>
                     import(
-                        './pages/accounts/account-statement/account-statement.component'
+                        './app-pages/accounts/account-statement/account-statement.component'
                     ).then((m) => m.AccountStatementComponent),
             },
         ],

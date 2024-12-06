@@ -1,0 +1,10 @@
+<div class="relative">
+    <button (click)="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full">
+        <img class="w-8 h-8 rounded-full" src="{{ userData?.userData.profileImage }}" alt="User Photo" />
+    </button>
+    <ul *ngIf="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+        <li><a routerLink="/dashboard" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a></li>
+        <li><a routerLink="/settings" class="block px-4 py-2 hover:bg-gray-100">Settings</a></li>
+        <li><a (click)="logout()" class="block px-4 py-2 hover:bg-gray-100">Sign out</a></li>
+    </ul>
+</div>

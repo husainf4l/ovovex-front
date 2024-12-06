@@ -1,0 +1,5 @@
+//.*$  to remove all commints 
+
+CLI COMANDS 
+ng g c components/shared/button --skip-tests
+ng serve --host 0.0.0.0

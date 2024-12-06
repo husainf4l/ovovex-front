@@ -1,0 +1,95 @@
+<h1 class="text-xl font-semibold text-gray-800 mb-3">Invoice</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
+        (selected)="selectClient($event)"></app-search-input>
+
+
+
+    <app-search-input [items]="accountManagers" [displayKey]="'displayName'" [label]="'Account Manager'"
+        placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
+    </app-search-input>
+
+
+    <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate">
+    </app-date-selector>
+
+
+
+
+</div>
+
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+    <!-- Invoice Number -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Invoice #</label>
+        <input type="text" [(ngModel)]="invoiceNumber" readonly
+            class="w-full mt-1 px-3 py-1.5 border bg-gray-100 rounded-md text-sm cursor-not-allowed" />
+    </div>
+
+    <!-- Payment Mode -->
+    <app-dropdown label="Payment" [options]="[
+            { value: 'CASH', label: 'Cash' },
+            { value: 'ACCOUNTS_RECEIVABLE', label: 'Accounts Receivable' }
+          ]" [(selectedValue)]="paymentMode"></app-dropdown>
+
+
+    <!-- Tax Section -->
+    <app-dropdown label="Tax" [options]="[
+              { value: 16, label: '16%' },
+              { value: 0, label: '0%' }
+            ]" [(selectedValue)]="taxRate" (selectedValueChange)="updateTotals()">
+    </app-dropdown>
+
+</div>
+
+
+
+<div class="mb-6">
+    <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
+        [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event) ">
+    </app-search-input>
+</div>
+
+
+
+
+<app-data-table [columns]="[
+    { label: 'Barcode', key: 'barcode' },
+    { label: 'Description', key: 'description' },
+    { label: 'Quantity', key: 'quantity' },
+    { label: 'Price', key: 'salesPrice' },
+    { label: 'Total', key: 'total' }
+  ]" [data]="invoiceProducts"></app-data-table>
+
+
+
+<app-invoice-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal" [taxRate]="taxRate">
+</app-invoice-totals>
+
+
+<!-- Actions -->
+<div class="m-6 flex justify-end gap-4">
+
+    <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+        (click)="printInvoice()">Print</button>
+
+    <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="saveInvoice()">Save</button>
+</div>
+
+
+
+<app-invoice-print class="hidden" [invoiceData]="{
+    customerName: selectedClient?.name,
+    accountManagerName: selectedAccountManager?.displayName,
+    paymentMode: paymentMode,
+    date: invoiceDate,
+    invoiceNumber: invoiceNumber,
+    invoiceItems: invoiceProducts,
+    subtotal: subtotal,
+    vatAmount: vatAmount,
+    grandTotal: grandTotal,
+    taxRate: taxRate
+  }" [companyData]="userData?.userData.company"></app-invoice-print>
