@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../../services/account.service';
+import { SearchInputComponent } from "../../../components/shared/search-input/search-input.component";
+import { ChartOfAccountsService } from '../../../services/chart-of-accounts.service';
 
 @Component({
   selector: 'app-account-statement',
   templateUrl: './account-statement.component.html',
   styleUrls: ['./account-statement.component.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SearchInputComponent],
 })
 export class AccountStatementComponent implements OnInit {
-  accountId!: string;
+  accountId: string | null = null;
   accountDetails: any;
   transactions: any[] = [];
   pagination = { currentPage: 1, totalPages: 0, totalRecords: 0 };
@@ -21,10 +23,13 @@ export class AccountStatementComponent implements OnInit {
   openingBalance = 0;
   totalDebits = 0;
   totalCredits = 0;
+  accounts: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private accountService: AccountService
+    private router: Router,
+    private accountService: AccountService,
+    private chartOfAccountsService: ChartOfAccountsService
   ) {
     const today = new Date();
     const startOfYear = new Date(today.getFullYear(), 0, 1);
@@ -34,14 +39,51 @@ export class AccountStatementComponent implements OnInit {
     this.filters.endDate = this.formatDate(today);
   }
 
+  onAccountSelected(account: any): void {
+    this.accountId = account.id;
+    this.router.navigate(['/account-statement', account.id]);
+    this.fetchAccountStatement();
+  }
+
+
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.accountId = params['accountId'];
-      this.fetchAccountStatement();
+      this.accountId = params['accountId'] || null;
+
+      if (!this.accountId) {
+        this.fetchAccounts();
+      } else {
+        this.fetchAccountStatement();
+      }
+    });
+  }
+
+  fetchAccounts(): void {
+    this.loading = true;
+
+    this.chartOfAccountsService.getAccounts().subscribe({
+      next: (data) => {
+        this.accounts = data.map((account: any) => ({
+          id: account.id,
+          name: account.name,
+          accountType: account.accountType,
+        }));
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching accounts:', err);
+        this.error = 'Failed to load accounts. Please try again later.';
+        this.loading = false;
+      },
     });
   }
 
   fetchAccountStatement(page: number = 1): void {
+    if (!this.accountId) {
+      this.error = 'Account ID is missing.';
+      return;
+    }
+
     this.loading = true;
     this.error = '';
 

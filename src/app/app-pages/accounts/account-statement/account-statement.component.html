@@ -1,11 +1,9 @@
-<!-- Account Details -->
-<div *ngIf="accountDetails" class="details mb-6 border-b pb-4">
-    <h2 class="text-2xl font-bold text-gray-700">{{ accountDetails?.name }}</h2>
-    <p class="text-sm text-gray-500">Account Type: {{ accountDetails?.accountType }}</p>
-    <p class="text-lg font-semibold text-green-600">
-        Current Balance: {{ accountDetails?.currentBalance | currency: 'JOD' }}
-    </p>
+<div *ngIf="!accountId" class="flex justify-center items-center mt-4">
+    <app-search-input [items]="accounts" [displayKey]="'name'" [label]="'Select Account'"
+        placeholder="Search accounts..." (selected)="onAccountSelected($event)">
+    </app-search-input>
 </div>
+
 
 <!-- Filters -->
 <div class="filters mb-6">

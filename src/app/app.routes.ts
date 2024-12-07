@@ -74,12 +74,20 @@ export const routes: Routes = [
                     ),
             },
             {
+                path: 'account-statement',
+                loadComponent: () =>
+                    import(
+                        './app-pages/accounts/account-statement/account-statement.component'
+                    ).then((m) => m.AccountStatementComponent),
+            },
+            {
                 path: 'account-statement/:accountId',
                 loadComponent: () =>
                     import(
                         './app-pages/accounts/account-statement/account-statement.component'
                     ).then((m) => m.AccountStatementComponent),
             },
+
         ],
     },
 ];
