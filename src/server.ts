@@ -29,14 +29,14 @@ process.on('unhandledRejection', (reason) => {
   console.error("Critical Error - Unhandled Rejection:", reason);
 });
 
-// Security Headers Middleware
-app.use(helmet());
-app.use((req, res, next) => {
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  next();
-});
+// // Security Headers Middleware
+// app.use(helmet());
+// app.use((req, res, next) => {
+//   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+//   res.setHeader('X-Content-Type-Options', 'nosniff');
+//   res.setHeader('X-Frame-Options', 'DENY');
+//   next();
+// });
 
 // Middleware for performance optimization
 app.use(compression({ level: 6, threshold: 1024 }));
