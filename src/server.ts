@@ -20,9 +20,9 @@ const serverDistFolder = path.dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // Load environment variables
-// dotenv.config({
-//   path: resolve(__dirname, '../../.env'), // Path to your .env file
-// });
+dotenv.config({
+  path: resolve(__dirname, '../../.env'), // Path to your .env file
+});
 
 console.log("Debug: Server script starting... 1");
 
