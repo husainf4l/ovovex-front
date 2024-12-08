@@ -1,7 +1,6 @@
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
-  isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express, { Request, Response, NextFunction } from 'express';
@@ -10,57 +9,28 @@ import { fileURLToPath } from 'node:url';
 import compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 
-
-console.log("Debug: Server script starting...");
-
-
+// Path setup for ES Modules
 const serverDistFolder = path.dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
-const __dirname = dirname(fileURLToPath(import.meta.url));
-// Load environment variables
-dotenv.config({
-  path: resolve(__dirname, '../../.env'), // Path to your .env file
-});
 
-console.log("Debug: Server script starting... 1");
-
-process.on('uncaughtException', (err) => {
-  console.error("Uncaught Exception:", err);
-});
-
-process.on('unhandledRejection', (reason) => {
-  console.error("Unhandled Rejection:", reason);
-});
-
-
-console.log("Debug: Server script starting... 2");
-
-
+// Initialize Express app
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-// // Security headers
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     useDefaults: true,
-//     directives: {
-//       'script-src': ["'self'", "'unsafe-inline'"],
-//       'style-src-elem': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-//       'connect-src': ["'self'", 'https://ovovex.com'],
-//       'img-src': ["'self'", 'data:', 'https://firebasestorage.googleapis.com'],
-//       'default-src': ["'self'"],
-//       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-//       'font-src': ["'self'", 'https://fonts.gstatic.com'],
-//     },
-//   },
-//   crossOriginEmbedderPolicy: true,
-//   crossOriginResourcePolicy: { policy: 'same-origin' },
-// }));
+// Centralized Logging Function
+const log = (message: string) => console.log(`[${new Date().toISOString()}] ${message}`);
 
-console.log("Debug: Server script starting... 3");
+// Global Error Handlers
+process.on('uncaughtException', (err) => {
+  console.error("Critical Error - Uncaught Exception:", err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error("Critical Error - Unhandled Rejection:", reason);
+});
 
+// Security Headers Middleware
+app.use(helmet());
 app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -68,39 +38,31 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log("Debug: Server script starting... 4");
-
-// Middleware
+// Middleware for performance optimization
 app.use(compression({ level: 6, threshold: 1024 }));
 app.use(express.json({ limit: '10kb' }));
 
-console.log("Debug: Server script starting... 5");
-
-// Rate limiter for API
+// Rate Limiting for APIs
 app.use(
   '/api',
   rateLimit({
-    windowMs: 15 * 60 * 1000,
+    windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100,
     message: 'Too many API requests, please try again later.',
   })
 );
 
-console.log("Debug: Server script starting... 6");
-
-// Logging
+// Logging Middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
   res.on('finish', () => {
     const duration = Date.now() - start;
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
+    log(`${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
   });
   next();
 });
 
-console.log("Debug: Server script starting... 7");
-
-// Static files
+// Serve Static Files
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -112,53 +74,45 @@ app.use(
   })
 );
 
-console.log("Debug: Server script starting... 8");
-
-// Angular SSR handler
-app.use('/**', (req: Request, res: Response, next: NextFunction) => {
-  angularApp
-    .handle(req)
-    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
-    .catch(next);
+// Angular SSR Handler
+app.use('/**', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const response = await angularApp.handle(req);
+    if (response) {
+      writeResponseToNodeResponse(response, res);
+    } else {
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 404 handler
+// 404 Handler
 app.use((req: Request, res: Response) => {
-  res.status(404).send('Not Found');
-});
-
-console.log("Debug: Server script starting... 9");
-
-// Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(`Error: ${err.message}`);
-  console.error(`Stack: ${err.stack}`);
-  console.error(`Request: ${req.method} ${req.url}`);
-  res.status(500).json({
+  res.status(404).json({
     status: 'error',
-    message: 'Something went wrong. Please try again later.',
+    message: 'Endpoint not found.',
   });
 });
 
-console.log("Debug: Server script starting... 10");
+// Centralized Error Handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error("Error Occurred:", {
+    message: err.message,
+    stack: err.stack,
+    method: req.method,
+    url: req.originalUrl,
+  });
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server Error.',
+  });
+});
 
 
-
-  const port = process.env['PORT'] || 4000;
-  console.log(`Debug: Preparing to start server on port ${port}...`); // Added log
-
-  try {
-    app.listen(port, () => {
-      console.log(`Node Express server listening on http://localhost:${port}`); // Log when the server starts
-    });
-    console.log("Debug: app.listen() executed successfully."); // Log after listen
-  } catch (error) {
-    console.error("Error in app.listen:", error); // Log any errors
-  }
-
-
-
-console.log("Debug: Server script starting... 11");
+const PORT = 4000;
+app.listen(PORT, () => log(`Server is running on http://localhost:${PORT}`));
 
 
 export const reqHandler = createNodeRequestHandler(app);
