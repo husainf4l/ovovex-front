@@ -7,11 +7,11 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'login',
-    renderMode: RenderMode.Client, // Client-side rendering for the login page
+    renderMode: RenderMode.Server, // Client-side rendering for the login page
   },
   {
     path: 'signup',
-    renderMode: RenderMode.Client, // Client-side rendering for the signup page
+    renderMode: RenderMode.Server, // Client-side rendering for the signup page
   },
   {
     path: 'app',
