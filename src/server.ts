@@ -9,17 +9,19 @@ import path, { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import compression from 'compression';
 import helmet from 'helmet';
-import dotenvSafe from 'dotenv-safe';
 import rateLimit from 'express-rate-limit';
+import dotenv from 'dotenv';
+
 
 const serverDistFolder = path.dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
 // Load environment variables
-dotenvSafe.config({
-  path: path.resolve(process.cwd(), '.env'), // Use process.cwd() for absolute path
-  example: path.resolve(process.cwd(), '.env.example'), // Use process.cwd() for absolute path
+dotenv.config({
+  path: resolve(__dirname, '../../.env'), // Path to your .env file
 });
+
+
 
 
 
@@ -110,12 +112,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Start the server
+
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
+  console.log(`Starting SSR server on port ${port}...`);
   app.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
+
+
 
 export const reqHandler = createNodeRequestHandler(app);
