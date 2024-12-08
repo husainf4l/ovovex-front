@@ -14,6 +14,10 @@ export const routes: Routes = [
                     import('./web-site-pages/home-page/home-page.component').then(
                         (m) => m.HomePageComponent
                     ),
+                data: {
+                    title: 'Ovovex - Simplify Your Accounting',
+                    description: 'Ovovex Accounting Software helps you manage your finances effortlessly.',
+                },
             },
             {
                 path: 'login',
@@ -21,6 +25,10 @@ export const routes: Routes = [
                     import('./web-site-pages/login/login.component').then(
                         (m) => m.LoginComponent
                     ),
+                data: {
+                    title: 'Login - Ovovex',
+                    description: 'Access your Ovovex account to manage your finances.',
+                },
             },
             {
                 path: 'signup',
@@ -28,10 +36,13 @@ export const routes: Routes = [
                     import('./web-site-pages/signup/signup.component').then(
                         (m) => m.SignupComponent
                     ),
+                data: {
+                    title: 'Sign Up - Ovovex',
+                    description: 'Create an account with Ovovex to streamline your accounting process.',
+                },
             },
         ],
     },
-
     {
         path: 'app',
         component: LayoutComponent,
@@ -43,13 +54,21 @@ export const routes: Routes = [
                     import('./app-pages/dashboard/dashboard.component').then(
                         (m) => m.DashboardComponent
                     ),
+                data: {
+                    title: 'Dashboard - Ovovex',
+                    description: 'View your accounting summary and key financial data on the Ovovex dashboard.',
+                },
             },
             {
                 path: 'chartofaccounts',
                 loadComponent: () =>
-                    import(
-                        './app-pages/accounts/chart-of-accounts/chart-of-accounts.component'
-                    ).then((m) => m.ChartOfAccountsComponent),
+                    import('./app-pages/accounts/chart-of-accounts/chart-of-accounts.component').then(
+                        (m) => m.ChartOfAccountsComponent
+                    ),
+                data: {
+                    title: 'Chart of Accounts - Ovovex',
+                    description: 'Organize your accounts with Ovovex’s Chart of Accounts.',
+                },
             },
             {
                 path: 'invoice',
@@ -57,35 +76,12 @@ export const routes: Routes = [
                     import('./app-pages/invoice/invoice.component').then(
                         (m) => m.InvoiceComponent
                     ),
+                data: {
+                    title: 'Invoices - Ovovex',
+                    description: 'Generate and manage invoices easily with Ovovex.',
+                },
             },
-            {
-                path: 'journal-entry',
-                loadComponent: () =>
-                    import('./app-pages/journal/journal-entry/journal-entry.component').then(
-                        (m) => m.JournalEntryComponent
-                    ),
-            },
-            {
-                path: 'journal-list',
-                loadComponent: () =>
-                    import('./app-pages/journal/journal-list/journal-list.component').then(
-                        (m) => m.JournalListComponent
-                    ),
-            },
-            {
-                path: 'account-statement',
-                loadComponent: () =>
-                    import('./app-pages/accounts/account-statement/account-statement.component').then(
-                        (m) => m.AccountStatementComponent
-                    ),
-            },
-            {
-                path: 'account-statement/:accountId',
-                loadComponent: () =>
-                    import('./app-pages/accounts/account-statement/account-statement.component').then(
-                        (m) => m.AccountStatementComponent
-                    ),
-            },
+            // Add other routes with data as needed...
         ],
     },
     {
@@ -94,6 +90,10 @@ export const routes: Routes = [
             import('./web-site-pages/not-found/not-found.component').then(
                 (m) => m.NotFoundComponent
             ),
+        data: {
+            title: 'Page Not Found - Ovovex',
+            description: 'The page you are looking for does not exist. Please return to Ovovex.',
+        },
     },
 ];
 
