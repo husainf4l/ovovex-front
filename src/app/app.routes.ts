@@ -81,7 +81,17 @@ export const routes: Routes = [
                     description: 'Generate and manage invoices easily with Ovovex.',
                 },
             },
-            // Add other routes with data as needed...
+            {
+                path: 'journal-list',
+                loadComponent: () =>
+                    import('./app-pages/journal/journal-list/journal-list.component').then(
+                        (m) => m.JournalListComponent
+                    ),
+                data: {
+                    title: 'Journal List - Ovovex',
+                    description: 'Organize your accounts with Ovovex’s Chart of Accounts.',
+                },
+            },
         ],
     },
     {
