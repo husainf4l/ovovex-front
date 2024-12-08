@@ -13,6 +13,9 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 
 
+console.log("Debug: Server script starting...");
+
+
 const serverDistFolder = path.dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -21,8 +24,18 @@ dotenv.config({
   path: resolve(__dirname, '../../.env'), // Path to your .env file
 });
 
+console.log("Debug: Server script starting... 1");
+
+process.on('uncaughtException', (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error("Unhandled Rejection:", reason);
+});
 
 
+console.log("Debug: Server script starting... 2");
 
 
 const app = express();
@@ -45,6 +58,9 @@ const angularApp = new AngularNodeAppEngine();
 //   crossOriginEmbedderPolicy: true,
 //   crossOriginResourcePolicy: { policy: 'same-origin' },
 // }));
+
+console.log("Debug: Server script starting... 3");
+
 app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -52,9 +68,13 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log("Debug: Server script starting... 4");
+
 // Middleware
 app.use(compression({ level: 6, threshold: 1024 }));
 app.use(express.json({ limit: '10kb' }));
+
+console.log("Debug: Server script starting... 5");
 
 // Rate limiter for API
 app.use(
@@ -66,6 +86,8 @@ app.use(
   })
 );
 
+console.log("Debug: Server script starting... 6");
+
 // Logging
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
@@ -75,6 +97,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
   next();
 });
+
+console.log("Debug: Server script starting... 7");
 
 // Static files
 app.use(
@@ -87,6 +111,8 @@ app.use(
     },
   })
 );
+
+console.log("Debug: Server script starting... 8");
 
 // Angular SSR handler
 app.use('/**', (req: Request, res: Response, next: NextFunction) => {
@@ -101,6 +127,8 @@ app.use((req: Request, res: Response) => {
   res.status(404).send('Not Found');
 });
 
+console.log("Debug: Server script starting... 9");
+
 // Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(`Error: ${err.message}`);
@@ -112,15 +140,25 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+console.log("Debug: Server script starting... 10");
 
-if (isMainModule(import.meta.url)) {
+
+
   const port = process.env['PORT'] || 4000;
-  console.log(`Starting SSR server on port ${port}...`);
-  app.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
-}
+  console.log(`Debug: Preparing to start server on port ${port}...`); // Added log
 
+  try {
+    app.listen(port, () => {
+      console.log(`Node Express server listening on http://localhost:${port}`); // Log when the server starts
+    });
+    console.log("Debug: app.listen() executed successfully."); // Log after listen
+  } catch (error) {
+    console.error("Error in app.listen:", error); // Log any errors
+  }
+
+
+
+console.log("Debug: Server script starting... 11");
 
 
 export const reqHandler = createNodeRequestHandler(app);
