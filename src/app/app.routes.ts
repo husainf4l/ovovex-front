@@ -41,6 +41,18 @@ export const routes: Routes = [
                     description: 'Create an account with Ovovex to streamline your accounting process.',
                 },
             },
+            {
+                path: 'verify/:id',
+                loadComponent: () =>
+                    import('./web-site-pages/verify-link/verify-link.component').then(
+                        (m) => m.VerifyLinkComponent
+                    ),
+                data: {
+                    title: 'verify - Ovovex',
+                    description: 'Create an account with Ovovex to streamline your accounting process.',
+                },
+            },
+
         ],
     },
     {
@@ -92,6 +104,29 @@ export const routes: Routes = [
                     description: 'Organize your accounts with Ovovex’s Chart of Accounts.',
                 },
             },
+            {
+                path: 'invoice/invoice-list',
+                loadComponent: () =>
+                    import('./app-pages/invoice/invoice-list/invoice-list.component').then(
+                        (m) => m.InvoiceListComponent
+                    ),
+                data: {
+                    title: 'Invoices - Ovovex',
+                    description: 'Generate and manage invoices easily with Ovovex.',
+                },
+            },
+            {
+                path: 'invoice/invoice-details/:invoiceId',
+                loadComponent: () =>
+                    import('./app-pages/invoice/invoice-details/invoice-details.component').then(
+                        (m) => m.InvoiceDetailsComponent
+                    ),
+                data: {
+                    title: 'Invoices - Ovovex',
+                    description: 'Generate and manage invoices easily with Ovovex.',
+                },
+            },
+
         ],
     },
     {

@@ -157,7 +157,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveInvoice(): void {
-    if (!this.selectedClient || !this.selectedAccountManager || this.invoiceProducts.length === 0) {
+    if (!this.selectedClient || this.invoiceProducts.length === 0) {
       alert('Please complete all required fields before saving the invoice.');
       return;
     }
@@ -165,7 +165,7 @@ export class InvoiceComponent implements OnInit {
     const invoiceData = {
       clientId: this.selectedClient.id,
       clientName: this.selectedClient.name,
-      accountManagerId: this.selectedAccountManager.id,
+      accountManagerId: this.selectedAccountManager?.id,
       date: this.invoiceDate,
       invoiceNumber: this.invoiceNumber,
       invoiceItems: this.invoiceProducts.map(product => ({
