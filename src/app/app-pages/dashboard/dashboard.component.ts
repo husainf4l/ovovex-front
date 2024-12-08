@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { colors } from '../../models/colors.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,8 +49,8 @@ export class DashboardComponent implements AfterViewInit {
           {
             label: 'Revenue',
             data: [12000, 15000, 13000, 17000, 19000, 21000],
-            borderColor: '#2563EB',
-            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+            borderColor: colors.primary,
+            backgroundColor: 'rgba(63, 81, 181, 0.2)', // Primary 20%
             tension: 0.4,
           },
         ],
@@ -71,7 +72,13 @@ export class DashboardComponent implements AfterViewInit {
         datasets: [
           {
             data: this.expenseBreakdown,
-            backgroundColor: ['#34AADC', '#FF6384', '#FF9F40', '#4BC0C0', '#9966FF'],
+            backgroundColor: [
+              colors.primary,
+              colors.accent,
+              colors.success,
+              colors.info,
+              colors.grey,
+            ],
           },
         ],
       },
@@ -89,7 +96,7 @@ export class DashboardComponent implements AfterViewInit {
           {
             label: 'Amount',
             data: [this.accountsOverview.assets, this.accountsOverview.liabilities, this.accountsOverview.equity],
-            backgroundColor: ['#1E293B', '#64748B', '#94A3B8'],
+            backgroundColor: [colors.success, colors.warn, colors.accent],
           },
         ],
       },
@@ -111,12 +118,12 @@ export class DashboardComponent implements AfterViewInit {
           {
             label: 'Inflow',
             data: this.cashFlowData,
-            backgroundColor: '#34D399',
+            backgroundColor: colors.success,
           },
           {
             label: 'Outflow',
             data: [40000, 45000, 42000, 47000, 46000, 49000],
-            backgroundColor: '#F87171',
+            backgroundColor: colors.warn,
           },
         ],
       },
@@ -129,7 +136,7 @@ export class DashboardComponent implements AfterViewInit {
       },
     });
 
-    // Profit Margins (Spider/Radar Chart)
+    // Profit Margins (Radar Chart)
     new Chart('profitMarginChart', {
       type: 'radar',
       data: {
@@ -138,8 +145,8 @@ export class DashboardComponent implements AfterViewInit {
           {
             label: 'Profit Margin (%)',
             data: this.profitMargins,
-            borderColor: '#34AADC',
-            backgroundColor: 'rgba(52, 170, 220, 0.2)',
+            borderColor: colors.accent,
+            backgroundColor: 'rgba(233, 30, 99, 0.2)', // Accent 20%
           },
         ],
       },
@@ -157,8 +164,8 @@ export class DashboardComponent implements AfterViewInit {
           {
             label: 'Net Profit',
             data: [12000, 15000, 17000, 19000, 21000, 23000, 25000],
-            borderColor: '#4B5563',
-            backgroundColor: 'rgba(75, 85, 99, 0.2)',
+            borderColor: colors.grey,
+            backgroundColor: 'rgba(158, 158, 158, 0.2)', // Grey 20%
             tension: 0.4,
           },
         ],
@@ -172,4 +179,5 @@ export class DashboardComponent implements AfterViewInit {
       },
     });
   }
+
 }

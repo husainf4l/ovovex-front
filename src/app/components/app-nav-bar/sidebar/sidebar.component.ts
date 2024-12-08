@@ -40,7 +40,7 @@ export class SidebarComponent {
         {
           icon: 'receipt',
           label: 'Account Statement',
-          routerLink: 'account-statement/:accountId', // Placeholder for dynamic route
+          routerLink: 'account-statement', // Placeholder for dynamic route
         },
       ],
     },

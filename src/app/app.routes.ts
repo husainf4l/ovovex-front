@@ -1,7 +1,9 @@
-import { Routes } from '@angular/router';
+import { PreloadAllModules, Routes } from '@angular/router';
 import { WebsiteLayoutComponent } from './layouts/website-layout/website-layout.component';
 import { LayoutComponent } from './layouts/app-layout/layout/layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
+import { RenderMode, ServerRoute } from '@angular/ssr';
+
 
 export const routes: Routes = [
     // Website layout routes
@@ -73,21 +75,41 @@ export const routes: Routes = [
                         (m) => m.JournalListComponent
                     ),
             },
+
             {
                 path: 'account-statement',
                 loadComponent: () =>
-                    import(
-                        './app-pages/accounts/account-statement/account-statement.component'
-                    ).then((m) => m.AccountStatementComponent),
+                    import('./app-pages/accounts/account-statement/account-statement.component').then(
+                        (m) => m.AccountStatementComponent
+                    ),
             },
+
             {
                 path: 'account-statement/:accountId',
+                canActivate: [AuthGuard],
                 loadComponent: () =>
-                    import(
-                        './app-pages/accounts/account-statement/account-statement.component'
-                    ).then((m) => m.AccountStatementComponent),
-            },
+                    import('./app-pages/accounts/account-statement/account-statement.component').then(
+                        (m) => m.AccountStatementComponent
+                    ),
+            }
+
+
+
 
         ],
     },
+
+    {
+        path: '**',
+        loadComponent: () =>
+            import('./web-site-pages/not-found/not-found.component').then(
+                (m) => m.NotFoundComponent
+            ),
+    },
+
 ];
+
+export const routingConfig = {
+    preloadingStrategy: PreloadAllModules,
+    initialNavigation: 'enabledBlocking',
+};

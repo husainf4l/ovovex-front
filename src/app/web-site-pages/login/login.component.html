@@ -1,13 +1,11 @@
-<!-- Main Container -->
-<div class=" min-h-screen flex">
-    <!-- Left side with marketing content and subtle background color -->
+<div class="min-h-screen flex">
+    <!-- Left Side: Marketing Content -->
     <div
         class="hidden lg:flex w-1/2 bg-gradient-to-br from-white to-gray-200 text-gray-800 p-12 items-center justify-center">
         <div class="max-w-lg space-y-8">
             <h1 class="text-5xl font-bold leading-snug text-gray-900">
                 Welcome to <span class="text-blue-600">ovovex</span>
             </h1>
-        
             <p class="text-lg leading-relaxed text-gray-600">
                 Transforming your operations, enhancing your efficiency, and driving innovation with Ovovex.
             </p>
@@ -34,44 +32,49 @@
                     <span>Integrated, user-friendly platforms</span>
                 </li>
             </ul>
-            
-
         </div>
     </div>
 
-    <!-- Right side with login form -->
+    <!-- Right Side: Login Form -->
     <div class="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
         <div class="w-full max-w-md space-y-8">
             <h2 class="text-4xl font-bold text-gray-900 mb-6">Login to ovovex</h2>
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
                 <div>
                     <label for="userName" class="block text-sm font-medium text-gray-700">User Name</label>
-                    <input id="userName" formControlName="userName" type="text"
+                    <input id="userName" formControlName="userName" type="text" autocomplete="username"
+                        aria-label="User Name" aria-required="true"
                         class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out"
-                        placeholder="Enter your User Name">
+                        placeholder="Enter your User Name" />
+                    <div *ngIf="loginForm.get('userName')?.touched && loginForm.get('userName')?.invalid"
+                        class="text-red-500 text-sm">
+                        User Name is required.
+                    </div>
                 </div>
-                <div>
+                <div class="relative">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" formControlName="password" type="password"
+                    <input id="password" formControlName="password" [type]="showPassword ? 'text' : 'password'"
+                        autocomplete="current-password" aria-label="Password" aria-required="true"
                         class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm text-gray-900 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out"
-                        placeholder="Enter your password">
-                </div>
-                <div>
-                    <button type="submit"
-                        class="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
-                        Sign In
+                        placeholder="Enter your password" />
+                    <button type="button" (click)="togglePassword()"
+                        class="absolute right-3 top-3 text-gray-500 focus:outline-none">
+                        {{ showPassword ? 'Hide' : 'Show' }}
                     </button>
+                    <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                        class="text-red-500 text-sm">
+                        Password is required.
+                    </div>
                 </div>
-
-                <div *ngIf="error" class="text-red-500 text-sm text-center">
-                    {{ error }}
-                </div>
-
-                <div class="text-center">
-                    <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Forgot your password?</a>
-                </div>
+                <button type="submit"
+                    class="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
+                    Sign In
+                </button>
+                <div *ngIf="error" class="text-red-500 text-sm text-center">{{ error }}</div>
             </form>
-
+            <div class="text-center">
+                <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Forgot your password?</a>
+            </div>
             <div class="text-center">
                 <p class="text-sm text-gray-600">Don't have an account? <a routerLink="/signup"
                         class="font-medium text-blue-600 hover:underline">Sign Up</a></p>
