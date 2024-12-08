@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /app/         # Block access to the app routes (requires authentication)
+Disallow: /login        # Block the login page
+Disallow: /signup       # Block the signup page
+Disallow: /not-found    # Block the 404 page
+
+Sitemap: https://ovovex.com/sitemap.xml

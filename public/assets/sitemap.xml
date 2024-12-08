@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Public Website Pages -->
+  <url>
+    <loc>https://ovovex.com/</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/login</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/signup</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Authenticated App Pages -->
+  <url>
+    <loc>https://ovovex.com/app/</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/chartofaccounts</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/invoice</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/journal-entry</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/journal-list</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/account-statement</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ovovex.com/app/account-statement/:accountId</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Not Found Page -->
+  <url>
+    <loc>https://ovovex.com/not-found</loc>
+    <lastmod>2024-12-08</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.1</priority>
+  </url>
+</urlset>

@@ -5,7 +5,7 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express, { Request, Response, NextFunction } from 'express';
-import path, { dirname, resolve } from 'node:path';
+import path, { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -18,11 +18,10 @@ console.log("Debug: Server script starting...");
 
 const serverDistFolder = path.dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
-const __dirname = dirname(fileURLToPath(import.meta.url));
-// Load environment variables
-dotenv.config({
-  path: resolve(__dirname, '../../.env'), // Path to your .env file
-});
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+
+
+
 
 console.log("Debug: Server script starting... 1");
 
@@ -85,6 +84,15 @@ app.use(
     message: 'Too many API requests, please try again later.',
   })
 );
+
+app.get('/robots.txt', (req, res) => {
+  res.sendFile(join(browserDistFolder, '/assets/robots.txt'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(join(browserDistFolder, '/assets/sitemap.xml'));
+});
+
 
 console.log("Debug: Server script starting... 6");
 
