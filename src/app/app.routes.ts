@@ -2,11 +2,8 @@ import { PreloadAllModules, Routes } from '@angular/router';
 import { WebsiteLayoutComponent } from './layouts/website-layout/website-layout.component';
 import { LayoutComponent } from './layouts/app-layout/layout/layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
-import { RenderMode, ServerRoute } from '@angular/ssr';
-
 
 export const routes: Routes = [
-    // Website layout routes
     {
         path: '',
         component: WebsiteLayoutComponent,
@@ -75,7 +72,6 @@ export const routes: Routes = [
                         (m) => m.JournalListComponent
                     ),
             },
-
             {
                 path: 'account-statement',
                 loadComponent: () =>
@@ -83,22 +79,15 @@ export const routes: Routes = [
                         (m) => m.AccountStatementComponent
                     ),
             },
-
             {
                 path: 'account-statement/:accountId',
-                canActivate: [AuthGuard],
                 loadComponent: () =>
                     import('./app-pages/accounts/account-statement/account-statement.component').then(
                         (m) => m.AccountStatementComponent
                     ),
-            }
-
-
-
-
+            },
         ],
     },
-
     {
         path: '**',
         loadComponent: () =>
@@ -106,7 +95,6 @@ export const routes: Routes = [
                 (m) => m.NotFoundComponent
             ),
     },
-
 ];
 
 export const routingConfig = {
