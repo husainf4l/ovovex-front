@@ -28,23 +28,23 @@ dotenv.config({
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-// Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    useDefaults: true,
-    directives: {
-      'script-src': ["'self'", "'unsafe-inline'"],
-      'style-src-elem': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      'connect-src': ["'self'", 'https://ovovex.com'],
-      'img-src': ["'self'", 'data:', 'https://firebasestorage.googleapis.com'],
-      'default-src': ["'self'"],
-      'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      'font-src': ["'self'", 'https://fonts.gstatic.com'],
-    },
-  },
-  crossOriginEmbedderPolicy: true,
-  crossOriginResourcePolicy: { policy: 'same-origin' },
-}));
+// // Security headers
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     useDefaults: true,
+//     directives: {
+//       'script-src': ["'self'", "'unsafe-inline'"],
+//       'style-src-elem': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+//       'connect-src': ["'self'", 'https://ovovex.com'],
+//       'img-src': ["'self'", 'data:', 'https://firebasestorage.googleapis.com'],
+//       'default-src': ["'self'"],
+//       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+//       'font-src': ["'self'", 'https://fonts.gstatic.com'],
+//     },
+//   },
+//   crossOriginEmbedderPolicy: true,
+//   crossOriginResourcePolicy: { policy: 'same-origin' },
+// }));
 app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   res.setHeader('X-Content-Type-Options', 'nosniff');
