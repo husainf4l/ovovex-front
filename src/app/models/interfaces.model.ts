@@ -75,7 +75,7 @@ export interface JournalEntry {
 }
 
 
-export interface AccountManager {
+export interface accountManagers {
     id: string,
     displayName: string
 }

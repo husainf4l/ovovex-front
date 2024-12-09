@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AccountManager, Client, InvoiceProduct, Product } from '../../models/interfaces.model';
+import { accountManagers, Client, InvoiceProduct, Product } from '../../models/interfaces.model';
 import { InvoiceService } from '../../services/invoice.service';
 import { AddCustomerDialogComponent } from '../../components/dialogs/add-customer-dialog/add-customer-dialog.component';
 import { InvoicePrintComponent } from '../../components/print/invoice-print/invoice-print.component';
@@ -28,9 +28,9 @@ export class InvoiceComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   productSearchQuery: string = '';
-  accountManagers: AccountManager[] = [];
-  filteredAccountManagers: AccountManager[] = [];
-  selectedAccountManager: AccountManager | null = null;
+  accountManagers: accountManagers[] = [];
+  filteredAccountManagers: accountManagers[] = [];
+  selectedAccountManager: accountManagers | null = null;
   accountManagerSearchQuery: string = '';
   invoiceProducts: InvoiceProduct[] = [];
   subtotal: number = 0;
@@ -64,7 +64,7 @@ export class InvoiceComponent implements OnInit {
       next: (data) => {
         this.products = data.products;
         this.clients = data.clients;
-        this.accountManagers = data.accountManager;
+        this.accountManagers = data.accountManagers;
         this.filteredClients = [...this.clients];
         this.filteredProducts = [...this.products];
         this.filteredAccountManagers = [...this.accountManagers];
@@ -134,7 +134,7 @@ export class InvoiceComponent implements OnInit {
     );
   }
 
-  selectAccountManager(accountManager: AccountManager): void {
+  selectAccountManager(accountManager: accountManagers): void {
     this.selectedAccountManager = accountManager;
     this.accountManagerSearchQuery = accountManager.displayName;;
     this.filteredAccountManagers = [];

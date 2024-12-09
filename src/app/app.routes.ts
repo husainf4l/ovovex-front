@@ -53,6 +53,7 @@ export const routes: Routes = [
                 },
             },
 
+
         ],
     },
     {
@@ -124,6 +125,17 @@ export const routes: Routes = [
                 data: {
                     title: 'Invoices - Ovovex',
                     description: 'Generate and manage invoices easily with Ovovex.',
+                },
+            },
+            {
+                path: 'receipt',
+                loadComponent: () =>
+                    import('./app-pages/receipt/receipt.component').then(
+                        (m) => m.ReceiptComponent
+                    ),
+                data: {
+                    title: 'verify - Ovovex',
+                    description: 'Create an account with Ovovex to streamline your accounting process.',
                 },
             },
 

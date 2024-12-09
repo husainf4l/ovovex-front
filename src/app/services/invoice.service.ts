@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 interface InvoiceData {
   products: any[];
   clients: any[];
-  accountManager: any[];
+  accountManagers: any[];
   invoiceNumber: number;
 }
 
