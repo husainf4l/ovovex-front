@@ -3,19 +3,26 @@
     <div class="px-4 py-6 flex flex-col h-full overflow-y-auto">
         <!-- Logo Section -->
         <app-logo></app-logo>
-        <!-- Navigation -->
+  
         <nav class="mt-5">
             <ul>
                 <!-- Render Main Menu Items -->
                 <li *ngFor="let item of menuItems" class="relative">
                     <!-- Main Menu Item -->
-                    <app-menu-item [icon]="item.icon" [label]="item.label" [routerLink]="item.routerLink"
-                        [isExpandable]="item.isExpandable">
+                    <app-menu-item 
+                        [icon]="item.icon" 
+                        [label]="item.label" 
+                        [routerLink]="item.routerLink" 
+                        [isExpandable]="item.isExpandable" 
+                        (click)="!item.isExpandable && closeSidebar()">
                         <ng-container *ngIf="item.isExpandable && item.children">
                             <ul>
                                 <li *ngFor="let child of item.children">
-                                    <app-menu-item [icon]="child.icon" [label]="child.label"
-                                        [routerLink]="child.routerLink">
+                                    <app-menu-item 
+                                        [icon]="child.icon" 
+                                        [label]="child.label" 
+                                        [routerLink]="child.routerLink" 
+                                        (click)="closeSidebar()">
                                     </app-menu-item>
                                 </li>
                             </ul>

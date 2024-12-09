@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LogoComponent } from "./logo/logo.component";
 import { MenuItemComponent } from "../menu-item/menu-item.component";
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,6 +13,13 @@ import { MenuItemComponent } from "../menu-item/menu-item.component";
 })
 export class SidebarComponent {
   @Input() isOpen = false;
+  @Output() toggleSidebar = new EventEmitter<void>();
+
+  closeSidebar(): void {
+    this.toggleSidebar.emit(); 
+  }
+
+
 
   menuItems = [
     {

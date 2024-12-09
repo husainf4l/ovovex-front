@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { LogoComponent } from '../sidebar/logo/logo.component';
 import { UserDropdownComponent } from './user-dropdown/user-dropdown.component';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';

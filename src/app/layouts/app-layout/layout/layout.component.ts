@@ -15,7 +15,7 @@ import { NavbarComponent } from '../../../components/app-nav-bar/navbar/navbar.c
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent implements OnInit {
-  isSidebarOpen = true;
+  isSidebarOpen = false;
   userData: any;
 
   ngOnInit(): void {
