@@ -2,24 +2,39 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { accountManagers, Client, InvoiceProduct, Product } from '../../models/interfaces.model';
+import {
+  accountManagers,
+  Client,
+  InvoiceProduct,
+  Product,
+} from '../../models/interfaces.model';
 import { InvoiceService } from '../../services/invoice.service';
 import { AddCustomerDialogComponent } from '../../components/dialogs/add-customer-dialog/add-customer-dialog.component';
 import { InvoicePrintComponent } from '../../components/print/invoice-print/invoice-print.component';
-import { SearchInputComponent } from "../../components/shared/search-input/search-input.component";
-import { DropdownComponent } from "../../components/shared/dropdown/dropdown.component";
-import { TableComponent } from "../../components/shared/table/table.component";
-import { TotalsComponent } from "../../components/shared/totals/totals.component";
-import { DateSelectorComponent } from "../../components/shared/date-selector/date-selector.component";
+import { SearchInputComponent } from '../../components/shared/search-input/search-input.component';
+import { DropdownComponent } from '../../components/shared/dropdown/dropdown.component';
+import { TableComponent } from '../../components/shared/table/table.component';
+import { TotalsComponent } from '../../components/shared/totals/totals.component';
+import { DateSelectorComponent } from '../../components/shared/date-selector/date-selector.component';
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css'],
-  imports: [FormsModule, CommonModule, InvoicePrintComponent, SearchInputComponent, DropdownComponent, TotalsComponent, DateSelectorComponent, TableComponent],
+  imports: [
+    FormsModule,
+    CommonModule,
+    InvoicePrintComponent,
+    SearchInputComponent,
+    DropdownComponent,
+    TotalsComponent,
+    DateSelectorComponent,
+    TableComponent,
+  ],
 })
 export class InvoiceComponent implements OnInit {
-  @ViewChild(InvoicePrintComponent) invoicePrintComponent!: InvoicePrintComponent; // Declare ViewChild
+  @ViewChild(InvoicePrintComponent)
+  invoicePrintComponent!: InvoicePrintComponent; // Declare ViewChild
 
   clients: Client[] = [];
   filteredClients: Client[] = [];
@@ -44,8 +59,10 @@ export class InvoiceComponent implements OnInit {
   invoiceNumber: number = 0;
   userData: any;
 
-
-  constructor(private dialog: MatDialog, private invoiceService: InvoiceService) { }
+  constructor(
+    private dialog: MatDialog,
+    private invoiceService: InvoiceService
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -68,7 +85,7 @@ export class InvoiceComponent implements OnInit {
         this.filteredClients = [...this.clients];
         this.filteredProducts = [...this.products];
         this.filteredAccountManagers = [...this.accountManagers];
-        this.invoiceNumber = data.invoiceNumber
+        this.invoiceNumber = data.invoiceNumber;
       },
       error: (err) => {
         console.error('Error fetching data:', err);
@@ -78,7 +95,7 @@ export class InvoiceComponent implements OnInit {
 
   filterClients(): void {
     const query = this.searchQuery.toLowerCase().trim();
-    this.filteredClients = this.clients.filter(client =>
+    this.filteredClients = this.clients.filter((client) =>
       client.name?.toLowerCase().includes(query)
     );
   }
@@ -91,8 +108,10 @@ export class InvoiceComponent implements OnInit {
 
   filterProducts(): void {
     const query = this.productSearchQuery.toLowerCase().trim();
-    this.filteredProducts = this.products.filter(product =>
-      product.name?.toLowerCase().includes(query) || product.barcode.includes(query)
+    this.filteredProducts = this.products.filter(
+      (product) =>
+        product.name?.toLowerCase().includes(query) ||
+        product.barcode.includes(query)
     );
   }
 
@@ -111,7 +130,9 @@ export class InvoiceComponent implements OnInit {
   }
 
   removeProduct(id: string): void {
-    this.invoiceProducts = this.invoiceProducts.filter(product => product.id !== id);
+    this.invoiceProducts = this.invoiceProducts.filter(
+      (product) => product.id !== id
+    );
     this.updateTotals();
   }
 
@@ -121,22 +142,26 @@ export class InvoiceComponent implements OnInit {
   }
 
   updateTotals(): void {
-    this.subtotal = this.invoiceProducts.reduce((sum, product) => sum + product.total, 0);
+    this.subtotal = this.invoiceProducts.reduce(
+      (sum, product) => sum + product.total,
+      0
+    );
     this.vatAmount = (this.subtotal * this.taxRate) / 100;
     this.grandTotal = this.subtotal + this.vatAmount;
   }
 
   filterAccountManagers(): void {
     const query = this.accountManagerSearchQuery.toLowerCase().trim();
-    this.filteredAccountManagers = this.accountManagers.filter(manager =>
-      manager.displayName.toLowerCase().includes(query) ||
-      manager.id.includes(query)
+    this.filteredAccountManagers = this.accountManagers.filter(
+      (manager) =>
+        manager.displayName.toLowerCase().includes(query) ||
+        manager.id.includes(query)
     );
   }
 
   selectAccountManager(accountManager: accountManagers): void {
     this.selectedAccountManager = accountManager;
-    this.accountManagerSearchQuery = accountManager.displayName;;
+    this.accountManagerSearchQuery = accountManager.displayName;
     this.filteredAccountManagers = [];
   }
 
@@ -168,7 +193,7 @@ export class InvoiceComponent implements OnInit {
       accountManagerId: this.selectedAccountManager?.id,
       date: this.invoiceDate,
       invoiceNumber: this.invoiceNumber,
-      invoiceItems: this.invoiceProducts.map(product => ({
+      invoiceItems: this.invoiceProducts.map((product) => ({
         productId: product.id,
         quantity: product.quantity,
         unitPrice: product.salesPrice,
@@ -197,10 +222,7 @@ export class InvoiceComponent implements OnInit {
     });
   }
 
-
-
   printInvoice(): void {
     this.invoicePrintComponent.printInvoice();
   }
-
 }

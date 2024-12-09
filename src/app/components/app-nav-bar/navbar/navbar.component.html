@@ -11,10 +11,20 @@
 
         <!-- User Profile -->
         <div class="flex items-center gap-2">
-            <mat-icon>apps</mat-icon>
-            <mat-icon>settings</mat-icon>
-            <mat-icon>search</mat-icon>
-            <mat-icon>notifications</mat-icon>
+            <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+                <mat-icon>apps</mat-icon>
+              </a>
+
+           
+              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+                <mat-icon>settings</mat-icon>
+              </a>
+              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+                <mat-icon>search</mat-icon>
+              </a>
+              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+                <mat-icon>notifications</mat-icon>
+              </a>
             <app-user-dropdown [userData]="userData"></app-user-dropdown>
         </div>
     </div>

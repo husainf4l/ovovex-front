@@ -19,16 +19,22 @@
 
 <!-- Payment Mode -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-  <app-dropdown label="Payment Mode" [options]="[
-      { value: 'CASH', label: 'Cash' },
-      { value: 'CHEQUE', label: 'Cheque' }
-    ]" [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
+  <app-dropdown label="Payment Mode" [options]="[ { value: 'CASH', label: 'Cash' }, { value: 'CHEQUE', label: 'Cheque' } ]" [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
   </app-dropdown>
 
   <!-- Cash Accounts (Only for Cash Mode) -->
   <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'"
     [label]="'Cash Account'" placeholder="Select cash account" (selected)="selectCashAccount($event)">
   </app-search-input>
+
+  <div *ngIf="paymentMode === 'CASH'">
+    <label class="block text-sm font-medium text-gray-700">Cash Amount</label>
+    <input type="number" [(ngModel)]="cashAmount" name="cashAmount"
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm"
+      placeholder="Enter Cash Amount"
+    />
+  </div>
+  
 </div>
 
 <!-- Cheque Details -->
@@ -62,6 +68,12 @@
   </div>
 </div>
 
+<!-- Receipt Total -->
+<div *ngIf="paymentMode === 'CHEQUE'" class="mt-4">
+  <h3 class="text-lg font-semibold mb-2">Total Amount</h3>
+  <p>{{ calculateTotalAmount() | currency }}</p>
+</div>
+
 <!-- Action Buttons -->
 <div class="m-6 flex justify-end gap-4">
   <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="printReceipt()">
@@ -72,6 +84,7 @@
   </button>
 </div>
 
+<!-- Printable Receipt -->
 <div id="printableReceipt" class="receipt-container">
     <!-- Receipt Header -->
     <div class="receipt-header">
@@ -112,14 +125,13 @@
   
     <!-- Total -->
     <div class="receipt-total">
-      <p><strong>Total:</strong>  120</p>
+      <p><strong>Total:</strong> {{ calculateTotalAmount() | currency }}</p>
     </div>
   </div>
-  
+
   <!-- Print Button -->
   <div class="m-6 flex justify-end">
     <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="printReceipt()">
       Print
     </button>
-  </div>
-  
+  </div> 
