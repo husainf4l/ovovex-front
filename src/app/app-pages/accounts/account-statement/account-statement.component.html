@@ -9,12 +9,12 @@
 <div class="filters mb-6">
     <div class="flex items-center gap-4">
         <div class="flex-1">
-            <label for="startDate" class="block text-sm font-medium text-gray-500">Start Date</label>
+            <label for="startDate" class="block text-sm font-medium ">Start Date</label>
             <input id="startDate" type="date" [(ngModel)]="filters.startDate"
                 class="block w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 sm:text-sm" />
         </div>
         <div class="flex-1">
-            <label for="endDate" class="block text-sm font-medium text-gray-500">End Date</label>
+            <label for="endDate" class="block text-sm font-medium ">End Date</label>
             <input id="endDate" type="date" [(ngModel)]="filters.endDate"
                 class="block w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 sm:text-sm" />
         </div>
@@ -26,14 +26,14 @@
 </div>
 
 <!-- Loading and Error -->
-<div *ngIf="loading" class="text-center py-4 text-gray-500">Loading...</div>
+<div *ngIf="loading" class="text-center py-4 ">Loading...</div>
 <div *ngIf="error" class="text-center py-4 text-red-600">{{ error }}</div>
 
 <!-- Transactions Table -->
 <div *ngIf="!loading && transactions.length > 0" class="overflow-x-auto">
-    <table class="w-full border-collapse text-sm text-gray-600">
+    <table class="w-full border-collapse text-sm ">
         <thead>
-            <tr class="bg-gray-100 text-gray-700">
+            <tr class="0 ">
                 <th class="px-4 py-2 text-left">Date</th>
                 <th class="px-4 py-2 text-left">Debit</th>
                 <th class="px-4 py-2 text-left">Credit</th>
@@ -42,10 +42,10 @@
         </thead>
         <tbody>
             <tr class="border-b bg-yellow-50" *ngIf="openingBalance != 0">
-                <td class="px-4 py-2 font-semibold text-gray-500">Cycle Balance</td>
+                <td class="px-4 py-2 font-semibold ">Cycle Balance</td>
                 <td class="px-4 py-2">-</td>
                 <td class="px-4 py-2">-</td>
-                <td class="px-4 py-2 text-right font-semibold text-gray-700">
+                <td class="px-4 py-2 text-right font-semibold ">
                     {{ openingBalance | currency: 'JOD' }}
                 </td>
             </tr>
@@ -59,14 +59,14 @@
         </tbody>
         <tfoot>
             <tr class="bg-gray-200">
-                <td class="px-4 py-2 font-semibold text-gray-700">Totals</td>
-                <td class="px-4 py-2 font-semibold text-gray-700">
+                <td class="px-4 py-2 font-semibold ">Totals</td>
+                <td class="px-4 py-2 font-semibold ">
                     {{ totalDebits | currency: 'JOD' }}
                 </td>
-                <td class="px-4 py-2 font-semibold text-gray-700">
+                <td class="px-4 py-2 font-semibold ">
                     {{ totalCredits | currency: 'JOD' }}
                 </td>
-                <td class="px-4 py-2 text-right font-semibold text-gray-700">
+                <td class="px-4 py-2 text-right font-semibold ">
                     {{ accountDetails?.currentBalance | currency: 'JOD' }}
                 </td>
             </tr>
@@ -75,7 +75,7 @@
 </div>
 
 <!-- Empty State -->
-<div *ngIf="!loading && transactions.length === 0" class="text-center py-4 text-gray-500">
+<div *ngIf="!loading && transactions.length === 0" class="text-center py-4 ">
     No transactions found for the selected filters.
 </div>
 
@@ -89,14 +89,14 @@
 <!-- Pagination Controls -->
 <div *ngIf="pagination.totalPages > 1" class="pagination flex justify-center items-center mt-6 gap-4">
     <button (click)="goToPage(pagination.currentPage - 1)" [disabled]="pagination.currentPage === 1"
-        class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
         Previous
     </button>
-    <span class="text-sm text-gray-600">
+    <span class="text-sm ">
         Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
     </span>
     <button (click)="goToPage(pagination.currentPage + 1)" [disabled]="pagination.currentPage === pagination.totalPages"
-        class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
+        class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
         Next
     </button>
 </div>
@@ -104,15 +104,15 @@
 <div id="printableInvoice" class=" hidden rounded-lg shadow-md p-6">
     <!-- Printable Content -->
     <div class="mb-4 border-b pb-4">
-        <h1 class="text-2xl font-bold text-gray-700">Account Statement</h1>
-        <p class="text-sm text-gray-500">{{ accountDetails?.name }}</p>
-        <p class="text-sm text-gray-500">Account Type: {{ accountDetails?.accountType }}</p>
+        <h1 class="text-2xl font-bold ">Account Statement</h1>
+        <p class="text-sm ">{{ accountDetails?.name }}</p>
+        <p class="text-sm ">Account Type: {{ accountDetails?.accountType }}</p>
         <p class="text-lg font-semibold text-green-600">
             Current Balance: {{ accountDetails?.currentBalance | currency: 'JOD' }}
         </p>
     </div>
 
-    <div class="filters-summary mb-6 text-sm text-gray-600">
+    <div class="filters-summary mb-6 text-sm ">
         <p>Statement Period: {{ filters.startDate }} to {{ filters.endDate }}</p>
     </div>
 </div>

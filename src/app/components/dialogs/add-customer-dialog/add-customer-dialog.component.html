@@ -1,31 +1,31 @@
 <div class="w-full">
-    <div class="dialog-container mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Add New Customer</h2>
+    <div class="dialog-container mx-auto p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4 ">Add New Customer</h2>
         <form (ngSubmit)="addCustomer()">
             <!-- Name -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="name">Customer Name</label>
+                <label class="block text-sm font-medium " for="name">Customer Name</label>
                 <input id="name" type="text" [(ngModel)]="newCustomer.name" name="name" required
                     class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
             </div>
 
             <!-- Email -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="email">Email (Optional)</label>
+                <label class="block text-sm font-medium " for="email">Email (Optional)</label>
                 <input id="email" type="email" [(ngModel)]="newCustomer.email" name="email"
                     class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
             </div>
 
             <!-- Phone -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="phone">Phone (Optional)</label>
+                <label class="block text-sm font-medium " for="phone">Phone (Optional)</label>
                 <input id="phone" type="text" [(ngModel)]="newCustomer.phone" name="phone"
                     class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
             </div>
 
             <!-- Address -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-600" for="address">Address (Optional)</label>
+                <label class="block text-sm font-medium " for="address">Address (Optional)</label>
                 <input id="address" type="text" [(ngModel)]="newCustomer.address" name="address"
                     class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
             </div>
@@ -41,8 +41,7 @@
             <!-- Actions -->
             <div class="flex justify-end gap-4">
                 <button type="button" (click)="closeDialog()"
-                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50"
-                    [disabled]="isLoading">
+                    class="px-4 py-2  rounded-lg hover:bg-gray-300 disabled:opacity-50" [disabled]="isLoading">
                     Cancel
                 </button>
                 <button type="submit"

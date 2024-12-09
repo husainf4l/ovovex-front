@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { RouterLink } from '@angular/router';
+import { ThemeService } from '../../../../services/theme.service';
 
 @Component({
   selector: 'app-user-dropdown',
@@ -11,7 +12,7 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, RouterLink]
 })
 export class UserDropdownComponent {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private themeService: ThemeService) { }
 
   @Input() userData: any;
   isDropdownOpen = false;
@@ -23,4 +24,6 @@ export class UserDropdownComponent {
   logout() {
     this.authService.logout();
   }
+
+
 }

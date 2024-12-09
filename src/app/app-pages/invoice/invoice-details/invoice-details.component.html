@@ -1,5 +1,5 @@
 <div id="printableInvoice">
-    <div class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6 bg-white">
+    <div class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6 ">
         <!-- Header -->
         <div class="invoice-header flex justify-between items-center mb-4">
             <div class="logo-title flex items-center">
@@ -24,14 +24,14 @@
                 <p><strong>Invoice #:</strong> {{ invoiceDetails?.invoiceNumber }}</p>
                 <p><strong>Tax Number:</strong> {{ companyData.taxNumber }}</p>
             </div>
-            <p class="text-3xl  font-bold text-gray-800  text-right">INVOICE</p>
+            <p class="text-3xl  font-bold   text-right">INVOICE</p>
 
         </div>
         <hr class="my-4">
 
         <!-- Product Table -->
         <table class="invoice-table w-full border-collapse border border-gray-200 text-sm mb-4">
-            <thead class="bg-gray-100">
+            <thead class="0">
                 <tr>
                     <th class="border border-gray-300 px-4 py-2 text-left">Barcode</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Product Name</th>

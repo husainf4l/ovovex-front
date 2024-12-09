@@ -1,29 +1,30 @@
 <div class="container mx-auto px-4 py-6 space-y-6">
     <!-- Dashboard Header -->
     <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-800">Financial Dashboard</h1>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 focus:outline-none">
-            Generate Report
-        </button>
+        <h1 class="text-3xl font-bold ">Financial Dashboard</h1>
     </div>
+
+    <button (click)="toggoleTheme()" class="  px-4 py-2 rounded-md shadow  focus:outline-none ">
+        Toogole Theme
+    </button>
 
     <!-- KPIs Section -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white shadow rounded-lg p-4">
-            <h2 class="text-sm font-semibold text-gray-500">Revenue</h2>
-            <p class="text-2xl font-bold text-gray-800">$ {{ kpis.revenue }}</p>
+        <div class=" shadow rounded-lg p-4">
+            <h2 class="text-sm font-semibold ">Revenue</h2>
+            <p class="text-2xl font-bold ">$ {{ kpis.revenue }}</p>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <h2 class="text-sm font-semibold text-gray-500">Expenses</h2>
-            <p class="text-2xl font-bold text-gray-800">$ {{ kpis.expenses }}</p>
+        <div class="shadow rounded-lg p-4">
+            <h2 class="text-sm font-semibold ">Expenses</h2>
+            <p class="text-2xl font-bold ">$ {{ kpis.expenses }}</p>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <h2 class="text-sm font-semibold text-gray-500">Net Profit</h2>
-            <p class="text-2xl font-bold text-gray-800">$ {{ kpis.netProfit }}</p>
+        <div class="shadow rounded-lg p-4">
+            <h2 class="text-sm font-semibold ">Net Profit</h2>
+            <p class="text-2xl font-bold ">$ {{ kpis.netProfit }}</p>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <h2 class="text-sm font-semibold text-gray-500">Cash Flow</h2>
-            <p class="text-md font-medium text-gray-700">
+        <div class="shadow rounded-lg p-4">
+            <h2 class="text-sm font-semibold ">Cash Flow</h2>
+            <p class="text-md font-medium ">
                 In: ${{ kpis.inflow }} / Out: ${{ kpis.outflow }}
             </p>
         </div>
@@ -32,17 +33,17 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-center">
 
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Revenue Trends</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Revenue Trends</h3>
             <canvas id="revenueChart" class="h-40"></canvas>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Profit Margins</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Profit Margins</h3>
             <canvas id="profitMarginChart" class="h-40"></canvas>
         </div>
 
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Expense Breakdown</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Expense Breakdown</h3>
             <canvas id="expenseChart" class="h-40"></canvas>
         </div>
 
@@ -53,18 +54,18 @@
 
 
         <!-- Accounts Overview -->
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Accounts Overview</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Accounts Overview</h3>
             <canvas id="accountsChart" class="h-40"></canvas>
         </div>
 
         <!-- Cash Flow Analysis -->
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Cash Flow Analysis</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Cash Flow Analysis</h3>
             <canvas id="cashFlowChart" class="h-40"></canvas>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <h3 class="text-md font-semibold text-gray-700 mb-4">Net Profit Trends</h3>
+        <div class="shadow rounded-lg p-4">
+            <h3 class="text-md font-semibold  mb-4">Net Profit Trends</h3>
             <canvas id="netProfitChart" class="h-40"></canvas>
         </div>
         <!-- Profit Margins -->
@@ -75,11 +76,11 @@
     </div>
 
     <!-- Recent Transactions Section -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <h3 class="text-md font-semibold text-gray-700 mb-4">Recent Transactions</h3>
+    <div class="shadow rounded-lg p-6">
+        <h3 class="text-md font-semibold  mb-4">Recent Transactions</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto text-sm">
-                <thead class="bg-gray-100 text-gray-600">
+                <thead class="0 ">
                     <tr>
                         <th class="py-2 px-4 text-left">Date</th>
                         <th class="py-2 px-4 text-left">Description</th>
@@ -89,9 +90,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let transaction of recentTransactions" class="border-b hover:bg-gray-50">
-                        <td class="py-2 px-4 text-gray-700">{{ transaction.date }}</td>
-                        <td class="py-2 px-4 text-gray-700">{{ transaction.description }}</td>
-                        <td class="py-2 px-4 text-gray-800 font-medium">
+                        <td class="py-2 px-4 ">{{ transaction.date }}</td>
+                        <td class="py-2 px-4 ">{{ transaction.description }}</td>
+                        <td class="py-2 px-4  font-medium">
                             ${{ transaction.amount }}
                         </td>
                         <td class="py-2 px-4 font-medium" [class.text-green-600]="transaction.type === 'Credit'"

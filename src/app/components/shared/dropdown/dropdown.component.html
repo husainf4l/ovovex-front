@@ -1,5 +1,5 @@
 <!-- components/invoice/dropdown/dropdown.component.html -->
-<label class="block text-sm font-medium text-gray-700">{{ label }}</label>
+<label class="block text-sm font-medium ">{{ label }}</label>
 <select [(ngModel)]="selectedValue" (change)="onChange($event)"
     class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm focus:ring focus:ring-green-200">
     <option *ngFor="let option of options" [value]="option.value">{{ option.label }}</option>

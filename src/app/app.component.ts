@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MetaService } from './services/meta.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,14 @@ export class AppComponent {
   constructor(
     private meta: Meta,
     private title: Title,
-    private metaService: MetaService
+    private metaService: MetaService,
+    private themeService: ThemeService
   ) {
     this.initializeMetaTags();
   }
+
+
+
 
   private initializeMetaTags(): void {
     this.metaService.initMetaTags();

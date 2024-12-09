@@ -1,18 +1,18 @@
-<div class="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-    <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">Invoice Verification</h1>
+<div class="max-w-lg mx-auto mt-10 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold  text-center mb-4">Invoice Verification</h1>
 
     <!-- Display success message if the invoice exists -->
     <div *ngIf="invoiceDetails; else errorTemplate" class="text-center">
         <p class="text-green-600 text-lg font-semibold mb-2">
             The invoice is verified!
         </p>
-        <p class="text-gray-700">
+        <p class="">
             <strong>Customer Name:</strong> {{ invoiceDetails.customer?.name }}
         </p>
-        <p class="text-gray-700">
+        <p class="">
             <strong>Invoice Number:</strong> {{ invoiceDetails.invoiceNumber }}
         </p>
-        <p class="text-gray-700">
+        <p class="">
             <strong>Total Amount:</strong> {{ invoiceDetails.grandTotal | currency }}
         </p>
     </div>

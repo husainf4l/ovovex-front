@@ -1,4 +1,4 @@
-<h1 class="text-xl font-semibold text-gray-800 mb-3">Receipt</h1>
+<h1 class="text-xl font-semibold  mb-3">Receipt</h1>
 
 <!-- Client and Account Manager Selection -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -11,30 +11,30 @@
   </app-search-input>
 
   <div>
-    <label class="block text-sm font-medium text-gray-700">Receipt #</label>
+    <label class="block text-sm font-medium ">Receipt #</label>
     <input type="text" [(ngModel)]="receiptNumber" readonly
-      class="w-full mt-1 px-3 py-1.5 border bg-gray-100 rounded-md text-sm cursor-not-allowed" />
+      class="w-full mt-1 px-3 py-1.5 border 0 rounded-md text-sm cursor-not-allowed" />
   </div>
 </div>
 
 <!-- Payment Mode -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-  <app-dropdown label="Payment Mode" [options]="[ { value: 'CASH', label: 'Cash' }, { value: 'CHEQUE', label: 'Cheque' } ]" [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
+  <app-dropdown label="Payment Mode"
+    [options]="[ { value: 'CASH', label: 'Cash' }, { value: 'CHEQUE', label: 'Cheque' } ]"
+    [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
   </app-dropdown>
 
   <!-- Cash Accounts (Only for Cash Mode) -->
-  <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'"
-    [label]="'Cash Account'" placeholder="Select cash account" (selected)="selectCashAccount($event)">
+  <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'" [label]="'Cash Account'"
+    placeholder="Select cash account" (selected)="selectCashAccount($event)">
   </app-search-input>
 
   <div *ngIf="paymentMode === 'CASH'">
-    <label class="block text-sm font-medium text-gray-700">Cash Amount</label>
+    <label class="block text-sm font-medium ">Cash Amount</label>
     <input type="number" [(ngModel)]="cashAmount" name="cashAmount"
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm"
-      placeholder="Enter Cash Amount"
-    />
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" placeholder="Enter Cash Amount" />
   </div>
-  
+
 </div>
 
 <!-- Cheque Details -->
@@ -45,19 +45,19 @@
   </button>
   <div *ngFor="let cheque of cheques; let i = index" class="flex items-center gap-4 mb-2 border-b pb-2">
     <div class="w-1/5">
-      <label class="block text-sm font-medium text-gray-700">Cheque Number</label>
+      <label class="block text-sm font-medium ">Cheque Number</label>
       <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium text-gray-700">Bank Name</label>
+      <label class="block text-sm font-medium ">Bank Name</label>
       <input type="text" [(ngModel)]="cheque.bankName" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium text-gray-700">Amount</label>
+      <label class="block text-sm font-medium ">Amount</label>
       <input type="number" [(ngModel)]="cheque.amount" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium text-gray-700">Cheque Date</label>
+      <label class="block text-sm font-medium ">Cheque Date</label>
       <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
     </div>
     <div class="w-1/10 flex justify-center items-center">
@@ -86,52 +86,52 @@
 
 <!-- Printable Receipt -->
 <div id="printableReceipt" class="receipt-container">
-    <!-- Receipt Header -->
-    <div class="receipt-header">
-      <p>Papaya Trading</p>
-      <p>Brothers </p>
-      <p>Phone: 0796026659</p>
-      <p>Email: al-husseinpapayatrading.com</p>
-    </div>
-  
-    <!-- Receipt Info -->
-    <div class="receipt-info">
-      <p><strong>Receipt #:</strong> {{ receiptNumber }}</p>
-      <p><strong>Customer:</strong> {{ selectedClient?.name }}</p>
-    </div>
-  
-    <!-- Cheque Details -->
-    <div *ngIf="paymentMode === 'CHEQUE'">
-      <h3>Cheque Details:</h3>
-      <table class="receipt-table">
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Bank</th>
-            <th>Date</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let cheque of cheques">
-            <td>{{ cheque.number }}</td>
-            <td>{{ cheque.bankName }}</td>
-            <td>{{ cheque.date }}</td>
-            <td>{{ cheque.amount | currency }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <!-- Total -->
-    <div class="receipt-total">
-      <p><strong>Total:</strong> {{ calculateTotalAmount() | currency }}</p>
-    </div>
+  <!-- Receipt Header -->
+  <div class="receipt-header">
+    <p>Papaya Trading</p>
+    <p>Brothers </p>
+    <p>Phone: 0796026659</p>
+    <p>Email: al-husseinpapayatrading.com</p>
   </div>
 
-  <!-- Print Button -->
-  <div class="m-6 flex justify-end">
-    <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="printReceipt()">
-      Print
-    </button>
-  </div> 
+  <!-- Receipt Info -->
+  <div class="receipt-info">
+    <p><strong>Receipt #:</strong> {{ receiptNumber }}</p>
+    <p><strong>Customer:</strong> {{ selectedClient?.name }}</p>
+  </div>
+
+  <!-- Cheque Details -->
+  <div *ngIf="paymentMode === 'CHEQUE'">
+    <h3>Cheque Details:</h3>
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Bank</th>
+          <th>Date</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cheque of cheques">
+          <td>{{ cheque.number }}</td>
+          <td>{{ cheque.bankName }}</td>
+          <td>{{ cheque.date }}</td>
+          <td>{{ cheque.amount | currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Total -->
+  <div class="receipt-total">
+    <p><strong>Total:</strong> {{ calculateTotalAmount() | currency }}</p>
+  </div>
+</div>
+
+<!-- Print Button -->
+<div class="m-6 flex justify-end">
+  <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="printReceipt()">
+    Print
+  </button>
+</div>

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { colors } from '../../models/colors.model';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +11,17 @@ import { colors } from '../../models/colors.model';
   imports: [CommonModule]
 })
 export class DashboardComponent implements AfterViewInit {
+
+  constructor(private theamService: ThemeService) { }
+
+  toggoleTheme() {
+    this.theamService.toggleTheme();
+  }
+
+
+
+
+
   kpis = {
     revenue: 500000,
     expenses: 350000,

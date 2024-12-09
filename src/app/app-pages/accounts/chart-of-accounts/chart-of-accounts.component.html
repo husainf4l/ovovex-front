@@ -1,6 +1,6 @@
 <!-- Header -->
 <div class="flex justify-between items-center px-4 py-4 border-b">
-  <h2 class="text-xl font-semibold text-gray-700">Chart of Accounts</h2>
+  <h2 class="text-xl font-semibold ">Chart of Accounts</h2>
   <button routerLink="add" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Add Account</button>
 </div>
 
@@ -19,14 +19,14 @@
 </div>
 
 <!-- Loading Indicator -->
-<div *ngIf="loading" class="px-4 py-3 text-center text-gray-500 text-sm">
+<div *ngIf="loading" class="px-4 py-3 text-center  text-sm">
   Loading accounts...
 </div>
 
 <!-- Accounts Table -->
 <div *ngIf="!loading && !error" class="overflow-x-auto">
-  <table class="w-full text-sm text-left text-gray-500 border-t">
-    <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
+  <table class="w-full text-sm text-left  border-t">
+    <thead class="0 text-xs  uppercase">
       <tr>
         <th class="px-3 py-2">Account Number</th>
         <th class="px-3 py-2">Account Name</th>

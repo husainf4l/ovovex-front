@@ -1,31 +1,53 @@
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300"
-    [ngStyle]="{ 'margin-left': isSidebarOpen ? '16rem' : '0', 'width': isSidebarOpen ? 'calc(100% - 16rem)' : '100%' }">
-    <div class="px-4 py-3 flex items-center justify-between">
-        <!-- Menu Toggle -->
-        <div class="flex items-center gap-2">
-            <button (click)="toggleSidebar.emit()" aria-controls="logo-sidebar" class="inline-flex items-center">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <p>{{ userData?.userData.company.name }}</p>
-        </div>
-
-        <!-- User Profile -->
-        <div class="flex items-center gap-2">
-            <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
-                <mat-icon>apps</mat-icon>
-              </a>
-
-           
-              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
-                <mat-icon>settings</mat-icon>
-              </a>
-              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
-                <mat-icon>search</mat-icon>
-              </a>
-              <a routerLink="/app/settings" class="text-gray-800 hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
-                <mat-icon>notifications</mat-icon>
-              </a>
-            <app-user-dropdown [userData]="userData"></app-user-dropdown>
-        </div>
+<nav class="fixed top-0 z-50 w-full border-b border-gray-200 shadow-sm transition-all duration-300"
+  [ngStyle]="{ 'margin-left': isSidebarOpen ? '16rem' : '0', 'width': isSidebarOpen ? 'calc(100% - 16rem)' : '100%' }">
+  <div class="px-4 py-3 flex items-center justify-between">
+    <!-- Menu Toggle -->
+    <div class="flex items-center gap-2">
+      <button (click)="toggleSidebar.emit()" aria-controls="logo-sidebar" class="inline-flex items-center">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <p>{{ userData?.userData.company.name }}</p>
     </div>
+
+    <!-- User Profile -->
+    <div class="flex items-center gap-2">
+
+
+      <a (click)="toggleTheme()">
+        <mat-icon>{{ themeService.isDarkMode ? 'sunny' : 'nights_stay' }}</mat-icon>
+      </a>
+
+
+
+
+      <a routerLink="/app/settings"
+        class=" hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+        <mat-icon>settings</mat-icon>
+      </a>
+
+
+      <a routerLink="/app/settings"
+        class=" hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+        <mat-icon>apps</mat-icon>
+      </a>
+
+
+      <a routerLink="/app/settings"
+        class=" hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+        <mat-icon>settings</mat-icon>
+      </a>
+
+
+
+      <a routerLink="/app/settings"
+        class=" hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+        <mat-icon>search</mat-icon>
+      </a>
+      <a routerLink="/app/settings"
+        class=" hover:text-blue-600 hover:scale-110 transition-all duration-200 ease-in-out cursor-pointer">
+        <mat-icon>notifications</mat-icon>
+      </a>
+      <app-user-dropdown [userData]="userData"></app-user-dropdown>
+    </div>
+  </div>
 </nav>

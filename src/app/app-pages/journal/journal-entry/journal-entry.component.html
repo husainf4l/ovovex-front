@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-bold text-gray-800 mb-6">Journal Entry</h1>
+<h1 class="text-2xl font-bold  mb-6">Journal Entry</h1>
 
 <app-error-alert [message]="error"></app-error-alert>
 
@@ -7,9 +7,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Journal ID -->
         <div>
-            <label for="journalId" class="block text-sm font-medium text-gray-700">Journal ID</label>
+            <label for="journalId" class="block text-sm font-medium ">Journal ID</label>
             <input id="journalId" type="text" [(ngModel)]="journalId" name="journalId" readonly
-                class="w-full mt-1 px-3 py-2 border rounded-md bg-gray-100 cursor-not-allowed" />
+                class="w-full mt-1 px-3 py-2 border rounded-md 0 cursor-not-allowed" />
         </div>
         <!-- Journal Date -->
         <div>
@@ -25,19 +25,19 @@
         <div class="flex items-center gap-4 mt-4">
             <!-- Debit -->
             <div class="flex-1">
-                <label class="block text-sm font-medium text-gray-700">Debit</label>
+                <label class="block text-sm font-medium ">Debit</label>
                 <input type="number" [(ngModel)]="newEntry.debit" name="debit" placeholder="0.00"
                     class="w-full mt-1 px-3 py-2 border rounded-md" />
             </div>
             <!-- Credit -->
             <div class="flex-1">
-                <label class="block text-sm font-medium text-gray-700">Credit</label>
+                <label class="block text-sm font-medium ">Credit</label>
                 <input type="number" [(ngModel)]="newEntry.credit" name="credit" placeholder="0.00"
                     class="w-full mt-1 px-3 py-2 border rounded-md" />
             </div>
             <!-- Notes -->
             <div class="flex-2">
-                <label class="block text-sm font-medium text-gray-700">Notes</label>
+                <label class="block text-sm font-medium ">Notes</label>
                 <input type="text" [(ngModel)]="newEntry.notes" name="notes" placeholder="Optional notes"
                     class="w-full mt-1 px-3 py-2 border rounded-md" />
             </div>

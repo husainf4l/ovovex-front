@@ -1,9 +1,9 @@
 <li>
     <ng-container *ngIf="isExpandable">
         <button type="button" (click)="toggleExpand()"
-            class="flex justify-between w-full p-1 rounded-lg hover:bg-gray-100 transition ">
+            class="flex justify-between w-full p-1 rounded-lg hover:0 transition ">
             <div class="flex">
-                <mat-icon class="text-gray-500 text-sm ">{{ icon }}</mat-icon>
+                <mat-icon class=" text-sm ">{{ icon }}</mat-icon>
                 <span class="ml-1">{{ label }}</span>
             </div>
             <mat-icon class="transition " [ngClass]="{ 'rotate-180': isExpanded }">expand_more</mat-icon>
@@ -18,8 +18,8 @@
     <!-- Regular Menu Item -->
     <ng-container *ngIf="!isExpandable">
         <button type="button" [routerLink]="routerLink" routerLinkActive="text-primary-600"
-            class="flex items-center w-full p-1 rounded-lg hover:bg-gray-100 transition">
-            <mat-icon class="text-gray-500 text-sm">{{ icon }}</mat-icon>
+            class="flex items-center w-full p-1 rounded-lg hover:0 transition">
+            <mat-icon class=" text-sm">{{ icon }}</mat-icon>
             <span class="ml-1">{{ label }}</span>
             <div></div>
         </button>
