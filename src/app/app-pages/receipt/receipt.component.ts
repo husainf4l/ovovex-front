@@ -3,23 +3,20 @@ import { SearchInputComponent } from "../../components/shared/search-input/searc
 import { DropdownComponent } from "../../components/shared/dropdown/dropdown.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InvoiceService } from '../../services/invoice.service';
 import { ReceiptService } from '../../services/receipt.service';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-receipt',
   templateUrl: './receipt.component.html',
   styleUrls: ['./receipt.component.css'],
-  imports: [SearchInputComponent, DropdownComponent, CommonModule, FormsModule, MatIcon],
+  imports: [SearchInputComponent, DropdownComponent, CommonModule, FormsModule, MatIconModule],
 })
 export class ReceiptComponent implements OnInit {
   clients: any = []; // Array of clients
   accountManagers: any = []; // Array of account managers
   cashAccounts: any = []; // Array of cash accounts
-  cheques: any = [{
-    number: 0
-  }]; // List of cheques for CHEQUE payment mode
+  cheques: any = []; // List of cheques for CHEQUE payment mode
 
   receiptNumber: number = 0;
   paymentMode: string = 'CASH'; // Default payment mode
@@ -27,11 +24,10 @@ export class ReceiptComponent implements OnInit {
   selectedAccountManager: any = null;
   selectedCashAccount: any = null;
 
-  constructor(private receiptService: ReceiptService) { }
+  constructor(private receiptService: ReceiptService) {}
 
   ngOnInit(): void {
     this.fetchData();
-
   }
 
   fetchData(): void {
@@ -76,9 +72,6 @@ export class ReceiptComponent implements OnInit {
     this.cheques.push(newCheque);
   }
 
-  /**
-   * Remove a cheque from the list by index.
-   */
   removeCheque(index: number) {
     this.cheques.splice(index, 1);
   }
@@ -94,10 +87,62 @@ export class ReceiptComponent implements OnInit {
     };
 
     console.log('Receipt Data:', receiptData);
-
+    // Call service to save the receipt
   }
 
-  printReceipt() {
-    console.log('Printing receipt...');
+
+  printReceipt(): void {
+    const printContents = document.getElementById('printableReceipt')?.innerHTML;
+    const printWindow = window.open('', '_blank', 'width=300,height=600');
+  
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Receipt</title>
+            <style>
+              /* Thermal Printer Styles */
+              body {
+                font-family: Arial, sans-serif;
+                width: 70mm;
+                margin: 0;
+                padding: 10px;
+              }
+              .receipt-header {
+                text-align: center;
+                font-size: 16px;
+                font-weight: bold;
+              }
+              .receipt-info {
+                margin-bottom: 10px;
+              }
+              .receipt-table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              .receipt-table th, .receipt-table td {
+                text-align: left;
+                font-size: 14px;
+                padding: 5px 0;
+                border-bottom: 1px dashed #000;
+              }
+              .receipt-total {
+                margin-top: 10px;
+                font-size: 14px;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            ${printContents || ''}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+      printWindow.close();
+    }
   }
+  
 }

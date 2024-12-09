@@ -2,78 +2,124 @@
 
 <!-- Client and Account Manager Selection -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
-        (selected)="selectClient($event)">
-    </app-search-input>
+  <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
+    (selected)="selectClient($event)">
+  </app-search-input>
 
-    <app-search-input [items]="accountManagers" [displayKey]="'displayName'" [label]="'Account Manager'"
-        placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
-    </app-search-input>
+  <app-search-input [items]="accountManagers" [displayKey]="'displayName'" [label]="'Account Manager'"
+    placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
+  </app-search-input>
 
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Receipt #</label>
-        <input type="text" [(ngModel)]="receiptNumber" readonly
-            class="w-full mt-1 px-3 py-1.5 border bg-gray-100 rounded-md text-sm cursor-not-allowed" />
-    </div>
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Receipt #</label>
+    <input type="text" [(ngModel)]="receiptNumber" readonly
+      class="w-full mt-1 px-3 py-1.5 border bg-gray-100 rounded-md text-sm cursor-not-allowed" />
+  </div>
 </div>
 
 <!-- Payment Mode -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-    <app-dropdown label="Payment Mode" [options]="[
+  <app-dropdown label="Payment Mode" [options]="[
       { value: 'CASH', label: 'Cash' },
       { value: 'CHEQUE', label: 'Cheque' }
     ]" [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
-    </app-dropdown>
+  </app-dropdown>
 
-    <!-- Cash Accounts (Only for Cash Mode) -->
-    <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'"
-        [label]="'Cash Account'" placeholder="Select cash account" (selected)="selectCashAccount($event)">
-    </app-search-input>
+  <!-- Cash Accounts (Only for Cash Mode) -->
+  <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'"
+    [label]="'Cash Account'" placeholder="Select cash account" (selected)="selectCashAccount($event)">
+  </app-search-input>
 </div>
 
-<div class="mt-4">
-    <h2 class="text-lg font-semibold mb-2">Cheque Details</h2>
-    <button (click)="addCheque()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-        Add Cheque
-    </button>
-    <div *ngFor="let cheque of cheques; let i = index" class="flex items-end gap-4 mb-2 border-b pb-2">
-        <div class="w-1/5">
-            <label class="block text-sm font-medium text-gray-700">Cheque Number</label>
-            <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
-        </div>
-        <div class="w-1/5">
-            <label class="block text-sm font-medium text-gray-700">Bank Name</label>
-            <input type="text" [(ngModel)]="cheque.bankName"
-                class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
-        </div>
-
-        <div class="w-1/5">
-            <label class="block text-sm font-medium text-gray-700">Amount</label>
-            <input type="number" [(ngModel)]="cheque.amount"
-                class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
-        </div>
-        <div class="w-1/5">
-            <label class="block text-sm font-medium text-gray-700">Cheque Date</label>
-            <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
-        </div>
-        <div class="w-1/10 flex justify-center items-end ">
-            <button (click)="removeCheque(i)" class="text-red-500 hover:text-red-600">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </div>
+<!-- Cheque Details -->
+<div *ngIf="paymentMode === 'CHEQUE'" class="mt-4">
+  <h2 class="text-lg font-semibold mb-2">Cheque Details</h2>
+  <button (click)="addCheque()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+    Add Cheque
+  </button>
+  <div *ngFor="let cheque of cheques; let i = index" class="flex items-center gap-4 mb-2 border-b pb-2">
+    <div class="w-1/5">
+      <label class="block text-sm font-medium text-gray-700">Cheque Number</label>
+      <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
     </div>
-
-
+    <div class="w-1/5">
+      <label class="block text-sm font-medium text-gray-700">Bank Name</label>
+      <input type="text" [(ngModel)]="cheque.bankName" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+    </div>
+    <div class="w-1/5">
+      <label class="block text-sm font-medium text-gray-700">Amount</label>
+      <input type="number" [(ngModel)]="cheque.amount" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+    </div>
+    <div class="w-1/5">
+      <label class="block text-sm font-medium text-gray-700">Cheque Date</label>
+      <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+    </div>
+    <div class="w-1/10 flex justify-center items-center">
+      <button (click)="removeCheque(i)" class="text-red-500 hover:text-red-600">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>
-
-
 
 <!-- Action Buttons -->
 <div class="m-6 flex justify-end gap-4">
-    <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="printReceipt()">
-        Print
-    </button>
-    <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="saveReceipt()">
-        Save
-    </button>
+  <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="printReceipt()">
+    Print
+  </button>
+  <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="saveReceipt()">
+    Save
+  </button>
 </div>
+
+<div id="printableReceipt" class="receipt-container">
+    <!-- Receipt Header -->
+    <div class="receipt-header">
+      <p>Papaya Trading</p>
+      <p>Brothers </p>
+      <p>Phone: 0796026659</p>
+      <p>Email: al-husseinpapayatrading.com</p>
+    </div>
+  
+    <!-- Receipt Info -->
+    <div class="receipt-info">
+      <p><strong>Receipt #:</strong> {{ receiptNumber }}</p>
+      <p><strong>Customer:</strong> {{ selectedClient?.name }}</p>
+    </div>
+  
+    <!-- Cheque Details -->
+    <div *ngIf="paymentMode === 'CHEQUE'">
+      <h3>Cheque Details:</h3>
+      <table class="receipt-table">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Bank</th>
+            <th>Date</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cheque of cheques">
+            <td>{{ cheque.number }}</td>
+            <td>{{ cheque.bankName }}</td>
+            <td>{{ cheque.date }}</td>
+            <td>{{ cheque.amount | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Total -->
+    <div class="receipt-total">
+      <p><strong>Total:</strong>  120</p>
+    </div>
+  </div>
+  
+  <!-- Print Button -->
+  <div class="m-6 flex justify-end">
+    <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="printReceipt()">
+      Print
+    </button>
+  </div>
+  

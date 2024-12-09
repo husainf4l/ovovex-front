@@ -128,7 +128,7 @@ export const routes: Routes = [
                 },
             },
             {
-                path: 'receipt',
+                path: 'receipt-entry',
                 loadComponent: () =>
                     import('./app-pages/receipt/receipt.component').then(
                         (m) => m.ReceiptComponent
@@ -138,7 +138,42 @@ export const routes: Routes = [
                     description: 'Create an account with Ovovex to streamline your accounting process.',
                 },
             },
+            {
+                path: 'journal-entry',
+                loadComponent: () =>
+                    import('./app-pages/journal/journal-entry/journal-entry.component').then(
+                        (m) => m.JournalEntryComponent
+                    ),
+                data: {
+                    title: 'verify - Ovovex',
+                    description: 'Create an account with Ovovex to streamline your accounting process.',
+                },
+            },
+            {
+                path: 'account-statement/:accountId',
+                loadComponent: () =>
+                    import('./app-pages/accounts/account-statement/account-statement.component').then(
+                        (m) => m.AccountStatementComponent
+                    ),
+                data: {
+                    title: 'verify - Ovovex',
+                    description: 'Create an account with Ovovex to streamline your accounting process.',
+                },
+            },
 
+            {
+                path: 'account-statement',
+                loadComponent: () =>
+                    import('./app-pages/accounts/account-statement/account-statement.component').then(
+                        (m) => m.AccountStatementComponent
+                    ),
+                data: {
+                    title: 'Account Statement - Ovovex',
+                    description: 'View your account statements with Ovovex to streamline your accounting process.',
+                },
+            },
+         
+        
         ],
     },
     {
