@@ -17,10 +17,15 @@ body {
     --background-dark: #181818;
     --text-light: #333333;
     --text-dark: #ffffff;
-    --primary-light: #38bdf8;
+    --primary-light: #3b82f6;
     --primary-dark: #3b82f6;
     --secondary-light: #10b981;
     --secondary-dark: #6ee7b7;
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+    --primary-color: var(--primary-light);
+    --secondary-color: var(--secondary-light);
+  
 }
 
 /* Light theme */
@@ -29,6 +34,7 @@ body {
     --text-color: var(--text-light);
     --primary-color: var(--primary-light);
     --secondary-color: var(--secondary-light);
+    
 }
 
 /* Dark theme */
@@ -72,7 +78,6 @@ select {
     box-sizing: border-box;
 }
 
-/* Add focus effect to inputs */
 input:focus,
 textarea:focus,
 select:focus {
