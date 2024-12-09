@@ -1,0 +1,82 @@
+<h1 class="text-xl font-semibold text-gray-800 mb-3">Create Account</h1>
+
+<form (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Account Name -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Account Name</label>
+    <input
+      type="text"
+      [(ngModel)]="account.name"
+      name="name"
+      required
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm"
+    />
+  </div>
+
+  <!-- Account Type -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Account Type</label>
+    <select
+      [(ngModel)]="account.accountType"
+      name="accountType"
+      required
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm"
+    >
+      <option value="ASSET">Asset</option>
+      <option value="LIABILITY">Liability</option>
+      <option value="EQUITY">Equity</option>
+      <option value="REVENUE">Revenue</option>
+      <option value="EXPENSE">Expense</option>
+    </select>
+  </div>
+
+  <!-- Opening Balance -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Opening Balance</label>
+    <input
+      type="number"
+      [(ngModel)]="account.openingBalance"
+      name="openingBalance"
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm"
+    />
+  </div>
+
+  <!-- Parent Account -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Parent Account</label>
+    <select
+      [(ngModel)]="account.parentAccountId"
+      name="parentAccountId"
+      required
+      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm "
+    >
+     
+      <optgroup label="Main Accounts">
+        <option *ngFor="let main of mainAccounts" [value]="main.id">
+          {{ main.name }}
+        </option>
+      </optgroup>
+    </select>
+  </div>
+
+  <!-- Mark as Main Account -->
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Is Main Account?</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="account.mainAccount"
+      name="mainAccount"
+      class="mt-2"
+    />
+  </div>
+
+  <!-- Submit Button -->
+  <div class="col-span-2 mt-4">
+    <button
+      type="submit"
+      class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+    >
+      Save
+    </button>
+  </div>
+</form>

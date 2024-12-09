@@ -16,7 +16,7 @@ export class SidebarComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   closeSidebar(): void {
-    this.toggleSidebar.emit(); 
+    this.toggleSidebar.emit();
   }
 
 
@@ -28,7 +28,27 @@ export class SidebarComponent {
       routerLink: '/app', // Root dashboard path
       isExpandable: false,
     },
-   
+
+    {
+      icon: 'receipt',
+      label: 'Receipt',
+      routerLink: null,
+      isExpandable: true,
+      children: [
+        {
+          icon: 'description',
+          label: 'Create Receipt',
+          routerLink: 'receipt-entry',
+        },
+        {
+          icon: 'view_list',
+          label: 'receipt List',
+          routerLink: 'receipt/receipt-list',
+        },
+
+      ],
+    },
+
     {
       icon: 'receipt',
       label: 'Invoices',
@@ -62,6 +82,11 @@ export class SidebarComponent {
           icon: 'table_chart',
           label: 'Chart of Accounts',
           routerLink: 'chartofaccounts',
+        },
+        {
+          icon: 'table_chart',
+          label: 'Add Account',
+          routerLink: 'chartofaccounts/add',
         },
         {
           icon: 'receipt_long',
@@ -384,12 +409,12 @@ export class SidebarComponent {
       isExpandable: false,
     },
   ];
-  
-  
 
 
-  
-  
+
+
+
+
 
 
 }

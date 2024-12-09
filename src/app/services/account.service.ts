@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
+import { AccountAdd } from '../models/interfaces.model';
 
 @Injectable({
     providedIn: 'root',
@@ -26,4 +27,22 @@ export class AccountService {
 
         return this.http.get<any>(`${this.apiUrl}/${accountId}/statement`, { params });
     }
+
+
+    createAccount(account: AccountAdd): Observable<AccountAdd> {
+        return this.http.post<AccountAdd>(`${this.apiUrl}`, account);
+    }
+
+
+    getAccounts(): Observable<AccountAdd[]> {
+        return this.http.get<AccountAdd[]>(`${this.apiUrl}`);
+    }
+
+    getMainAccounts(): Observable<AccountAdd[]> {
+        return this.http.get<AccountAdd[]>(`${this.apiUrl}/main`);
+    }
+
+  
+    
+
 }

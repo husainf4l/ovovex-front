@@ -87,3 +87,15 @@ export interface Journals {
     transactions: transactions[];
 }
 
+
+export interface AccountAdd {
+    id?: string;
+    name: string;
+    accountType: 'ASSET' | 'LIABILITY' | 'EQUITY' | 'REVENUE' | 'EXPENSE'; // Adjust based on your schema
+    openingBalance?: number;
+    parentAccountId?: string | null; // Nullable for main accounts
+    mainAccount: boolean;
+    currentBalance?: number; // Automatically calculated, but can be included
+
+}
+

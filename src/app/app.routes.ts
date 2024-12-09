@@ -84,6 +84,17 @@ export const routes: Routes = [
                 },
             },
             {
+                path: 'chartofaccounts/add',
+                loadComponent: () =>
+                    import('./app-pages/accounts/add-account/add-account.component').then(
+                        (m) => m.AddAccountComponent
+                    ),
+                data: {
+                    title: 'Chart of Accounts - Ovovex',
+                    description: 'Organize your accounts with Ovovex’s Chart of Accounts.',
+                },
+            },
+            {
                 path: 'invoice',
                 loadComponent: () =>
                     import('./app-pages/invoice/invoice.component').then(
@@ -172,8 +183,8 @@ export const routes: Routes = [
                     description: 'View your account statements with Ovovex to streamline your accounting process.',
                 },
             },
-         
-        
+
+
         ],
     },
     {
