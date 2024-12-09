@@ -35,7 +35,10 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "qrcode" 
+            ]
           },
           "configurations": {
             "production": {

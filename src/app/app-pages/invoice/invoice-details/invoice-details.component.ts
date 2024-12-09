@@ -8,6 +8,7 @@ import { QRCodeComponent } from 'angularx-qrcode';
   selector: 'app-invoice-details',
   templateUrl: './invoice-details.component.html',
   styleUrls: ['./invoice-details.component.css'],
+  standalone: true,
   imports: [CommonModule, QRCodeComponent], // Import QRCodeComponent
 })
 export class InvoiceDetailsComponent implements OnInit {
@@ -22,12 +23,11 @@ export class InvoiceDetailsComponent implements OnInit {
     email: 'info@yourcompany.com',
   };
   qrCodeUrl: string | null = null;
-  userData: any;
 
   constructor(
     private route: ActivatedRoute,
     private invoiceService: InvoiceService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadCompanyData();
@@ -39,26 +39,21 @@ export class InvoiceDetailsComponent implements OnInit {
 
   loadCompanyData() {
     const userDataString = localStorage.getItem('userData');
-
-
     if (userDataString) {
       try {
-
         const userData = JSON.parse(userDataString);
-        console.log(userData)
-        console.log(userData.userData.company.name)
+        const company = userData?.userData?.company;
 
-
-
-        this.companyData = {
-          name: userData.userData.company.name,
-          logoImage: userData.userData.company.logoImage,
-          taxNumber: userData.userData.company.taxNumber,
-          address: userData.userData.company.address,
-          phone: userData.userData.company.phone,
-          email: userData.userData.company.email,
-        };
-
+        if (company) {
+          this.companyData = {
+            name: company.name || 'Default Company Name',
+            logoImage: company.logoImage || '/assets/logo.png',
+            taxNumber: company.taxNumber || '123456789',
+            address: company.address || '123 Business St, City, Country',
+            phone: company.phone || '+123 456 789',
+            email: company.email || 'info@yourcompany.com',
+          };
+        }
       } catch (error) {
         console.error('Error parsing userData:', error);
       }
