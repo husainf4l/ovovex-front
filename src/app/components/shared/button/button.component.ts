@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class ButtonComponent {
   @Input() isDisabled: boolean = false;
@@ -17,11 +17,10 @@ export class ButtonComponent {
 
   get buttonClasses(): { [key: string]: boolean } {
     return {
-      'bg-blue-600 hover:bg-blue-700 cursor-pointer': !this.isDisabled && !this.buttonClass,
+      'bg-blue-600 hover:bg-blue-700 cursor-pointer':
+        !this.isDisabled && !this.buttonClass,
       'bg-gray-400 cursor-not-allowed': this.isDisabled && !this.buttonClass,
-      [this.buttonClass]: !!this.buttonClass
+      [this.buttonClass]: !!this.buttonClass,
     };
   }
 }
-
-

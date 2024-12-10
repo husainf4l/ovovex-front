@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         background: 'var(--background-color)',
-        foreground: 'var(--text-color)',
+        foreground: 'var(--foreground-color)',
         primary: 'var(--primary-color)',
         secondary: 'var(--secondary-color)',
 

@@ -5,14 +5,14 @@
   <div>
     <label class="block text-sm font-medium ">Account Name</label>
     <input type="text" [(ngModel)]="account.name" name="name" required
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
   </div>
 
   <!-- Account Type -->
   <div>
     <label class="block text-sm font-medium ">Account Type</label>
     <select [(ngModel)]="account.accountType" name="accountType" required
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm">
+      class="w-full mt-1 px-3 py-1.5 border-custom text-sm">
       <option value="ASSET">Asset</option>
       <option value="LIABILITY">Liability</option>
       <option value="EQUITY">Equity</option>
@@ -25,14 +25,14 @@
   <div>
     <label class="block text-sm font-medium ">Opening Balance</label>
     <input type="number" [(ngModel)]="account.openingBalance" name="openingBalance"
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
   </div>
 
   <!-- Parent Account -->
   <div>
     <label class="block text-sm font-medium ">Parent Account</label>
     <select [(ngModel)]="account.parentAccountId" name="parentAccountId" required
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm ">
+      class="w-full mt-1 px-3 py-1.5 border-custom text-sm ">
 
       <optgroup label="Main Accounts">
         <option *ngFor="let main of mainAccounts" [value]="main.id">

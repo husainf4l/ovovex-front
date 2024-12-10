@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cheque } from '../../models/interfaces.model';
 import { Router } from '@angular/router';
+import { ButtonComponent } from "../../components/shared/button/button.component";
 
 @Component({
   selector: 'app-receipt',
@@ -18,7 +19,8 @@ import { Router } from '@angular/router';
     DropdownComponent,
     CommonModule,
     FormsModule,
-  ],
+    ButtonComponent
+],
 })
 export class ReceiptComponent implements OnInit {
   clients: any = [];

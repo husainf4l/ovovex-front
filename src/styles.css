@@ -4,83 +4,154 @@
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 :root {
-    --background-light: #ffffff;
-    --background-dark: #181818;
-    --text-light: #333333;
-    --text-dark: #ffffff;
-    --primary-light: #3b82f6;
-    --primary-dark: #3b82f6;
-    --secondary-light: #10b981;
-    --secondary-dark: #6ee7b7;
-    --background-color: var(--background-light);
-    --text-color: var(--text-light);
-    --primary-color: var(--primary-light);
-    --secondary-color: var(--secondary-light);
-  
+  --background-light: #ffffff;
+  --background-dark: #09090b;
+
+  --foreground-light: #ffffff; /* Added specific light foreground */
+  --foreground-dark: #020817; /* Added specific dark foreground */
+
+  --text-light: #09090b;
+  --text-dark: #ffffff;
+  --secondary-text-light: #485264;
+  --secondary-text-dark: #485264;
+
+  --primary-light: #3a72ec;
+  --primary-dark: #3576df;
+
+  --secondary-light: #92b1f5;
+  --secondary-dark: #1f4586;
+
+  --background-color: var(--background-light);
+  --text-color: var(--text-light);
+  --secondary-text-color: var(--secondary-text-light);
+
+  --primary-color: var(--primary-light);
+  --secondary-color: var(--secondary-light);
+
+  --foreground-color: var(--foreground-light); /* Default foreground color */
 }
 
 /* Light theme */
 .light {
-    --background-color: var(--background-light);
-    --text-color: var(--text-light);
-    --primary-color: var(--primary-light);
-    --secondary-color: var(--secondary-light);
-    
+  --background-color: var(--background-light);
+  --text-color: var(--text-light);
+  --secondary-text-color: var(--secondary-text-light);
+  --primary-color: var(--primary-light);
+  --secondary-color: var(--secondary-light);
+  --foreground-color: var(--foreground-light); /* Use light foreground color */
 }
 
 /* Dark theme */
 .dark {
-    --background-color: var(--background-dark);
-    --text-color: var(--text-dark);
-    --primary-color: var(--primary-dark);
-    --secondary-color: var(--secondary-dark);
+  --background-color: var(--background-dark);
+  --text-color: var(--text-dark);
+  --secondary-text-color: var(--secondary-text-dark);
+  --primary-color: var(--primary-dark);
+  --secondary-color: var(--secondary-dark);
+  --foreground-color: var(--foreground-dark); /* Use dark foreground color */
 }
 
 /* Apply the colors */
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
+  background-color: var(--primary-color);
+  color: var(--foreground-color); /* Apply foreground color to text */
 }
 
 .btn-secondary {
-    background-color: var(--secondary-color);
-    color: white;
+  background-color: var(--secondary-color);
+  color: var(--foreground-color); /* Apply foreground color to text */
 }
 
 h1,
 p {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
-input,
-textarea,
-select {
-    background-color: var(--input-background);
-    color: var(--input-text);
-    border: 1px solid var(--input-border);
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    width: 100%;
-    box-sizing: border-box;
-}
-
+/* Add focus effect to inputs */
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: var(--primary-color);
-    outline: none;
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; 
+
+}
+
+table th,
+table td {
+  text-align: left;
+  background-color: var(--foreground-color);
+  border: 0.1px solid  #192950;
+
+}
+
+/* table tbody tr:hover {
+  background-color: var(--foreground-color);
+  color: #333;
+} */
+
+table tbody tr:hover td {
+  color: var(--primary-color);
+}
+
+input {
+  background-color: var(--foreground-color);
+  color: var(--text-color);
+  border: 1px solid var(--foreground-color);
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: var(--text-color);
+}
+
+input:read-only {
+  color: var(--secondary-text-color) ;
+}
+
+/* Apply background, text, and placeholder colors */
+select {
+  background-color: var(--foreground-color);
+  color: var(--text-color);
+  border: 1px solid var(--foreground-color);
+  box-sizing: border-box;
+}
+
+select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Styling the placeholder text (the option with an empty value) */
+select option:disabled {
+  color: var(--text-color); /* Set the placeholder color */
+}
+
+.border-custom  {
+  border: 0.1px solid #192950;
+  border-radius: 0.375rem; 
+  
 }

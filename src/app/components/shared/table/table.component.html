@@ -5,7 +5,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let row of data" class="hover:bg-gray-50">
+        <tr *ngFor="let row of data" class="">
             <td *ngFor="let col of columns" class="px-4 py-3">
                 <ng-container *ngIf="col.key !== 'actions'; else actionsCell">
                     {{ row[col.key] }}

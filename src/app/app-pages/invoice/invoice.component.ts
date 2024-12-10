@@ -16,6 +16,7 @@ import { DropdownComponent } from '../../components/shared/dropdown/dropdown.com
 import { TableComponent } from '../../components/shared/table/table.component';
 import { TotalsComponent } from '../../components/shared/totals/totals.component';
 import { DateSelectorComponent } from '../../components/shared/date-selector/date-selector.component';
+import { ButtonComponent } from "../../components/shared/button/button.component";
 
 @Component({
   selector: 'app-invoice',
@@ -30,7 +31,8 @@ import { DateSelectorComponent } from '../../components/shared/date-selector/dat
     TotalsComponent,
     DateSelectorComponent,
     TableComponent,
-  ],
+    ButtonComponent
+],
 })
 export class InvoiceComponent implements OnInit {
   @ViewChild(InvoicePrintComponent)

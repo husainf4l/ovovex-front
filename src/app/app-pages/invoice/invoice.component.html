@@ -1,5 +1,7 @@
 <h1 class="text-xl font-semibold  mb-3">Invoice</h1>
 
+<div class="bg-foreground p-4 border-custom  ">
+
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
     <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
@@ -26,7 +28,7 @@
     <div>
         <label class="block text-sm font-medium ">Invoice #</label>
         <input type="text" [(ngModel)]="invoiceNumber" readonly
-            class="w-full mt-1 px-3 py-1.5 border 0 rounded-md text-sm cursor-not-allowed" />
+            class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed" />
     </div>
 
     <!-- Payment Mode -->
@@ -47,16 +49,18 @@
 
 
 
-<div class="mb-6">
+<div class="mb-3 mt-6">
     <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
         [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event) ">
     </app-search-input>
 </div>
 
 
+</div>
 
 
-<app-data-table [columns]="[
+<div class="mt-6 ">
+    <app-data-table  [columns]="[
     { label: 'Barcode', key: 'barcode' },
     { label: 'Description', key: 'description' },
     { label: 'Quantity', key: 'quantity' },
@@ -65,18 +69,19 @@
   ]" [data]="invoiceProducts"></app-data-table>
 
 
+</div>
 
 <app-invoice-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal" [taxRate]="taxRate">
 </app-invoice-totals>
 
 
 <!-- Actions -->
-<div class="m-6 flex justify-end gap-4">
+<div class="flex justify-end gap-4">
 
-    <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-        (click)="printInvoice()">Print</button>
+    <app-button  [buttonText]="'Print'"
+        (click)="printInvoice()"></app-button>
 
-    <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="saveInvoice()">Save</button>
+    <app-button  [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveInvoice()"></app-button>
 </div>
 
 

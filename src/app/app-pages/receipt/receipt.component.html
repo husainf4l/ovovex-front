@@ -32,7 +32,7 @@
   <div *ngIf="paymentMode === 'CASH'">
     <label class="block text-sm font-medium ">Cash Amount</label>
     <input type="number" [(ngModel)]="cashAmount" name="cashAmount"
-      class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" placeholder="Enter Cash Amount" />
+      class="w-full mt-1 px-3 py-1.5 border-custom text-sm" placeholder="Enter Cash Amount" />
   </div>
 
 </div>
@@ -46,19 +46,19 @@
   <div *ngFor="let cheque of cheques; let i = index" class="flex items-center gap-4 mb-2 border-b pb-2">
     <div class="w-1/5">
       <label class="block text-sm font-medium ">Cheque Number</label>
-      <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
     </div>
     <div class="w-1/5">
       <label class="block text-sm font-medium ">Bank Name</label>
-      <input type="text" [(ngModel)]="cheque.bankName" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      <input type="text" [(ngModel)]="cheque.bankName" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
     </div>
     <div class="w-1/5">
       <label class="block text-sm font-medium ">Amount</label>
-      <input type="number" [(ngModel)]="cheque.amount" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      <input type="number" [(ngModel)]="cheque.amount" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
     </div>
     <div class="w-1/5">
       <label class="block text-sm font-medium ">Cheque Date</label>
-      <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border rounded-md text-sm" />
+      <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
     </div>
     <div class="w-1/10 flex justify-center items-center">
       <button (click)="removeCheque(i)" class="text-red-500 hover:text-red-600">
@@ -76,62 +76,11 @@
 
 <!-- Action Buttons -->
 <div class="m-6 flex justify-end gap-4">
-  <button class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" (click)="printReceipt()">
+  <app-button  [buttonText]="'Print'" (click)="printReceipt()">
     Print
-  </button>
-  <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="saveReceipt()">
+  </app-button>
+  <app-button  [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveReceipt()">
     Save
-  </button>
+  </app-button>
 </div>
 
-<!-- Printable Receipt -->
-<div id="printableReceipt" class="receipt-container">
-  <!-- Receipt Header -->
-  <div class="receipt-header">
-    <p>Papaya Trading</p>
-    <p>Brothers </p>
-    <p>Phone: 0796026659</p>
-    <p>Email: al-husseinpapayatrading.com</p>
-  </div>
-
-  <!-- Receipt Info -->
-  <div class="receipt-info">
-    <p><strong>Receipt #:</strong> {{ receiptNumber }}</p>
-    <p><strong>Customer:</strong> {{ selectedClient?.name }}</p>
-  </div>
-
-  <!-- Cheque Details -->
-  <div *ngIf="paymentMode === 'CHEQUE'">
-    <h3>Cheque Details:</h3>
-    <table class="receipt-table">
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Bank</th>
-          <th>Date</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let cheque of cheques">
-          <td>{{ cheque.number }}</td>
-          <td>{{ cheque.bankName }}</td>
-          <td>{{ cheque.date }}</td>
-          <td>{{ cheque.amount | currency }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Total -->
-  <div class="receipt-total">
-    <p><strong>Total:</strong> {{ calculateTotalAmount() | currency }}</p>
-  </div>
-</div>
-
-<!-- Print Button -->
-<div class="m-6 flex justify-end">
-  <button class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" (click)="printReceipt()">
-    Print
-  </button>
-</div>

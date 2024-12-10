@@ -11,12 +11,12 @@
         <div class="flex-1">
             <label for="startDate" class="block text-sm font-medium ">Start Date</label>
             <input id="startDate" type="date" [(ngModel)]="filters.startDate"
-                class="block w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 sm:text-sm" />
+                class="block w-full px-3 py-2 border-custom  sm:text-sm" />
         </div>
         <div class="flex-1">
             <label for="endDate" class="block text-sm font-medium ">End Date</label>
             <input id="endDate" type="date" [(ngModel)]="filters.endDate"
-                class="block w-full px-3 py-2 border rounded-md focus:ring-green-500 focus:border-green-500 sm:text-sm" />
+                class="block w-full px-3 py-2 border-custom  sm:text-sm" />
         </div>
         <button (click)="applyFilters()"
             class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
