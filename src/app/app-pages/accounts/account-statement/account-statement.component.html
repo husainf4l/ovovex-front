@@ -18,10 +18,9 @@
             <input id="endDate" type="date" [(ngModel)]="filters.endDate"
                 class="block w-full px-3 py-2 border-custom  sm:text-sm" />
         </div>
-        <button (click)="applyFilters()"
-            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-            Apply Filters
-        </button>
+        <app-button [buttonText]="'Apply Filters'"  (click)="applyFilters()">
+            
+        </app-button>
     </div>
 </div>
 
@@ -41,7 +40,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="border-b bg-yellow-50" *ngIf="openingBalance != 0">
+            <tr class="border-b bg-yellow-500" *ngIf="openingBalance != 0">
                 <td class="px-4 py-2 font-semibold ">Cycle Balance</td>
                 <td class="px-4 py-2">-</td>
                 <td class="px-4 py-2">-</td>
@@ -80,10 +79,8 @@
 </div>
 
 <div class="text-right mt-4">
-    <button (click)="printAccountStatement()"
-        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-        Print Statement
-    </button>
+    <app-button [buttonText]="'print'"  (click)="printAccountStatement()">
+    </app-button>
 </div>
 
 <!-- Pagination Controls -->

@@ -216,6 +216,18 @@ export const routes: Routes = [
             'View your account statements with Ovovex to streamline your accounting process.',
         },
       },
+      {
+        path: 'products/list',
+        loadComponent: () =>
+          import('./app-pages/product-list/product-list.component').then(
+            (m) => m.ProductListComponent
+          ),
+        data: {
+          title: 'Account Statement - Ovovex',
+          description:
+            'View your account statements with Ovovex to streamline your accounting process.',
+        },
+      },
     ],
   },
   {

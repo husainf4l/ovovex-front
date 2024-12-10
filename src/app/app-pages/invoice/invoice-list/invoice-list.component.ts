@@ -1,47 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { InvoiceService } from '../../../services/invoice.service';
 import { TableComponent } from '../../../components/shared/table/table.component';
 import { SearchInputComponent } from '../../../components/shared/search-input/search-input.component';
+import { CommonModule } from '@angular/common';
+import { Invoice, Customer } from '../../../models/interfaces.model'; // Import your interfaces
 
 @Component({
   selector: 'app-invoice-list',
   templateUrl: './invoice-list.component.html',
+  styleUrls: ['./invoice-list.component.css'],
   imports: [TableComponent, SearchInputComponent, CommonModule],
 })
 export class InvoiceListComponent implements OnInit {
-  accounts = [
-    { id: '1', name: 'Account A' },
-    { id: '2', name: 'Account B' },
-    { id: '3', name: 'Account C' },
+  invoices: Invoice[] = [];
+  filteredInvoices: Invoice[] = [];
+  accounts: Customer[] = []; // Define Customer type
+  columns: { label: string; key: string }[] = [
+    { label: 'Invoice Number', key: 'invoiceNumber' },
+    { label: 'Client Name', key: 'customerName' },
+    { label: 'Total Amount', key: 'total' },
+    { label: 'Date', key: 'date' },
   ];
 
-  invoices = [
-    { invoiceNumber: 'INV001', clientName: 'John Doe', totalAmount: 500, date: '2024-12-01', accountId: '1', id: '12345' },
-    { invoiceNumber: 'INV002', clientName: 'Jane Smith', totalAmount: 300, date: '2024-12-02', accountId: '2', id: '12346' },
-    { invoiceNumber: 'INV003', clientName: 'Sam Johnson', totalAmount: 450, date: '2024-12-03', accountId: '3', id: '12347' },
-  ];
-
-  filteredInvoices = [...this.invoices];
-
-  constructor(private router: Router
-  ) { }
+  constructor(private router: Router, private invoiceService: InvoiceService) {}
 
   ngOnInit() {
-    // Initialize filteredInvoices to show all invoices initially
-    this.filteredInvoices = [...this.invoices];
+    this.invoiceService.getInvoicesDetails().subscribe((data: Invoice[]) => {
+      // Add a new property called 'customerName' to each invoice
+      this.invoices = data.map((invoice) => ({
+        ...invoice,
+        customerName: invoice.customer ? invoice.customer.name : 'Unknown', // Add customer name to the invoice object
+      }));
+
+      this.filteredInvoices = [...this.invoices]; // Initialize filteredInvoices with the invoices
+      this.accounts = data.map((invoice) => invoice.customer); // Extract customer from each invoice
+    });
   }
 
-  onAccountSelected(account: any) {
+  onAccountSelected(account: Customer) {
     // Filter invoices based on the selected account
     if (account) {
-      this.filteredInvoices = this.invoices.filter((invoice) => invoice.accountId === account.id);
+      this.filteredInvoices = this.invoices.filter(
+        (invoice) => invoice.customer.id === account.id
+      );
     } else {
       this.filteredInvoices = [...this.invoices]; // Show all invoices if no account is selected
     }
   }
 
-  onInvoiceClicked(invoice: any) {
-    this.router.navigate(['/invoice-details', invoice.id]);
+  onInvoiceClicked(invoice: Invoice) {
+    this.router.navigate(['/app/invoice/invoice-details', invoice.id]);
   }
 }

@@ -4,16 +4,18 @@
     <app-search-input [items]="accounts" [displayKey]="'name'" [label]="'Select Account'"
         placeholder="Search accounts..." (selected)="onAccountSelected($event)">
     </app-search-input>
+  
+    <!-- Invoice Table -->
+<!-- invoice-list.component.html -->
 
-
-    <div class="mt-5">
-        <app-data-table [columns]="[
-        { label: 'Invoice Number', key: 'invoiceNumber' },
-        { label: 'Client Name', key: 'clientName' },
-        { label: 'Total Amount', key: 'totalAmount' },
-        { label: 'Date', key: 'date' }
-      ]" [data]="filteredInvoices" (rowClicked)="onInvoiceClicked($event)">
-        </app-data-table>
-    </div>
-
-</div>
+<div class="mt-5">
+    <app-data-table
+      [columns]="columns"
+      [data]="filteredInvoices"
+      (rowClicked)="onInvoiceClicked($event)">
+    </app-data-table>
+  </div>
+  
+  
+  </div>
+  

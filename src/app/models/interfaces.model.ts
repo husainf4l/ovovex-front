@@ -97,3 +97,41 @@ export interface Cheque {
   amount: number;
   date: string;
 }
+
+export interface InvoiceData {
+  products: any[];
+  clients: any[];
+  accountManagers: any[];
+  invoiceNumber: number;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  accountId: string;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  createdAt: string;
+}
+
+// Interface for the Invoice
+export interface Invoice {
+  id: string;
+  invoiceNumber: number;
+  customerId: string;
+  customerName?: string; // Optional customerName property
+
+  accountManagerId: string | null;
+  date: string;
+  total: number;
+  taxType: string;
+  taxAmount: number;
+  grandTotal: number;
+  paymentMode: string;
+  vendorName: string | null;
+  createdAt: string;
+  updatedAt: string;
+  qrCode: string | null;
+  customer: Customer; // The customer object is nested inside the invoice object
+}

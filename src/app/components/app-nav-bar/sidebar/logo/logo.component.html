@@ -1,3 +1,10 @@
 <a routerLink="/" class="flex items-center justify-center">
-    <img src="assets/logo/ovovex-logo.webp" class="h-12" alt="Vovovex Logo" />
-</a>
+  <img
+    [src]="
+      themeService.isDarkMode
+        ? 'assets/logo/ovovex-logo-dark.webp'
+        : 'assets/logo/ovovex-logo.webp'
+    "
+    alt="ovovex logo"
+    class="h-12"
+/></a>

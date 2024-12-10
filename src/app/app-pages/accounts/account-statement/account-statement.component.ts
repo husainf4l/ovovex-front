@@ -5,12 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../../services/account.service';
 import { SearchInputComponent } from "../../../components/shared/search-input/search-input.component";
 import { ChartOfAccountsService } from '../../../services/chart-of-accounts.service';
+import { ButtonComponent } from "../../../components/shared/button/button.component";
 
 @Component({
   selector: 'app-account-statement',
   templateUrl: './account-statement.component.html',
   styleUrls: ['./account-statement.component.css'],
-  imports: [CommonModule, FormsModule, SearchInputComponent],
+  imports: [CommonModule, FormsModule, SearchInputComponent, ButtonComponent],
 })
 export class AccountStatementComponent implements OnInit {
   accountId: string | null = null;
