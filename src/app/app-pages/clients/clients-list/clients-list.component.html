@@ -1,0 +1,6 @@
+<h1>Employees List</h1>
+
+<div class="mt-5">
+    <app-data-table [columns]="columns" [data]="clientsList" (rowClicked)="onInvoiceClicked($event)">
+    </app-data-table>
+</div>

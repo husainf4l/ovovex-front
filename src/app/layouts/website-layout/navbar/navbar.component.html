@@ -1,89 +1,35 @@
 <nav class="">
-  <div
-    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-1"
-  >
-    <!-- Logo -->
+  <div class=" px-2 max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto py-1">
 
-    <!-- Hamburger Button -->
-    <button
-      (click)="toggleMenu()"
-      type="button"
-      class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:0 focus:outline-none focus:ring-2"
-    >
-      <span class="sr-only">Open main menu</span>
-      <svg
-        class="w-5 h-5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 17 14"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 1h15M1 7h15M1 13h15"
-        />
-      </svg>
-    </button>
+
 
     <!-- Navbar Links -->
     <div class="flex items-center gap-10">
       <a routerLink="/" class="flex items-center justify-center pt-1">
-        <img
-          [src]="
+        <img [src]="
             themeService.isDarkMode
               ? 'assets/logo/ovovex-logo-dark.webp'
               : 'assets/logo/ovovex-logo.webp'
-          "
-          alt="ovovex logo"
-          class="h-12"
-      /></a>
+          " alt="ovovex logo" class="h-12" /></a>
 
-      <div
-        [ngClass]="{ hidden: !isMenuOpen }"
-        class="w-full md:block md:w-auto"
-        id="navbar-dropdown"
-      >
+      <div [ngClass]="{ hidden: !isMenuOpen }" class="w-full md:block md:w-auto" id="navbar-dropdown">
         <ul
-          class="flex flex-col p-4 md:p-0 mt-4 border font-light rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:"
-        >
+          class="flex flex-col p-4 md:p-0 mt-4 border font-light rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:">
           <li>
-            <a
-              href="#"
-              class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0"
-              >Home</a
-            >
+            <a href="#" class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0">Home</a>
           </li>
 
           <li>
-            <a
-              href="#"
-              class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0"
-              >Pricing</a
-            >
+            <a href="#" class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0">Pricing</a>
           </li>
           <li>
-            <a
-              href="#"
-              class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0"
-              >Features</a
-            >
+            <a href="#" class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0">Features</a>
           </li>
           <li>
-            <a
-              href="#"
-              class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0"
-              >About us</a
-            >
+            <a href="#" class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0">About us</a>
           </li>
           <li>
-            <a
-              href="#"
-              class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0"
-              >Contact us</a
-            >
+            <a href="#" class="font-light text-sm hover:0 md:hover:bg-transparent md:border-0 md:p-0">Contact us</a>
           </li>
         </ul>
       </div>
@@ -94,16 +40,23 @@
         <a (click)="toggleTheme()">
           <mat-icon class="text-sm">{{
             themeService.isDarkMode ? "sunny" : "nights_stay"
-          }}</mat-icon>
+            }}</mat-icon>
         </a>
       </div>
       <a href="/login">
-        <button
-          class="font-light text-sm bg-primary text-white px-3 py-1 rounded-md"
-        >
+        <button class="font-light text-sm bg-primary text-white px-3 py-1 rounded-md">
           Login
         </button>
       </a>
+
+      <button (click)="toggleMenu()" type="button"
+        class="inline-flex items-center w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:0 focus:outline-none focus:ring-2">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+        </svg>
+      </button>
     </div>
   </div>
 </nav>
