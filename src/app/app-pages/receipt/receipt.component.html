@@ -40,7 +40,7 @@
 <!-- Cheque Details -->
 <div *ngIf="paymentMode === 'CHEQUE'" class="mt-4">
   <h2 class="text-lg font-semibold mb-2">Cheque Details</h2>
-  <button (click)="addCheque()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+  <button (click)="addCheque()" class="mb-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary">
     Add Cheque
   </button>
   <div *ngFor="let cheque of cheques; let i = index" class="flex items-center gap-4 mb-2 border-b pb-2">
@@ -76,11 +76,10 @@
 
 <!-- Action Buttons -->
 <div class="m-6 flex justify-end gap-4">
-  <app-button  [buttonText]="'Print'" (click)="printReceipt()">
+  <app-button [buttonText]="'Print'" (click)="printReceipt()">
     Print
   </app-button>
-  <app-button  [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveReceipt()">
+  <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveReceipt()">
     Save
   </app-button>
 </div>
-

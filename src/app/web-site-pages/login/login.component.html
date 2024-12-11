@@ -3,28 +3,28 @@
     <div class="hidden lg:flex w-1/2 bg-gradient-to-br  p-12 items-center justify-center">
         <div class="max-w-lg space-y-8">
             <h1 class="text-5xl font-bold leading-snug ">
-                Welcome to <span class="text-blue-600">ovovex</span>
+                Welcome to <span class="text-primary">ovovex</span>
             </h1>
             <p class="text-lg leading-relaxed ">
                 Transforming your operations, enhancing your efficiency, and driving innovation with Ovovex.
             </p>
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
                     <span>Cutting-edge workflow solutions</span>
                 </li>
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
                     <span>Comprehensive data insights</span>
                 </li>
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -43,7 +43,7 @@
                     <label for="userName" class="block text-sm font-medium ">User Name</label>
                     <input id="userName" formControlName="userName" type="text" autocomplete="username"
                         aria-label="User Name" aria-required="true"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out"
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out"
                         placeholder="Enter your User Name" />
                     <div *ngIf="loginForm.get('userName')?.touched && loginForm.get('userName')?.invalid"
                         class="text-red-500 text-sm">
@@ -57,7 +57,7 @@
                     <div class="relative">
                         <input id="password" formControlName="password" [type]="showPassword ? 'text' : 'password'"
                             autocomplete="current-password" aria-label="Password" aria-required="true"
-                            class="block w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out"
+                            class="block w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out"
                             placeholder="Enter your password" />
                         <button type="button" (click)="togglePassword()"
                             class="absolute inset-y-0 right-4 flex items-center  hover: focus:outline-none"
@@ -72,17 +72,17 @@
 
 
                 <button type="submit"
-                    class="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
+                    class="w-full py-3 px-6 bg-primary text-white font-bold rounded-lg hover:bg-primary transition duration-300 ease-in-out">
                     Sign In
                 </button>
                 <div *ngIf="error" class="text-red-500 text-sm text-center">{{ error }}</div>
             </form>
             <div class="text-center">
-                <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Forgot your password?</a>
+                <a href="#" class="text-sm font-medium text-primary hover:underline">Forgot your password?</a>
             </div>
             <div class="text-center">
                 <p class="text-sm ">Don't have an account? <a routerLink="/signup"
-                        class="font-medium text-blue-600 hover:underline">Sign Up</a></p>
+                        class="font-medium text-primary hover:underline">Sign Up</a></p>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <div class="hidden lg:flex w-1/2 bg-gradient-to-br   p-12 items-center justify-center">
         <div class="max-w-lg space-y-8">
             <h1 class="text-5xl font-bold leading-snug ">
-                Welcome to <span class="text-blue-600">ovovex</span>
+                Welcome to <span class="text-primary">ovovex</span>
             </h1>
 
             <p class="text-lg leading-relaxed ">
@@ -12,21 +12,21 @@
             </p>
             <ul class="space-y-2">
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
                     <span>Cutting-edge workflow solutions</span>
                 </li>
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
                     <span>Comprehensive data insights</span>
                 </li>
                 <li class="flex items-center space-x-2">
-                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -46,7 +46,7 @@
                 <div>
                     <label for="name" class="block text-sm font-medium ">Name</label>
                     <input id="name" formControlName="name" type="text" placeholder="Enter your full name"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('name') }}
@@ -56,7 +56,7 @@
                 <div>
                     <label for="userName" class="block text-sm font-medium ">userName</label>
                     <input id="userName" formControlName="userName" type="text" placeholder="Enter userName"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('userName')?.invalid && signupForm.get('userName')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('userName') }}
@@ -65,7 +65,7 @@
                 <div>
                     <label for="email" class="block text-sm font-medium ">email</label>
                     <input id="email" formControlName="email" type="text" placeholder="Enter email"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('email') }}
@@ -74,7 +74,7 @@
                 <div>
                     <label for="companyId" class="block text-sm font-medium ">companyId</label>
                     <input id="companyId" formControlName="companyId" type="text" placeholder="companyId"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('companyId')?.invalid && signupForm.get('companyId')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('companyId') }}
@@ -86,7 +86,7 @@
                     <label for="phoneNumber" class="block text-sm font-medium ">Mobile Number</label>
                     <input id="phoneNumber" formControlName="phoneNumber" type="text"
                         placeholder="Enter your mobile number"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('phoneNumber')?.invalid && signupForm.get('phoneNumber')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('phoneNumber') }}
@@ -97,7 +97,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium ">Password</label>
                     <input id="password" formControlName="password" type="password" placeholder="Enter your password"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                     <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
                         class="text-red-500 text-sm">
                         {{ getErrorMessage('password') }}
@@ -108,7 +108,7 @@
                 <div>
                     <label for="role" class="block text-sm font-medium ">Role</label>
                     <select id="role" formControlName="role"
-                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition duration-300 ease-in-out">
+                        class="block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-2 focus:ring-primary focus:border-primary transition duration-300 ease-in-out">
                         <option value="USER">USER</option>
                         <option value="ADMIN">Admin</option>
                         <option value="SUPERADMIN">Super Admin</option>
@@ -119,7 +119,7 @@
                 <!-- Submit Button -->
                 <div>
                     <button type="submit"
-                        class="w-full py-3 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out">
+                        class="w-full py-3 px-6 bg-primary text-white font-bold rounded-lg hover:bg-primary transition duration-300 ease-in-out">
                         Sign Up
                     </button>
                 </div>

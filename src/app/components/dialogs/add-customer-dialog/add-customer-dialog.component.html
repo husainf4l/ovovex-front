@@ -6,28 +6,28 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium " for="name">Customer Name</label>
                 <input id="name" type="text" [(ngModel)]="newCustomer.name" name="name" required
-                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
+                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-primary" />
             </div>
 
             <!-- Email -->
             <div class="mb-4">
                 <label class="block text-sm font-medium " for="email">Email (Optional)</label>
                 <input id="email" type="email" [(ngModel)]="newCustomer.email" name="email"
-                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
+                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-primary" />
             </div>
 
             <!-- Phone -->
             <div class="mb-4">
                 <label class="block text-sm font-medium " for="phone">Phone (Optional)</label>
                 <input id="phone" type="text" [(ngModel)]="newCustomer.phone" name="phone"
-                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
+                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-primary" />
             </div>
 
             <!-- Address -->
             <div class="mb-4">
                 <label class="block text-sm font-medium " for="address">Address (Optional)</label>
                 <input id="address" type="text" [(ngModel)]="newCustomer.address" name="address"
-                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500" />
+                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-primary" />
             </div>
 
             <!-- Error Message -->
@@ -35,7 +35,7 @@
 
             <!-- Loading Spinner -->
             <div *ngIf="isLoading" class="text-center mb-4">
-                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
+                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-primary"></div>
             </div>
 
             <!-- Actions -->
@@ -45,7 +45,7 @@
                     Cancel
                 </button>
                 <button type="submit"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary disabled:opacity-50"
                     [disabled]="isLoading">
                     Add
                 </button>

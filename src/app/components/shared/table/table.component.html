@@ -5,22 +5,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let row of data"
-      (click)="onRowClick(row)"
-      class="cursor-pointer"
-    >
+    <tr *ngFor="let row of data" (click)="onRowClick(row)" class="cursor-pointer">
       <td *ngFor="let col of columns" class="px-4 py-3">
         <ng-container *ngIf="col.key !== 'actions'; else actionsCell">
           {{ row[col.key] }}
         </ng-container>
         <ng-template #actionsCell>
-          <button
-            *ngFor="let action of row[col.key]"
-            (click)="handleAction(action, row)"
-            class="px-2 py-1 rounded text-white"
-            [ngClass]="action.style || 'bg-blue-600 hover:bg-blue-700'"
-          >
+          <button *ngFor="let action of row[col.key]" (click)="handleAction(action, row)"
+            class="px-2 py-1 rounded text-white" [ngClass]="action.style || 'bg-primary hover:bg-primary'">
             {{ action.label }}
           </button>
         </ng-template>
