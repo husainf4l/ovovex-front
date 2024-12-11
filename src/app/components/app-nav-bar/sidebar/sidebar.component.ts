@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { LogoComponent } from "./logo/logo.component";
-import { MenuItemComponent } from "../menu-item/menu-item.component";
+import { LogoComponent } from './logo/logo.component';
+import { MenuItemComponent } from '../menu-item/menu-item.component';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -9,7 +9,7 @@ import { MatIcon } from '@angular/material/icon';
   standalone: true,
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
-  imports: [CommonModule, LogoComponent, MenuItemComponent]
+  imports: [CommonModule, LogoComponent, MenuItemComponent],
 })
 export class SidebarComponent {
   @Input() isOpen = false;
@@ -18,8 +18,6 @@ export class SidebarComponent {
   closeSidebar(): void {
     this.toggleSidebar.emit();
   }
-
-
 
   menuItems = [
     {
@@ -45,7 +43,6 @@ export class SidebarComponent {
           label: 'receipt List',
           routerLink: 'receipt/receipt-list',
         },
-
       ],
     },
 
@@ -289,6 +286,11 @@ export class SidebarComponent {
           routerLink: 'settings/general',
         },
         {
+          icon: 'build',
+          label: 'Company Settings',
+          routerLink: 'settings/company-settings',
+        },
+        {
           icon: 'security',
           label: 'User Permissions',
           routerLink: 'settings/permissions',
@@ -409,13 +411,5 @@ export class SidebarComponent {
       isExpandable: false,
     },
   ];
-
-
-
-
-
-
-
-
 }
 //receipt
