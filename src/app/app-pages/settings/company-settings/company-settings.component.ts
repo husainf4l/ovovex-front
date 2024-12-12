@@ -32,12 +32,14 @@ export class CompanySettingsComponent implements OnInit {
       address: [''], // Optional field
       taxNumber: [''], // Optional field
       eInvoiceClientId: [''], // Optional field
-      eInvoiceSecretKey: [''],// Optional but must be a valid email if provided
+      eInvoiceSecretKey: [''], // Optional but must be a valid email if provided
       whatsAppKey: [''], // Optional field
       phone: [''], // Optional field
       email: [''], // Optional field
       website: [''], // Optional field
       logoImage: [''], // Optional field
+      eInvoiceLink: [''], // Optional field
+      legalId: [''],
     });
   }
 
@@ -61,6 +63,8 @@ export class CompanySettingsComponent implements OnInit {
             email: data.email || '',
             website: data.website || '',
             logoImage: data.logoImage || '',
+            eInvoiceLink: data.eInvoiceLink || '',
+            legalId: data.legalId || '',
           });
         }
         this.isLoading = false;

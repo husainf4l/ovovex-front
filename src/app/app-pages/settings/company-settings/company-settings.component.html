@@ -9,19 +9,43 @@
           <label for="name" class="block text-sm font-medium text-gray-700">
             Company Name
           </label>
-          <input type="text" id="name" formControlName="name"
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter company name" />
+            placeholder="Enter company name"
+          />
         </div>
 
         <!-- Legal Name -->
         <div>
-          <label for="legalName" class="block text-sm font-medium text-gray-700">
+          <label
+            for="legalName"
+            class="block text-sm font-medium text-gray-700"
+          >
             Legal Name
           </label>
-          <input type="text" id="legalName" formControlName="legalName"
+          <input
+            type="text"
+            id="legalName"
+            formControlName="legalName"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter legal name" />
+            placeholder="Enter legal name"
+          />
+        </div>
+
+        <div>
+          <label for="legalId" class="block text-sm font-medium text-gray-700">
+            Legal Id
+          </label>
+          <input
+            type="text"
+            id="legalId"
+            formControlName="legalId"
+            class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Enter legal Id"
+          />
         </div>
 
         <!-- Address -->
@@ -29,49 +53,96 @@
           <label for="address" class="block text-sm font-medium text-gray-700">
             Address
           </label>
-          <textarea id="address" formControlName="address" rows="2"
+          <textarea
+            id="address"
+            formControlName="address"
+            rows="2"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter address"></textarea>
+            placeholder="Enter address"
+          ></textarea>
         </div>
 
         <!-- Tax Number -->
         <div>
-          <label for="taxNumber" class="block text-sm font-medium text-gray-700">
+          <label
+            for="taxNumber"
+            class="block text-sm font-medium text-gray-700"
+          >
             Tax Number
           </label>
-          <input type="text" id="taxNumber" formControlName="taxNumber"
+          <input
+            type="text"
+            id="taxNumber"
+            formControlName="taxNumber"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter tax number" />
+            placeholder="Enter tax number"
+          />
         </div>
 
         <!-- Invoice Client ID -->
         <div>
-          <label for="eInvoiceClientId" class="block text-sm font-medium text-gray-700">
+          <label
+            for="eInvoiceClientId"
+            class="block text-sm font-medium text-gray-700"
+          >
             E-Invoice Client ID
           </label>
-          <input type="text" id="eInvoiceClientId" formControlName="eInvoiceClientId"
+          <input
+            type="text"
+            id="eInvoiceClientId"
+            formControlName="eInvoiceClientId"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter invoice client ID" />
+            placeholder="Enter invoice client ID"
+          />
         </div>
 
         <!-- Invoice Secret Key -->
         <div>
-          <label for="eInvoiceSecretKey" class="block text-sm font-medium text-gray-700">
+          <label
+            for="eInvoiceSecretKey"
+            class="block text-sm font-medium text-gray-700"
+          >
             E-Invoice Secret Key
           </label>
-          <input type="email" id="eInvoiceSecretKey" formControlName="eInvoiceSecretKey"
+          <input
+            type="email"
+            id="eInvoiceSecretKey"
+            formControlName="eInvoiceSecretKey"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter invoice secret key" />
+            placeholder="Enter invoice secret key"
+          />
+        </div>
+        <div>
+          <label
+            for="eInvoiceLink"
+            class="block text-sm font-medium text-gray-700"
+          >
+            E-Invoice Link
+          </label>
+          <input
+            type="text"
+            id="eInvoiceLink"
+            formControlName="eInvoiceLink"
+            class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Enter  eInvoiceLink"
+          />
         </div>
 
         <!-- WhatsApp Key -->
         <div>
-          <label for="whatsAppKey" class="block text-sm font-medium text-gray-700">
+          <label
+            for="whatsAppKey"
+            class="block text-sm font-medium text-gray-700"
+          >
             WhatsApp Key
           </label>
-          <input type="text" id="whatsAppKey" formControlName="whatsAppKey"
+          <input
+            type="text"
+            id="whatsAppKey"
+            formControlName="whatsAppKey"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter WhatsApp key" />
+            placeholder="Enter WhatsApp key"
+          />
         </div>
 
         <!-- Contact Information Grid -->
@@ -81,9 +152,13 @@
             <label for="phone" class="block text-sm font-medium text-gray-700">
               Phone Number
             </label>
-            <input type="tel" id="phone" formControlName="phone"
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
               class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Enter phone number" />
+              placeholder="Enter phone number"
+            />
           </div>
 
           <!-- Email -->
@@ -91,9 +166,13 @@
             <label for="email" class="block text-sm font-medium text-gray-700">
               Email
             </label>
-            <input type="email" id="email" formControlName="email"
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
               class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Enter email address" />
+              placeholder="Enter email address"
+            />
           </div>
         </div>
 
@@ -102,31 +181,48 @@
           <label for="website" class="block text-sm font-medium text-gray-700">
             Website
           </label>
-          <input type="url" id="website" formControlName="website"
+          <input
+            type="url"
+            id="website"
+            formControlName="website"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Enter website URL" />
+            placeholder="Enter website URL"
+          />
         </div>
 
         <!-- Logo Image -->
         <div>
-          <label for="logoImage" class="block text-sm font-medium text-gray-700">
+          <label
+            for="logoImage"
+            class="block text-sm font-medium text-gray-700"
+          >
             Logo Image URL
           </label>
           <div>
-            <input type="url" id="logoImage" formControlName="logoImage"
+            <input
+              type="url"
+              id="logoImage"
+              formControlName="logoImage"
               class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Enter logo image URL" />
+              placeholder="Enter logo image URL"
+            />
 
             <!-- Optional Image Preview -->
-            <img *ngIf="companyForm.get('logoImage')?.value" [src]="companyForm.get('logoImage')?.value"
-              alt="Logo Preview" class="mt-4 max-w-full h-auto border rounded-md" />
+            <img
+              *ngIf="companyForm.get('logoImage')?.value"
+              [src]="companyForm.get('logoImage')?.value"
+              alt="Logo Preview"
+              class="mt-4 max-w-full h-auto border rounded-md"
+            />
           </div>
         </div>
 
         <!-- Submit Button -->
         <div>
-          <button type="submit"
-            class="w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          <button
+            type="submit"
+            class="w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
             Save Company Settings
           </button>
         </div>

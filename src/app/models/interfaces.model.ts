@@ -103,6 +103,7 @@ export interface InvoiceData {
   clients: any[];
   accountManagers: any[];
   number: number;
+  cashAccounts: any[];
 }
 
 export interface Customer {
