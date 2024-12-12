@@ -10,10 +10,10 @@
             <strong>Customer Name:</strong> {{ invoiceDetails.customer?.name }}
         </p>
         <p class="">
-            <strong>Invoice Number:</strong> {{ invoiceDetails.invoiceNumber }}
+            <strong>Invoice Number:</strong> {{ invoiceDetails.number }}
         </p>
         <p class="">
-            <strong>Total Amount:</strong> {{ invoiceDetails.grandTotal | currency }}
+            <strong>Total Amount:</strong> {{ invoiceDetails.taxInclusiveAmount | currency }}
         </p>
     </div>
 

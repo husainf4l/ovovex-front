@@ -17,13 +17,13 @@ export class InvoiceListComponent implements OnInit {
   filteredInvoices: Invoice[] = [];
   accounts: Customer[] = []; // Define Customer type
   columns: { label: string; key: string }[] = [
-    { label: 'Invoice Number', key: 'invoiceNumber' },
+    { label: 'Invoice Number', key: 'number' },
     { label: 'Client Name', key: 'customerName' },
-    { label: 'Total Amount', key: 'total' },
-    { label: 'Date', key: 'date' },
+    { label: 'Total Amount', key: 'taxInclusiveAmount' },
+    { label: 'Date', key: 'issueDate' },
   ];
 
-  constructor(private router: Router, private invoiceService: InvoiceService) {}
+  constructor(private router: Router, private invoiceService: InvoiceService) { }
 
   ngOnInit() {
     this.invoiceService.getInvoicesDetails().subscribe((data: Invoice[]) => {

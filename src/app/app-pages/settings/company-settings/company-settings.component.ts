@@ -28,15 +28,16 @@ export class CompanySettingsComponent implements OnInit {
   ) {
     this.companyForm = this.fb.group({
       name: [''], // Optional field
-      einvoiceSecret: [''], // Optional field
-      einvoiceKey: [''], // Optional field
-      taxNumber: [''], // Optional field
+      legalName: [''], // Optional field
       address: [''], // Optional field
-      email: ['', [Validators.email]], // Optional but must be a valid email if provided
-      phone: [''], // Optional field
+      taxNumber: [''], // Optional field
+      eInvoiceClientId: [''], // Optional field
+      eInvoiceSecretKey: [''],// Optional but must be a valid email if provided
       whatsAppKey: [''], // Optional field
+      phone: [''], // Optional field
+      email: [''], // Optional field
+      website: [''], // Optional field
       logoImage: [''], // Optional field
-
     });
   }
 
@@ -50,14 +51,16 @@ export class CompanySettingsComponent implements OnInit {
         if (data) {
           this.companyForm.patchValue({
             name: data.name || '',
-            einvoiceSecret: data.einvoiceSecret || '',
-            einvoiceKey: data.einvoiceKey || '',
-            taxNumber: data.taxNumber || '',
+            legalName: data.legalName || '',
             address: data.address || '',
-            logoImage: data.logoImage || '',
-            email: data.email || '',
-            phone: data.phone || '',
+            taxNumber: data.taxNumber || '',
+            eInvoiceClientId: data.eInvoiceClientId || '',
+            eInvoiceSecretKey: data.eInvoiceSecretKey || '',
             whatsAppKey: data.whatsAppKey || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            website: data.website || '',
+            logoImage: data.logoImage || '',
           });
         }
         this.isLoading = false;

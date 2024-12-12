@@ -1,30 +1,35 @@
 <div id="printableInvoice">
-    <div class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6 ">
+    <div class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6">
         <!-- Header -->
         <div class="invoice-header flex justify-between items-center mb-4">
             <div class="logo-title flex items-center">
                 <img [src]="companyData.logoImage" alt="Company Logo" class="w-36  mr-4">
             </div>
-            <qrcode *ngIf="qrCodeUrl" [qrdata]="qrCodeUrl" [width]="100" class="border border-gray-200">
-            </qrcode>
+
+            <p class="text-3xl  font-bold   text-right">INVOICE</p>
+
         </div>
         <hr class="my-4">
 
 
-        <!-- Customer and Invoice Info -->
         <div class="invoice-info grid grid-cols-3 gap-4 text-sm ">
             <div>
 
                 <p><strong>Customer:</strong> {{ invoiceDetails?.customer?.name }}</p>
-                <p><strong>Account Manager:</strong> {{ invoiceDetails?.accountManager?.displayName }}</p>
-                <p><strong>Payment Mode:</strong> {{ invoiceDetails?.paymentMode }}</p>
+                <p><strong>Account Manager:</strong> {{ invoiceDetails?.employee?.name }}</p>
+                <p><strong>Payment Mode:</strong> {{ invoiceDetails?.InvoiceTypeCodeName == "011"? "CASH INVOICE" :
+                    "RECEIVABLE INVOICE" }}
+                </p>
             </div>
             <div>
-                <p><strong>Invoice Date:</strong> {{ invoiceDetails?.date | date }}</p>
-                <p><strong>Invoice #:</strong> {{ invoiceDetails?.invoiceNumber }}</p>
+                <p><strong>Invoice Date:</strong> {{ invoiceDetails?.issueDate | date }}</p>
+                <p><strong>Invoice #:</strong> {{ invoiceDetails?.number }}</p>
                 <p><strong>Tax Number:</strong> {{ companyData.taxNumber }}</p>
             </div>
-            <p class="text-3xl  font-bold   text-right">INVOICE</p>
+            <div class=" justify-end flex">
+                <qrcode *ngIf="qrCodeUrl" [qrdata]="qrCodeUrl" [width]="60" class="border border-gray-200">
+                </qrcode>
+            </div>
 
         </div>
         <hr class="my-4">
@@ -33,29 +38,42 @@
         <table class="invoice-table w-full border-collapse border border-gray-200 text-sm mb-4">
             <thead class="0">
                 <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Barcode</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Product Name</th>
                     <th class="border border-gray-300 px-4 py-2 text-center">Quantity</th>
                     <th class="border border-gray-300 px-4 py-2 text-center">Unit Price</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Tax Percent</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">discount</th>
+
+
                     <th class="border border-gray-300 px-4 py-2 text-center">Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of invoiceDetails?.invoiceItems">
-                    <td class="border border-gray-300 px-4 py-2">{{ product.product?.barcode }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ product.product?.name }}</td>
+                <tr *ngFor="let product of invoiceDetails?.items">
+                    <td class="border border-gray-300 px-4 py-2">{{ product.name }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">{{ product.quantity }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">{{ product.unitPrice | currency }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">{{ product.totalAmount | currency }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ product.taxPercent }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ product.discountAmount }}</td>
+
+
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ product.lineExtensionAmount | currency
+                        }}</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Totals -->
-        <div class="totals text-sm">
-            <p><strong>Subtotal:</strong> {{ invoiceDetails?.total | currency }}</p>
-            <p><strong>VAT ({{ invoiceDetails?.taxRate }}%):</strong> {{ invoiceDetails?.taxAmount | currency }}</p>
-            <p class="font-bold text-lg"><strong>Grand Total:</strong> {{ invoiceDetails?.grandTotal | currency }}</p>
+        <div class="totals text-sm  justify-end items-end flex flex-col p-10">
+            <div class="flex flex-col">
+                <p><strong>Tax Exclusive Amount:</strong> {{ invoiceDetails?.taxExclusiveAmount | currency }}</p>
+                <p><strong>Tax Amount ({{ invoiceDetails?.taxRate }}%):</strong> {{ invoiceDetails?.taxInclusiveAmount -
+                    invoiceDetails?.taxExclusiveAmount | currency }}</p>
+                <p><strong>Tax Inclusive Amount:</strong> {{
+                    invoiceDetails?.taxInclusiveAmount |
+                    currency
+                    }}</p>
+            </div>
         </div>
 
         <!-- Footer -->

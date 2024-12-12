@@ -48,6 +48,25 @@ export class SidebarComponent {
 
     {
       icon: 'receipt',
+      label: 'Journal',
+      routerLink: null,
+      isExpandable: true,
+      children: [
+        {
+          icon: 'description',
+          label: 'journal-list',
+          routerLink: 'journal-list',
+        },
+        {
+          icon: 'view_list',
+          label: 'journal-entry',
+          routerLink: 'journal-entry',
+        },
+      ],
+    },
+
+    {
+      icon: 'receipt',
       label: 'Invoices',
       routerLink: null,
       isExpandable: true,

@@ -1,68 +1,80 @@
 <h1 class="text-xl font-semibold  mb-3">Invoice</h1>
 
 <div class="bg-foreground p-4 border-custom  ">
+    <button class=" mt-1 bg-primary text-white px-3 py-1 text-sm rounded" (click)="openAddCustomerDialog()">
+        Add New Customer
+    </button>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class=" ">
+            <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
+                (selected)="selectClient($event)"></app-search-input>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        </div>
 
-    <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
-        (selected)="selectClient($event)"></app-search-input>
-
-
-
-    <app-search-input [items]="accountManagers" [displayKey]="'displayName'" [label]="'Account Manager'"
-        placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
-    </app-search-input>
-
-
-    <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate">
-    </app-date-selector>
+        <app-search-input [items]="accountManagers" [displayKey]="'name'" [label]="'Account Manager'"
+            placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
+        </app-search-input>
 
 
 
 
-</div>
+        <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate">
+        </app-date-selector>
 
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-    <!-- Invoice Number -->
-    <div>
-        <label class="block text-sm font-medium ">Invoice #</label>
-        <input type="text" [(ngModel)]="invoiceNumber" readonly
-            class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed" />
+
+
     </div>
 
-    <!-- Payment Mode -->
-    <app-dropdown label="Payment" [options]="[
-            { value: 'CASH', label: 'Cash' },
-            { value: 'ACCOUNTS_RECEIVABLE', label: 'Accounts Receivable' }
-          ]" [(selectedValue)]="paymentMode"></app-dropdown>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-1">
+        <!-- Invoice Number -->
+        <div>
+            <label class="block text-sm font-medium ">Invoice #</label>
+            <input type="text" [(ngModel)]="number" readonly
+                class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed" />
+        </div>
+
+        <!-- Payment Mode -->
+        <app-dropdown label="Payment" [options]="[
+            { value: '011', label: 'Cash' },
+            { value: '021', label: 'Accounts Receivable' }
+          ]" [(selectedValue)]="InvoiceTypeCodeName"></app-dropdown>
 
 
-    <!-- Tax Section -->
-    <app-dropdown label="Tax" [options]="[
+        <!-- Tax Section -->
+        <app-dropdown label="Tax" [options]="[
               { value: 16, label: '16%' },
               { value: 0, label: '0%' }
             ]" [(selectedValue)]="taxRate" (selectedValueChange)="updateTotals()">
-    </app-dropdown>
+        </app-dropdown>
 
-</div>
+        <app-dropdown *ngIf="InvoiceTypeCodeName == '011' " label="Cash Accounts" [options]="[
+            cashAccounts
+      ]" [(selectedValue)]="taxRate" (selectedValueChange)="updateCashAcountId()">
+        </app-dropdown>
 
 
 
-<div class="mb-3 mt-6">
-    <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
-        [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event) ">
-    </app-search-input>
-</div>
+
+    </div>
+
+
+
+    <div class="mb-3 mt-6">
+        <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
+            [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event) ">
+        </app-search-input>
+    </div>
 
 
 </div>
 
 
 <div class="mt-6 ">
-    <app-data-table  [columns]="[
+    <app-data-table [columns]="[
     { label: 'Barcode', key: 'barcode' },
-    { label: 'Description', key: 'description' },
+    { label: 'name', key: 'name' },
     { label: 'Quantity', key: 'quantity' },
     { label: 'Price', key: 'salesPrice' },
     { label: 'Total', key: 'total' }
@@ -78,20 +90,19 @@
 <!-- Actions -->
 <div class="flex justify-end gap-4">
 
-    <app-button  [buttonText]="'Print'"
-        (click)="printInvoice()"></app-button>
+    <app-button [buttonText]="'Print'" (click)="printInvoice()"></app-button>
 
-    <app-button  [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveInvoice()"></app-button>
+    <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveInvoice()"></app-button>
 </div>
 
 
 
 <app-invoice-print class="hidden" [invoiceData]="{
     customerName: selectedClient?.name,
-    accountManagerName: selectedAccountManager?.displayName,
-    paymentMode: paymentMode,
+    accountManagerName: selectedAccountManager?.name,
+    InvoiceTypeCodeName: InvoiceTypeCodeName,
     date: invoiceDate,
-    invoiceNumber: invoiceNumber,
+    invoiceNumber: number,
     invoiceItems: invoiceProducts,
     subtotal: subtotal,
     vatAmount: vatAmount,

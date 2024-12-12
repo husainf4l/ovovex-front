@@ -1,6 +1,9 @@
 <h1>Employees List</h1>
 
 <div class="mt-5">
+    <button class=" mt-1 bg-primary text-white px-3 py-1 text-sm rounded" (click)="openAddCustomerDialog()">
+        Add New
+    </button>
     <app-data-table [columns]="columns" [data]="clientsList" (rowClicked)="onInvoiceClicked($event)">
     </app-data-table>
 </div>

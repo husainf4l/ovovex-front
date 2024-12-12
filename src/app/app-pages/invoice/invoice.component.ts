@@ -32,7 +32,7 @@ import { ButtonComponent } from "../../components/shared/button/button.component
     DateSelectorComponent,
     TableComponent,
     ButtonComponent
-],
+  ],
 })
 export class InvoiceComponent implements OnInit {
   @ViewChild(InvoicePrintComponent)
@@ -55,16 +55,18 @@ export class InvoiceComponent implements OnInit {
   grandTotal: number = 0;
   taxRate: number = 16;
   bonus: number = 0;
-  paymentMode: string = 'CASH';
+  InvoiceTypeCodeName: string = '011';
   customerName: string = '';
   invoiceDate: string = new Date().toISOString();
-  invoiceNumber: number = 0;
+  number: number = 0;
   userData: any;
+  cashAccounts: any = [{ value: 16, label: '16%' },
+  { value: 0, label: '0%' }]
 
   constructor(
     private dialog: MatDialog,
     private invoiceService: InvoiceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -87,7 +89,7 @@ export class InvoiceComponent implements OnInit {
         this.filteredClients = [...this.clients];
         this.filteredProducts = [...this.products];
         this.filteredAccountManagers = [...this.accountManagers];
-        this.invoiceNumber = data.invoiceNumber;
+        this.number = data.number;
       },
       error: (err) => {
         console.error('Error fetching data:', err);
@@ -121,7 +123,7 @@ export class InvoiceComponent implements OnInit {
     this.invoiceProducts.push({
       id: product.id,
       barcode: product.barcode,
-      description: product.name,
+      name: product.name,
       quantity: 1,
       salesPrice: product.salesPrice,
       total: product.salesPrice,
@@ -143,6 +145,10 @@ export class InvoiceComponent implements OnInit {
     this.updateTotals();
   }
 
+  updateCashAcountId() {
+
+  }
+
   updateTotals(): void {
     this.subtotal = this.invoiceProducts.reduce(
       (sum, product) => sum + product.total,
@@ -152,18 +158,20 @@ export class InvoiceComponent implements OnInit {
     this.grandTotal = this.subtotal + this.vatAmount;
   }
 
+
+
   filterAccountManagers(): void {
     const query = this.accountManagerSearchQuery.toLowerCase().trim();
     this.filteredAccountManagers = this.accountManagers.filter(
       (manager) =>
-        manager.displayName.toLowerCase().includes(query) ||
+        manager.name.toLowerCase().includes(query) ||
         manager.id.includes(query)
     );
   }
 
   selectAccountManager(accountManager: accountManagers): void {
     this.selectedAccountManager = accountManager;
-    this.accountManagerSearchQuery = accountManager.displayName;
+    this.accountManagerSearchQuery = accountManager.name;
     this.filteredAccountManagers = [];
   }
 
@@ -193,9 +201,12 @@ export class InvoiceComponent implements OnInit {
       clientId: this.selectedClient.id,
       clientName: this.selectedClient.name,
       accountManagerId: this.selectedAccountManager?.id,
-      date: this.invoiceDate,
-      invoiceNumber: this.invoiceNumber,
-      invoiceItems: this.invoiceProducts.map((product) => ({
+      issueDate: this.invoiceDate,
+      number: this.number,
+      cashAccountId: "aaaaaa",
+
+      items: this.invoiceProducts.map((product) => ({
+        name: product.name,
         productId: product.id,
         quantity: product.quantity,
         unitPrice: product.salesPrice,
@@ -203,10 +214,12 @@ export class InvoiceComponent implements OnInit {
         discount: 0,
         totalAmount: product.total,
       })),
-      total: this.subtotal,
+
+
+      taxExclusiveAmount: this.subtotal,
       taxAmount: this.vatAmount,
-      grandTotal: this.grandTotal,
-      paymentMode: this.paymentMode,
+      taxInclusiveAmount: this.grandTotal,
+      InvoiceTypeCodeName: this.InvoiceTypeCodeName,
       bonus: this.bonus,
     };
 
@@ -228,3 +241,4 @@ export class InvoiceComponent implements OnInit {
     this.invoicePrintComponent.printInvoice();
   }
 }
+

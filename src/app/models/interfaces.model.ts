@@ -7,8 +7,8 @@ export interface Product {
 
 export interface InvoiceProduct {
   id: string;
+  name: string;
   barcode: string;
-  description: string;
   quantity: number;
   salesPrice: number;
   total: number;
@@ -72,7 +72,7 @@ export interface JournalEntry {
 
 export interface accountManagers {
   id: string;
-  displayName: string;
+  name: string;
 }
 
 export interface Journals {
@@ -102,7 +102,7 @@ export interface InvoiceData {
   products: any[];
   clients: any[];
   accountManagers: any[];
-  invoiceNumber: number;
+  number: number;
 }
 
 export interface Customer {

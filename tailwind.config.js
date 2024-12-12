@@ -11,6 +11,9 @@ module.exports = {
         foreground: 'var(--foreground-color)',
         primary: 'var(--primary-color)',
         secondary: 'var(--secondary-color)',
+        fontFamily: {
+          cairo: ['Cairo', 'sans-serif'],
+        },
 
       }
 

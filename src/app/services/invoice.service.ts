@@ -10,7 +10,7 @@ import { InvoiceData } from '../models/interfaces.model';
 export class InvoiceService {
   private apiUrl = `${environment.apiUrl}/invoice`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getInvoiceData(): Observable<InvoiceData> {
     return this.http.get<InvoiceData>(`${this.apiUrl}/invoice-data`);
