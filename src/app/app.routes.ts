@@ -266,6 +266,19 @@ export const routes: Routes = [
             'View your account statements with Ovovex to streamline your accounting process.',
         },
       },
+
+      {
+        path: 'reports/financial/profit-loss',
+        loadComponent: () =>
+          import(
+            './app-pages/reports/financial-report/financial-report.component'
+          ).then((m) => m.FinancialReportComponent),
+        data: {
+          title: 'Account Statement - Ovovex',
+          description:
+            'View your account statements with Ovovex to streamline your accounting process.',
+        },
+      },
     ],
   },
   {

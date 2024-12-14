@@ -1,0 +1,87 @@
+<div class="container mx-auto p-6">
+    <!-- Title -->
+    <h1 class="text-2xl font-bold mb-6">Income Statement (IFRS Compliant)</h1>
+
+    <!-- Date Filters -->
+    <section class="mb-8">
+        <h2 class="text-lg font-semibold mb-4">Select Date Range</h2>
+        <div class="flex gap-4">
+            <div>
+                <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="date" id="startDate" [(ngModel)]="startDate" (change)="fetchIncomeStatement()"
+                    class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            </div>
+            <div>
+                <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="date" id="endDate" [(ngModel)]="endDate" (change)="fetchIncomeStatement()"
+                    class="mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="text-center text-lg">Loading income statement data...</div>
+
+    <!-- Income Statement -->
+    <div *ngIf="!isLoading && incomeStatement">
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold mb-4">Summary</h2>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="border px-4 py-2 text-left">Metric</th>
+                        <th class="border px-4 py-2 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border px-4 py-2">Revenue</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.totalRevenue | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Cost of Goods Sold (COGS)</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.totalCOGS | currency }}</td>
+                    </tr>
+                    <tr class="font-semibold">
+                        <td class="border px-4 py-2">Gross Profit</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.grossProfit | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Operating Expenses</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.totalOperatingExpenses | currency }}
+                        </td>
+                    </tr>
+                    <tr class="font-semibold">
+                        <td class="border px-4 py-2">Operating Profit</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.operatingProfit | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Other Income</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.otherIncome | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Other Expenses</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.otherExpenses | currency }}</td>
+                    </tr>
+                    <tr class="font-semibold">
+                        <td class="border px-4 py-2">Profit Before Tax</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.profitBeforeTax | currency }}</td>
+                    </tr>
+                    <tr>
+                        <td class="border px-4 py-2">Income Tax Expense</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.taxExpense | currency }}</td>
+                    </tr>
+                    <tr class="font-bold text-green-600">
+                        <td class="border px-4 py-2">Net Profit/Loss</td>
+                        <td class="border px-4 py-2 text-right">{{ incomeStatement.netProfitOrLoss | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- No Data State -->
+    <div *ngIf="!isLoading && !incomeStatement" class="text-center text-lg text-red-500">
+        No income statement data available for the selected period.
+    </div>
+</div>

@@ -136,27 +136,19 @@ export class SidebarComponent {
       isExpandable: true,
       children: [
         {
-          icon: 'assessment',
-          label: 'Financial Reports',
-          routerLink: 'reports/financial',
-          isExpandable: true,
-          children: [
-            {
-              icon: 'show_chart',
-              label: 'Profit & Loss',
-              routerLink: 'reports/financial/profit-loss',
-            },
-            {
-              icon: 'insights',
-              label: 'Balance Sheet',
-              routerLink: 'reports/financial/balance-sheet',
-            },
-            {
-              icon: 'account_tree',
-              label: 'Trial Balance',
-              routerLink: 'reports/financial/trial-balance',
-            },
-          ],
+          icon: 'show_chart',
+          label: 'Profit & Loss',
+          routerLink: 'reports/financial/profit-loss',
+        },
+        {
+          icon: 'insights',
+          label: 'Balance Sheet',
+          routerLink: 'reports/financial/balance-sheet',
+        },
+        {
+          icon: 'account_tree',
+          label: 'Trial Balance',
+          routerLink: 'reports/financial/trial-balance',
         },
         {
           icon: 'inventory',
