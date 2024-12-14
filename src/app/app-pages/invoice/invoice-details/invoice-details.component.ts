@@ -27,7 +27,7 @@ export class InvoiceDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private invoiceService: InvoiceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCompanyData();
@@ -71,6 +71,8 @@ export class InvoiceDetailsComponent implements OnInit {
       },
     });
   }
+  eInvoice() { this.invoiceService.submiteInvoice(this.invoiceDetails).subscribe() }
+
 
   generateQRCode() {
     if (this.invoiceId) {

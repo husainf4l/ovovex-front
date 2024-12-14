@@ -27,4 +27,8 @@ export class InvoiceService {
   createInvoice(invoiceData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/create`, invoiceData);
   }
+
+  submiteInvoice(invoice: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/submitEinvoice`, invoice)
+  }
 }

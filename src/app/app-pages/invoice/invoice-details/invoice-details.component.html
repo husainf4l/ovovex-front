@@ -7,6 +7,8 @@
             </div>
 
             <p class="text-3xl  font-bold   text-right">INVOICE</p>
+            <button (click)="eInvoice()" class="bg-red-400 p-4 rounded-md"> {{invoiceDetails.isSubmitted}}</button>
+
 
         </div>
         <hr class="my-4">
@@ -83,4 +85,5 @@
             <p>Phone: {{ companyData.phone }} | Email: {{ companyData.email }}</p>
         </div>
     </div>
+
 </div>
