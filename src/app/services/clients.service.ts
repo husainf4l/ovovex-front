@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,6 +10,7 @@ export class ClientsService {
   private apiUrl = `${environment.apiUrl}/clients`;
 
   constructor(private http: HttpClient) {}
+  token = localStorage.getItem('token');
 
   createClient(data: {
     name: string;
@@ -17,10 +18,16 @@ export class ClientsService {
     phone?: string;
     address?: string;
   }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/create-new`, data);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post<any>(`${this.apiUrl}/create-new`, data, { headers });
   }
 
   getClients(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/all-clients`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/all-clients`, { headers });
   }
 }

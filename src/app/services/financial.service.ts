@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
@@ -9,17 +9,16 @@ import { environment } from '../environments/environment';
 export class FinancialService {
   private apiUrl = `${environment.apiUrl}/financials`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+  token = localStorage.getItem('token');
 
-  /**
-   * Fetch income statement data for the given date range.
-   * @param startDate Start date of the range
-   * @param endDate End date of the range
-   * @returns Observable of the income statement data
-   */
   getIncomeStatement(startDate: string, endDate: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
     return this.http.get(`${this.apiUrl}/income-statement`, {
       params: { startDate, endDate },
+      headers,
     });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InvoiceData } from '../models/interfaces.model';
 
@@ -10,25 +10,51 @@ import { InvoiceData } from '../models/interfaces.model';
 export class InvoiceService {
   private apiUrl = `${environment.apiUrl}/invoice`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+  token = localStorage.getItem('token');
 
   getInvoiceData(): Observable<InvoiceData> {
-    return this.http.get<InvoiceData>(`${this.apiUrl}/invoice-data`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<InvoiceData>(`${this.apiUrl}/invoice-data`, {
+      headers,
+    });
   }
 
   getInvoicesDetails(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/invoices-data`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<any>(`${this.apiUrl}/invoices-data`, {
+      headers,
+    });
   }
 
   getInvoiceDetails(invoiceId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/invoice-details/${invoiceId}`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<any>(`${this.apiUrl}/invoice-details/${invoiceId}`, {
+      headers,
+    });
   }
 
   createInvoice(invoiceData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, invoiceData);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post(`${this.apiUrl}/create`, invoiceData, {
+      headers,
+    });
   }
 
   submiteInvoice(invoice: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/submitEinvoice`, invoice)
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post(`${this.apiUrl}/submitEinvoice`, invoice, {
+      headers,
+    });
   }
 }

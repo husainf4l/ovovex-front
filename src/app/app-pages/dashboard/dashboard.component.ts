@@ -1,26 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { colors } from '../../models/colors.model';
 import { ThemeService } from '../../services/theme.service';
+import { FinancialService } from '../../services/financial.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements AfterViewInit, OnInit {
+  incomeStatement: any = null;
 
-  constructor(private theamService: ThemeService) { }
-
-  toggoleTheme() {
-    this.theamService.toggleTheme();
-  }
-
-
-
-
+  // Default date range (current year)
+  startDate = new Date(new Date().getFullYear(), 0, 1)
+    .toISOString()
+    .split('T')[0];
+  endDate = new Date().toISOString().split('T')[0];
 
   kpis = {
     revenue: 500000,
@@ -28,7 +26,34 @@ export class DashboardComponent implements AfterViewInit {
     netProfit: 150000,
     inflow: 400000,
     outflow: 300000,
+    totalCOGS: 0,
+    grossProfit: 0,
   };
+
+  constructor(private financialService: FinancialService) {}
+  ngOnInit(): void {
+    this.fetchIncomeStatement();
+  }
+  fetchIncomeStatement(): void {
+    this.financialService
+      .getIncomeStatement(this.startDate, this.endDate)
+      .subscribe({
+        next: (data) => {
+          this.kpis = {
+            revenue: data.totalRevenue,
+            totalCOGS: data.totalCOGS,
+            expenses: data.totalOperatingExpenses,
+            grossProfit: data.grossProfit,
+            netProfit: data.operatingProfit,
+            inflow: 400000,
+            outflow: 300000,
+          };
+        },
+        error: (err) => {
+          console.error('Error fetching income statement:', err);
+        },
+      });
+  }
 
   accountsOverview = {
     assets: 1000000,
@@ -36,11 +61,36 @@ export class DashboardComponent implements AfterViewInit {
     equity: 400000,
   };
   recentTransactions = [
-    { date: '2024-12-01', description: 'Invoice Payment #2024', amount: 5000, type: 'Credit' },
-    { date: '2024-12-02', description: 'Purchase Office Supplies', amount: 700, type: 'Debit' },
-    { date: '2024-12-03', description: 'Salary Payment', amount: 15000, type: 'Debit' },
-    { date: '2024-12-04', description: 'Client Payment', amount: 10000, type: 'Credit' },
-    { date: '2024-12-05', description: 'Utility Bill', amount: 1200, type: 'Debit' },
+    {
+      date: '2024-12-01',
+      description: 'Invoice Payment #2024',
+      amount: 5000,
+      type: 'Credit',
+    },
+    {
+      date: '2024-12-02',
+      description: 'Purchase Office Supplies',
+      amount: 700,
+      type: 'Debit',
+    },
+    {
+      date: '2024-12-03',
+      description: 'Salary Payment',
+      amount: 15000,
+      type: 'Debit',
+    },
+    {
+      date: '2024-12-04',
+      description: 'Client Payment',
+      amount: 10000,
+      type: 'Credit',
+    },
+    {
+      date: '2024-12-05',
+      description: 'Utility Bill',
+      amount: 1200,
+      type: 'Debit',
+    },
   ];
 
   profitMargins = [15, 18, 20, 22, 19, 24, 28, 30, 27, 25, 29, 32];
@@ -107,7 +157,11 @@ export class DashboardComponent implements AfterViewInit {
         datasets: [
           {
             label: 'Amount',
-            data: [this.accountsOverview.assets, this.accountsOverview.liabilities, this.accountsOverview.equity],
+            data: [
+              this.accountsOverview.assets,
+              this.accountsOverview.liabilities,
+              this.accountsOverview.equity,
+            ],
             backgroundColor: [colors.success, colors.warn, colors.accent],
           },
         ],
@@ -152,7 +206,20 @@ export class DashboardComponent implements AfterViewInit {
     new Chart('profitMarginChart', {
       type: 'radar',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ],
         datasets: [
           {
             label: 'Profit Margin (%)',
@@ -191,5 +258,4 @@ export class DashboardComponent implements AfterViewInit {
       },
     });
   }
-
 }

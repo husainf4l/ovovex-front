@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
@@ -17,16 +17,29 @@ export class ReceiptService {
   private apiUrl = `${environment.apiUrl}/receipt`;
 
   constructor(private http: HttpClient) {}
+  token = localStorage.getItem('token');
 
   getReceiptData(): Observable<ReceiptData> {
-    return this.http.get<ReceiptData>(`${this.apiUrl}/receipt-data`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+
+    return this.http.get<ReceiptData>(`${this.apiUrl}/receipt-data`, {
+      headers,
+    });
   }
 
   getReceiptList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/receipt-list`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/receipt-list`, { headers });
   }
 
   saveReceipt(receipt: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, receipt);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post(`${this.apiUrl}`, receipt, { headers });
   }
 }

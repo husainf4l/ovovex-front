@@ -16,7 +16,6 @@ export class AppComponent {
     private meta: Meta,
     private title: Title,
     private metaService: MetaService,
-    private themeService: ThemeService
   ) {
     this.initializeMetaTags();
   }
