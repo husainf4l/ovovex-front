@@ -37,7 +37,7 @@
               "entry": "src/server.ts"
             },
             "allowedCommonJsDependencies": [
-              "qrcode" 
+              "qrcode"
             ]
           },
           "configurations": {

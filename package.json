@@ -44,7 +44,6 @@
     "@angular/core": "^19.0.3",
     "@angular/language-service": "^19.0.3",
     "@types/compression": "^1.7.5",
-    "@types/cookie-parser": "^1.4.8",
     "@types/date-fns": "^2.6.3",
     "@types/dotenv-safe": "^8.1.6",
     "@types/express": "^4.17.17",
