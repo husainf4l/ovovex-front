@@ -10,7 +10,6 @@ import { fileURLToPath } from 'node:url';
 import compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import cookieParser from 'cookie-parser';
 
 console.log('Debug: Server script starting...');
 
@@ -79,8 +78,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   res.on('finish', () => {
     const duration = Date.now() - start;
     console.log(
-      `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - ${
-        res.statusCode
+      `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - ${res.statusCode
       } (${duration}ms)`
     );
   });
@@ -105,8 +103,6 @@ console.log('Debug: Server script starting... 8');
 
 // Angular SSR handler
 app.use('/**', (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers['authorization']; // Get token from headers
-  console.log(`Incoming token: ${token}`); // Debug log the token
 
   angularApp
     .handle(req)
@@ -115,7 +111,6 @@ app.use('/**', (req: Request, res: Response, next: NextFunction) => {
     )
     .catch(next);
 });
-app.use(cookieParser());
 
 app.use(
   helmet({

@@ -45,6 +45,8 @@ export class ChartOfAccountsComponent implements OnInit {
     });
   }
 
+  initialize() { this.chartOfAccountsService.initializeAccounts().subscribe() }
+
   onSearch(query: string): void {
     this.searchQuery = query.toLowerCase();
     this.displayedAccounts = this.chartOfAccounts.filter((account) =>

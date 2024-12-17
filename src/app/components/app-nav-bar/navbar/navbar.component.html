@@ -6,10 +6,16 @@
       <button (click)="toggleSidebar.emit()" aria-controls="logo-sidebar" class="inline-flex items-center">
         <mat-icon>menu</mat-icon>
       </button>
-      <p>{{ userData?.userData.company.name }}</p>
+      <p>
+        {{ userData?.company.name }}
+      </p>
+
+
+      <button mat-button (click)="openCompanySelectionDialog()" cdkFocusInitial>
+        <mat-icon>swap_horiz</mat-icon>
+      </button>
     </div>
 
-    <!-- User Profile -->
     <div class="flex items-center gap-2">
 
 

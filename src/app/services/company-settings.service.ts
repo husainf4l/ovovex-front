@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 export class CompanySettingsService {
   private apiUrl = `${environment.apiUrl}/settings`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCompanySettings(): Observable<any> {
     const token = localStorage.getItem('token');

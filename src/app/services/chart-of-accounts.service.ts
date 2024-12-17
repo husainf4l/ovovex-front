@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 export class ChartOfAccountsService {
   private baseUrl = `${environment.apiUrl}/chart-of-accounts`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   token = localStorage.getItem('token');
 
   // Fetch all accounts
@@ -54,4 +54,15 @@ export class ChartOfAccountsService {
     });
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers });
   }
+
+
+
+  initializeAccounts(): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post<any>(`${this.baseUrl}/initialize`, {}, { headers });
+
+  }
+
 }

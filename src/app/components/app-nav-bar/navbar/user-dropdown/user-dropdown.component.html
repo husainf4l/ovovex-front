@@ -1,6 +1,6 @@
 <div class="relative ">
   <button (click)="toggleDropdown()" class="flex text-sm bg-gray-800 rounded-full">
-    <img class="w-8 h-8 rounded-full" src="{{ userData?.userData.profileImage }}" alt="User Photo" />
+    <img class="w-8 h-8 rounded-full" src="{{ userData.profileImage }}" alt="User Photo" />
   </button>
   <ul *ngIf="isDropdownOpen"
     class="absolute right-0 mt-2 w-48 border bg-background border-gray-200 rounded-md shadow-lg">

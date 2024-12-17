@@ -4,15 +4,22 @@ import { Chart } from 'chart.js/auto';
 import { colors } from '../../models/colors.model';
 import { ThemeService } from '../../services/theme.service';
 import { FinancialService } from '../../services/financial.service';
+import { DashboardService } from '../../services/dashboard.service';
+import { FormsModule } from '@angular/forms';
+import { CompanySelectDialogComponent } from '../../components/company-select-dialog/company-select-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class DashboardComponent implements AfterViewInit, OnInit {
   incomeStatement: any = null;
+  selectedCompanyId: string | null = null;
+  companies: any[] = [];
+
 
   // Default date range (current year)
   startDate = new Date(new Date().getFullYear(), 0, 1)
@@ -30,10 +37,21 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     grossProfit: 0,
   };
 
-  constructor(private financialService: FinancialService) {}
+  constructor(private financialService: FinancialService, private dialog: MatDialog) { }
   ngOnInit(): void {
     this.fetchIncomeStatement();
+
+
   }
+
+
+
+
+
+
+
+
+
   fetchIncomeStatement(): void {
     this.financialService
       .getIncomeStatement(this.startDate, this.endDate)

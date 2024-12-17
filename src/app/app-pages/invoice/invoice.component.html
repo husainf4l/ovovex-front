@@ -1,30 +1,17 @@
 <h1 class="text-xl font-semibold mb-3">Invoice</h1>
 
 <div class="bg-foreground p-4 border-custom">
-  <button
-    class="mt-1 bg-primary text-white px-3 py-1 text-sm rounded"
-    (click)="openAddCustomerDialog()"
-  >
+  <button class="mt-1 bg-primary text-white px-3 py-1 text-sm rounded" (click)="openAddCustomerDialog()">
     Add New Customer
   </button>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div class=" ">
-      <app-search-input
-        [items]="clients"
-        [displayKey]="'name'"
-        placeholder="Search customer"
-        [label]="'Clients'"
-        (selected)="selectClient($event)"
-      ></app-search-input>
+      <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
+        (selected)="selectClient($event)"></app-search-input>
     </div>
 
-    <app-search-input
-      [items]="accountManagers"
-      [displayKey]="'name'"
-      [label]="'Account Manager'"
-      placeholder="Search Account Manager"
-      (selected)="selectAccountManager($event)"
-    >
+    <app-search-input [items]="accountManagers" [displayKey]="'name'" [label]="'Account Manager'"
+      placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
     </app-search-input>
 
     <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate">
@@ -35,93 +22,55 @@
     <!-- Invoice Number -->
     <div>
       <label class="block text-sm font-medium">Invoice #</label>
-      <input
-        type="text"
-        [(ngModel)]="number"
-        readonly
-        class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed"
-      />
+      <input type="text" [(ngModel)]="number" readonly
+        class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed" />
     </div>
 
     <!-- Payment Mode -->
-    <app-dropdown
-      label="Payment"
-      [options]="[
+    <app-dropdown label="Payment" [options]="[
         { value: '012', label: 'Cash' },
         { value: '022', label: 'Accounts Receivable' }
-      ]"
-      [(selectedValue)]="InvoiceTypeCodeName"
-    ></app-dropdown>
+      ]" [(selectedValue)]="InvoiceTypeCodeName"></app-dropdown>
 
     <!-- Tax Section -->
-    <app-dropdown
-      label="Tax"
-      [options]="[
+    <app-dropdown label="Tax" [options]="[
         { value: 16, label: '16%' },
         { value: 0, label: '0%' }
-      ]"
-      [(selectedValue)]="taxRate"
-      (selectedValueChange)="updateTotals()"
-    >
+      ]" [(selectedValue)]="taxRate" (selectedValueChange)="updateTotals()">
     </app-dropdown>
-    <app-dropdown
-      *ngIf="InvoiceTypeCodeName == '012'"
-      label="Cash Accounts"
-      [options]="cashAccounts"
-      [(selectedValue)]="selectedCashAccountId"
-      (selectedValueChange)="updateCashAccountId($event)"
-    >
+    <app-dropdown *ngIf="InvoiceTypeCodeName == '012'" label="Cash Accounts" [options]="cashAccounts"
+      [(selectedValue)]="selectedCashAccountId" (selectedValueChange)="updateCashAccountId($event)">
     </app-dropdown>
   </div>
 
   <div class="mb-3 mt-6">
-    <app-search-input
-      [items]="products"
-      [displayKey]="'name'"
-      placeholder="Search Product by barcode or name"
-      [clearOnSelect]="true"
-      [label]="'Add Product'"
-      (selected)="selectProduct($event)"
-    >
+    <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
+      [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event)">
     </app-search-input>
   </div>
 </div>
 
 <div class="mt-6">
-  <app-data-table
-    [columns]="[
+  <app-data-table [columns]="[
       { label: 'Barcode', key: 'barcode' },
       { label: 'name', key: 'name' },
       { label: 'Quantity', key: 'quantity' },
       { label: 'Price', key: 'salesPrice' },
       { label: 'Total', key: 'total' }
-    ]"
-    [data]="invoiceProducts"
-  ></app-data-table>
+    ]" [data]="invoiceProducts"></app-data-table>
 </div>
 
-<app-invoice-totals
-  [subtotal]="subtotal"
-  [vatAmount]="vatAmount"
-  [grandTotal]="grandTotal"
-  [taxRate]="taxRate"
->
+<app-invoice-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal" [taxRate]="taxRate">
 </app-invoice-totals>
 
 <!-- Actions -->
 <div class="flex justify-end gap-4">
   <app-button [buttonText]="'Print'" (click)="printInvoice()"></app-button>
 
-  <app-button
-    [buttonText]="'Save'"
-    [buttonType]="'submit'"
-    (click)="saveInvoice()"
-  ></app-button>
+  <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveInvoice()"></app-button>
 </div>
 
-<app-invoice-print
-  class="hidden"
-  [invoiceData]="{
+<app-invoice-print class="hidden" [invoiceData]="{
     customerName: selectedClient?.name,
     accountManagerName: selectedAccountManager?.name,
     InvoiceTypeCodeName: InvoiceTypeCodeName,
@@ -132,6 +81,4 @@
     vatAmount: vatAmount,
     grandTotal: grandTotal,
     taxRate: taxRate
-  }"
-  [companyData]="userData?.userData.company"
-></app-invoice-print>
+  }" [companyData]="userData.company"></app-invoice-print>

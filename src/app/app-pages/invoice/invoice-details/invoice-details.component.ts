@@ -42,7 +42,7 @@ export class InvoiceDetailsComponent implements OnInit {
     if (userDataString) {
       try {
         const userData = JSON.parse(userDataString);
-        const company = userData?.userData?.company;
+        const company = userData?.company;
 
         if (company) {
           this.companyData = {

@@ -20,7 +20,7 @@ import { ButtonComponent } from "../../components/shared/button/button.component
     CommonModule,
     FormsModule,
     ButtonComponent
-],
+  ],
 })
 export class ReceiptComponent implements OnInit {
   clients: any = [];
@@ -34,7 +34,7 @@ export class ReceiptComponent implements OnInit {
   selectedCashAccount: any = null;
   cashAmount: number = 0; // Store cash amount for cash payments
 
-  constructor(private receiptService: ReceiptService, private router: Router) {}
+  constructor(private receiptService: ReceiptService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchData();
