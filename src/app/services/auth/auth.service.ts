@@ -5,7 +5,6 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { InitiateService } from '../inisiate/initiate.service';
-import { CookieService } from 'ngx-cookie-service';
 
 interface AuthResponse {
   access_token: string;
@@ -25,8 +24,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private initiateService: InitiateService,
-    private cookieService: CookieService
-  ) {}
+  ) { }
 
   public getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
