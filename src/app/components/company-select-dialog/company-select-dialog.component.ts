@@ -1,5 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { DashboardService } from '../../services/dashboard.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,27 +11,30 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 
-
-
-export interface Company {
+export interface UserCompany {
   id: string;
   name: string;
+  company: {id:string, name:string};
+  companyId: string;
+  user: { id: string; companyId: string };
 }
-
 
 @Component({
   selector: 'app-company-select-dialog',
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
 
-    MatDialogModule, MatDialogModule, MatProgressSpinnerModule, MatRadioModule
-
+    MatDialogModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
   ],
   templateUrl: './company-select-dialog.component.html',
-  styleUrl: './company-select-dialog.component.css'
+  styleUrl: './company-select-dialog.component.css',
 })
 export class CompanySelectDialogComponent {
-  companies: Company[] = [];
+  userCompanies: UserCompany[] = [];
   selectedCompanyId: string | null = null;
 
   isLoading = false;
@@ -36,7 +43,7 @@ export class CompanySelectDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CompanySelectDialogComponent>,
     private dashboardService: DashboardService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchCompanies();
@@ -46,7 +53,7 @@ export class CompanySelectDialogComponent {
     this.isLoading = true;
     this.dashboardService.getCompanies().subscribe({
       next: (data) => {
-        this.companies = data;
+        this.userCompanies = data;
         this.isLoading = false;
       },
       error: (err) => {
@@ -60,7 +67,7 @@ export class CompanySelectDialogComponent {
     if (!this.selectedCompanyId) return;
 
     this.isUpdating = true;
-    this.dashboardService.updateCompanySettings(this.selectedCompanyId)
+    this.dashboardService.updateCompanySettings(this.selectedCompanyId);
   }
 
   onCancel(): void {

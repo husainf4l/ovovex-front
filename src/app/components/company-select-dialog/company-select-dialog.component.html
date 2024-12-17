@@ -1,32 +1,55 @@
 <mat-dialog-content>
-    <!-- Loading Spinner -->
-    <div *ngIf="isLoading" class="text-center">
-        <p>Loading companies...</p>
-        <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-    </div>
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="text-center">
+    <p>Loading companies...</p>
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="40"
+    ></mat-progress-spinner>
+  </div>
 
-    <!-- Radio Group -->
-    <mat-radio-group *ngIf="!isLoading" [(ngModel)]="selectedCompanyId" class="w-full">
-        <mat-radio-button *ngFor="let company of companies" [value]="company.id" class="block mb-2">
-            {{ company.name }}
-        </mat-radio-button>
-    </mat-radio-group>
+  <!-- Radio Group -->
+  <mat-radio-group
+    *ngIf="!isLoading"
+    [(ngModel)]="selectedCompanyId"
+    class="w-full"
+  >
+    <ng-container *ngFor="let userCompany of userCompanies">
+      <mat-radio-button
+        [value]="userCompany.company.id"
+        class="text-primary hover:underline mr-2 block mb-2"
+        *ngIf="userCompany.companyId != userCompany.user.companyId"
+      >
+        {{ userCompany.company.name }}
+      </mat-radio-button>
+    </ng-container>
+  </mat-radio-group>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="gap-3">
-    <!-- Cancel Button -->
-    <button mat-button class="text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2"
-        (click)="onCancel()">
-        Cancel
-    </button>
+  <!-- Cancel Button -->
+  <button
+    mat-button
+    class="text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
 
-    <!-- Confirm Button -->
-    <button mat-raised-button
-        class="text-white bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        [disabled]="!selectedCompanyId || isUpdating" (click)="onConfirm()">
-        <span *ngIf="!isUpdating">Confirm</span>
-        <span *ngIf="isUpdating">
-            <mat-progress-spinner diameter="20" mode="indeterminate" class="text-white"></mat-progress-spinner>
-        </span>
-    </button>
+  <!-- Confirm Button -->
+  <button
+    mat-raised-button
+    class="text-white bg-blue-500 hover:bg-blue-600 rounded-md px-4 py-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+    [disabled]="!selectedCompanyId || isUpdating"
+    (click)="onConfirm()"
+  >
+    <span *ngIf="!isUpdating">Confirm</span>
+    <span *ngIf="isUpdating">
+      <mat-progress-spinner
+        diameter="20"
+        mode="indeterminate"
+        class="text-white"
+      ></mat-progress-spinner>
+    </span>
+  </button>
 </mat-dialog-actions>
