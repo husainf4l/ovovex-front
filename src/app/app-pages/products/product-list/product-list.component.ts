@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
-import { TableComponent } from '../../components/shared/table/table.component';
 import { Router } from '@angular/router';
+import { TableComponent } from '../../../components/shared/table/table.component';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class ProductListComponent implements OnInit {
   products: any[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
     this.getProducts();

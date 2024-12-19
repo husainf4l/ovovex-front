@@ -1,0 +1,40 @@
+<h1 class="text-xl font-semibold mb-3">Purchase</h1>
+
+<div class="bg-foreground p-4 border-custom">
+    <button class="mt-1 bg-primary text-white px-3 py-1 text-sm rounded">
+        Add New Supplier
+    </button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <app-search-input [items]="suppliers" [displayKey]="'name'" placeholder="Search supplier"
+                [label]="'Suppliers'" (selected)="selectSupplier($event)"></app-search-input>
+        </div>
+
+        <app-date-selector [label]="'Purchase Date'" [(selectedDate)]="purchaseDate">
+        </app-date-selector>
+    </div>
+
+    <div class="mb-3 mt-6">
+        <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
+            [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event)">
+        </app-search-input>
+    </div>
+</div>
+
+<div class="mt-6">
+    <app-data-table [columns]="[
+      { label: 'Barcode', key: 'barcode' },
+      { label: 'Name', key: 'name' },
+      { label: 'Quantity', key: 'quantity' },
+      { label: 'Price', key: 'costPrice' },
+      { label: 'Total', key: 'total' }
+    ]" [data]="purchaseProducts"></app-data-table>
+</div>
+
+<!-- <app-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal" [taxRate]="taxRate">
+</app-totals> -->
+
+<div class="flex justify-end gap-4">
+    <app-button [buttonText]="'Print'" (click)="printPurchase()"></app-button>
+    <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="savePurchase()"></app-button>
+</div>

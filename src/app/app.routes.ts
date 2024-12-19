@@ -219,7 +219,7 @@ export const routes: Routes = [
       {
         path: 'products/list',
         loadComponent: () =>
-          import('./app-pages/product-list/product-list.component').then(
+          import('./app-pages/products/product-list/product-list.component').then(
             (m) => m.ProductListComponent
           ),
         data: {
@@ -228,6 +228,44 @@ export const routes: Routes = [
             'View your account statements with Ovovex to streamline your accounting process.',
         },
       },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./app-pages/products/inventory-screen/inventory-screen.component').then(
+            (m) => m.InventoryScreenComponent
+          ),
+        data: {
+          title: 'Account Statement - Ovovex',
+          description:
+            'View your account statements with Ovovex to streamline your accounting process.',
+        },
+      },
+
+      {
+        path: 'purchase',
+        loadComponent: () =>
+          import('./app-pages/purchase/purchase.component').then(
+            (m) => m.PurchaseComponent
+          ),
+        data: {
+          title: 'Account Statement - Ovovex',
+          description:
+            'View your account statements with Ovovex to streamline your accounting process.',
+        },
+      },
+      {
+        path: 'add-product',
+        loadComponent: () =>
+          import('./app-pages/products/add-product/add-product.component').then(
+            (m) => m.AddProductComponent
+          ),
+        data: {
+          title: 'Account Statement - Ovovex',
+          description:
+            'View your account statements with Ovovex to streamline your accounting process.',
+        },
+      },
+
 
       {
         path: 'employees/list',

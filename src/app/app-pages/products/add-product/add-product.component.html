@@ -1,0 +1,63 @@
+<h1 class="text-xl font-semibold mb-4">Add New Product</h1>
+<div class="bg-foreground p-4 border-custom">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium">Product Name</label>
+                <input type="text" formControlName="name" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter product name" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Barcode</label>
+                <input type="text" formControlName="barcode" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter barcode" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Category</label>
+                <input type="text" formControlName="category" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter category" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Stock</label>
+                <input type="number" formControlName="stock" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter stock quantity" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Cost Price</label>
+                <input type="number" formControlName="costPrice" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter cost price" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Sales Price</label>
+                <input type="number" formControlName="salesPrice" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter sales price" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Reorder Level</label>
+                <input type="number" formControlName="reorderLevel"
+                    class="w-full mt-1 px-3 py-1.5 border-custom text-sm" placeholder="Enter reorder level" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">NRV</label>
+                <input type="number" formControlName="nrv" class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+                    placeholder="Enter NRV" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Active</label>
+                <input type="checkbox" formControlName="isActive" class="w-5 h-5 mt-1" />
+            </div>
+        </div>
+
+        <button type="submit" class="mt-6 bg-primary text-white px-6 py-2 text-sm rounded" [disabled]="isLoading">
+            {{ isLoading ? 'Saving...' : 'Save Product' }}
+        </button>
+    </form>
+</div>
