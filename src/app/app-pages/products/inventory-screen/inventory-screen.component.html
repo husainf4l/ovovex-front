@@ -1,0 +1,159 @@
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">IFRS-Compliant Inventory Report</h1>
+
+  <!-- Date Range Selection -->
+  <div class="mb-6 flex items-center gap-4">
+    <label>
+      Start Date:
+      <input
+        type="date"
+        #startDateInput
+        (change)="
+          updateDateRange(startDateInput.value || '', endDateInput?.value || '')
+        "
+        class="p-2 border border-gray-300 rounded"
+        [value]="startDate | date : 'yyyy-MM-dd'"
+      />
+    </label>
+    <label>
+      End Date:
+      <input
+        type="date"
+        #endDateInput
+        (change)="
+          updateDateRange(startDateInput?.value || '', endDateInput.value || '')
+        "
+        class="p-2 border border-gray-300 rounded"
+        [value]="endDate | date : 'yyyy-MM-dd'"
+      />
+    </label>
+  </div>
+
+  <!-- Inventory Table -->
+  <div class="overflow-x-auto">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2">Name</th>
+          <th class="border border-gray-300 px-4 py-2">SKU</th>
+          <th class="border border-gray-300 px-4 py-2">Category</th>
+          <th class="border border-gray-300 px-4 py-2">Opening Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Closing Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Cost/Unit</th>
+          <th class="border border-gray-300 px-4 py-2">Total Cost</th>
+          <th class="border border-gray-300 px-4 py-2">NRV</th>
+          <th class="border border-gray-300 px-4 py-2">Validation</th>
+          <th class="border border-gray-300 px-4 py-2">Valuation Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inventoryItems" class="hover:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2">{{ item.name }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.sku }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.category }}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.openingBalance }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.closingBalance }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.totalCost | currency }}
+            <span
+              *ngIf="item.adjustmentRequired"
+              class="text-xs text-orange-500"
+            >
+              (Needs Adjustment)
+            </span>
+          </td>
+
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.totalCost | currency }}
+            <span *ngIf="item.costValidationError" class="text-xs text-red-500">
+              (Adjusted to NRV)
+            </span>
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.nrv | currency }}
+          </td>
+          <td
+            class="border border-gray-300 px-4 py-2"
+            [class.text-red-500]="item.costValidationError"
+          >
+            {{ item.costValidationError ? "Invalid" : "Valid" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.valuationMethod }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-4">
+      <p *ngIf="hasInvalidCosts()" class="text-red-500">
+        Warning: Some items have invalid costs and were adjusted to NRV.
+      </p>
+      <p *ngIf="areAllCostsValid()" class="text-green-500">
+        All items have valid costs.
+      </p>
+    </div>
+    <button
+      *ngIf="hasInvalidCosts()"
+      (click)="generateAdjustmentJournal()"
+      class="px-4 py-2 mt-2 bg-red-500 text-white rounded"
+    >
+      Create Adjustment Journal
+    </button>
+    <div class="flex justify-end mb-4 gap-4">
+      <button
+        (click)="exportToExcel()"
+        class="px-4 py-2 bg-green-500 text-white rounded"
+      >
+        Export to Excel
+      </button>
+      <button
+        (click)="exportToCSV()"
+        class="px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Export to CSV
+      </button>
+      <button
+        (click)="printReport()"
+        class="px-4 py-2 bg-gray-700 text-white rounded"
+      >
+        Print or Save as PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="printable-area" class="hidden">
+  <table class="table-auto w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100">
+        <th>Name</th>
+        <th>SKU</th>
+        <th>Category</th>
+        <th>Opening Balance</th>
+        <th>Closing Balance</th>
+        <th>Total Cost</th>
+        <th>NRV</th>
+        <th>Validation</th>
+        <th>Valuation Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inventoryItems">
+        <td>{{ item.name }}</td>
+        <td>{{ item.sku }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.openingBalance }}</td>
+        <td>{{ item.closingBalance }}</td>
+        <td>{{ item.totalCost | currency }}</td>
+        <td>{{ item.nrv | currency }}</td>
+        <td>{{ item.costValidationError ? "Needs Adjustment" : "Valid" }}</td>
+        <td>{{ item.valuationMethod }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
