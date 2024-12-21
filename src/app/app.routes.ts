@@ -21,6 +21,50 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'about-us',
+        loadComponent: () =>
+          import('./web-site-pages/about-us/about-us.component').then(
+            (m) => m.AboutUsComponent
+          ),
+        data: {
+          title: 'Login - Ovovex',
+          description: 'Access your Ovovex account to manage your finances.',
+        },
+      },
+      {
+        path: 'contact-us',
+        loadComponent: () =>
+          import('./web-site-pages/contact-us/contact-us.component').then(
+            (m) => m.ContactUsComponent
+          ),
+        data: {
+          title: 'Login - Ovovex',
+          description: 'Access your Ovovex account to manage your finances.',
+        },
+      },
+      {
+        path: 'pricing',
+        loadComponent: () =>
+          import('./web-site-pages/pricing/pricing.component').then(
+            (m) => m.PricingComponent
+          ),
+        data: {
+          title: 'Login - Ovovex',
+          description: 'Access your Ovovex account to manage your finances.',
+        },
+      },
+      {
+        path: 'features',
+        loadComponent: () =>
+          import('./web-site-pages/features/features.component').then(
+            (m) => m.FeaturesComponent
+          ),
+        data: {
+          title: 'Login - Ovovex',
+          description: 'Access your Ovovex account to manage your finances.',
+        },
+      },
+      {
         path: 'login',
         loadComponent: () =>
           import('./web-site-pages/login/login.component').then(
