@@ -23,7 +23,7 @@ export class JournalEntryService {
   private apiUrl = `${environment.apiUrl}/journal-entry`;
   token = localStorage.getItem('token');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Fetch all journal entries
   getAllJournalEntries(): Observable<any[]> {
@@ -52,4 +52,16 @@ export class JournalEntryService {
       })
     );
   }
+
+
+  submitJournalEntries(entries: any[]): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+
+    // Send the entries array directly
+    return this.http.post(`${this.apiUrl}/bulk`, entries, { headers });
+  }
+
+
 }

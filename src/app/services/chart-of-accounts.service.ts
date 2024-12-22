@@ -21,6 +21,13 @@ export class ChartOfAccountsService {
     return this.http.get<Account[]>(`${this.baseUrl}`, { headers });
   }
 
+  reconsole(): Observable<Account[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.get<Account[]>(`${this.baseUrl}/reconsole`, { headers });
+  }
+
   // Fetch account by ID
   getAccountById(id: string): Observable<Account> {
     const headers = new HttpHeaders({

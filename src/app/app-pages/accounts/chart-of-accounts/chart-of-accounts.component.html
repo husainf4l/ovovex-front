@@ -1,17 +1,14 @@
 <div class="flex justify-between items-center px-4 py-4 border-b">
   <h2 class="text-xl font-semibold">Chart of Accounts</h2>
   <div class="flex items-center gap-2">
-    <button
-      routerLink="add"
-      class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-    >
+    <button routerLink="add" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
       Add Account
     </button>
-    <button
-      (click)="downloadAsExcel()"
-      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-    >
+    <button (click)="downloadAsExcel()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
       Download Excel
+    </button>
+    <button (click)="reconsole()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+      reconsole
     </button>
   </div>
 </div>
@@ -19,18 +16,9 @@
 
 <!-- Search Bar -->
 <div class="px-4 py-3 border-b flex items-center gap-2">
-  <input
-    type="text"
-    [(ngModel)]="searchQuery"
-    (input)="onSearch(searchQuery)"
-    placeholder="Search accounts..."
-    class="w-full px-3 py-2 border-custom focus:ring-2 focus:ring-green-500 focus:outline-none"
-  />
-  <button
-    *ngIf="searchQuery"
-    (click)="clearSearch()"
-    class="text-red-500 hover:text-red-700 text-sm"
-  >
+  <input type="text" [(ngModel)]="searchQuery" (input)="onSearch(searchQuery)" placeholder="Search accounts..."
+    class="w-full px-3 py-2 border-custom focus:ring-2 focus:ring-green-500 focus:outline-none" />
+  <button *ngIf="searchQuery" (click)="clearSearch()" class="text-red-500 hover:text-red-700 text-sm">
     Clear
   </button>
 </div>
@@ -65,10 +53,7 @@
     <tbody>
       <ng-container *ngFor="let account of displayedAccounts">
         <tr class="border-b border-gray-200 hover:bg-red-50">
-          <td
-            class="px-3 py-2"
-            [ngClass]="{ 'text-red-500': !!account.mainAccount }"
-          >
+          <td class="px-3 py-2" [ngClass]="{ 'text-red-500': !!account.mainAccount }">
             {{ account.hierarchyCode }}
           </td>
           <td class="px-3 py-2">{{ account.name }}</td>
@@ -77,20 +62,14 @@
           <td class="px-3 py-2">{{ account.totalDebit }}</td>
           <td class="px-3 py-2">{{ account.totalCredit }}</td>
 
-          <td
-            class="px-3 py-2 text-right"
-            [ngClass]="{ 'text-red-500': !!account.mainAccount }"
-          >
+          <td class="px-3 py-2 text-right" [ngClass]="{ 'text-red-500': !!account.mainAccount }">
             {{ account.currentBalance | currency : "JOD" }}
           </td>
           <td class="px-3 py-2 text-center">
             <span *ngIf="account.mainAccount">-</span>
 
-            <button
-              *ngIf="!account.mainAccount"
-              class="text-primary hover:underline mr-2"
-              [routerLink]="['../account-statement', account.id]"
-            >
+            <button *ngIf="!account.mainAccount" class="text-primary hover:underline mr-2"
+              [routerLink]="['../account-statement', account.id]">
               View Statement
             </button>
           </td>
@@ -99,11 +78,8 @@
     </tbody>
   </table>
   <div class="flex justify-center m-10">
-    <button
-      (click)="initialize()"
-      *ngIf="chartOfAccounts.length == 0"
-      class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-green-700"
-    >
+    <button (click)="initialize()" *ngIf="chartOfAccounts.length == 0"
+      class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-green-700">
       initialize
     </button>
   </div>

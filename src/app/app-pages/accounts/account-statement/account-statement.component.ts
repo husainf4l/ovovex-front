@@ -15,7 +15,7 @@ import { ButtonComponent } from "../../../components/shared/button/button.compon
 })
 export class AccountStatementComponent implements OnInit {
   accountId: string | null = null;
-  accountDetails: any;
+  accountDetails: any = {};
   transactions: any[] = [];
   pagination = { currentPage: 1, totalPages: 0, totalRecords: 0 };
   filters = { startDate: '', endDate: '' };
@@ -45,7 +45,6 @@ export class AccountStatementComponent implements OnInit {
     this.router.navigate(['/account-statement', account.id]);
     this.fetchAccountStatement();
   }
-
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -90,29 +89,50 @@ export class AccountStatementComponent implements OnInit {
 
     this.accountService
       .getAccountStatement(this.accountId, page, 10, this.filters)
-      .subscribe(
-        (data) => {
-          this.accountDetails = data.accountDetails;
+      .subscribe({
+        next: (data) => {
+          this.accountDetails = data.accountDetails || {};
           this.transactions = data.transactions || [];
           this.pagination = data.pagination || {
             currentPage: 1,
             totalPages: 0,
             totalRecords: 0,
           };
-          this.openingBalance = data.openingBalance || 0;
+          this.openingBalance = this.accountDetails.openingBalance || 0;
+
+          // Add the "Opening Balance" as a pseudo-transaction
+          if (this.openingBalance !== 0) {
+            this.transactions.unshift({
+              journalEntry: { date: null },
+              debit: null,
+              credit: null,
+              runningBalance: this.openingBalance,
+              notes: 'Opening Balance', // Add a note for Opening Balance
+              type: 'Opening Balance',
+            });
+          }
 
           // Calculate totals
-          this.totalDebits = this.transactions.reduce((sum, t) => sum + (t.debit || 0), 0);
-          this.totalCredits = this.transactions.reduce((sum, t) => sum + (t.credit || 0), 0);
+          this.totalDebits = this.transactions.reduce(
+            (sum, t) => sum + (t.debit || 0),
+            0
+          );
+          this.totalCredits = this.transactions.reduce(
+            (sum, t) => sum + (t.credit || 0),
+            0
+          );
 
           this.loading = false;
         },
-        (error) => {
+        error: (err) => {
+          console.error('Error fetching account statement:', err);
           this.error = 'Failed to load account statement. Please try again later.';
           this.loading = false;
-        }
-      );
+        },
+      });
   }
+
+
 
   applyFilters(): void {
     this.pagination.currentPage = 1; // Reset to the first page when applying filters

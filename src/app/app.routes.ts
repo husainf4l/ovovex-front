@@ -4,6 +4,7 @@ import { LayoutComponent } from './layouts/app-layout/layout/layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
 import { UploadExcileComponent } from './app-pages/settings/upload-excile/upload-excile.component';
 import { UploadAccountsComponent } from './app-pages/settings/upload-accounts/upload-accounts.component';
+import { UploadJournalComponent } from './app-pages/settings/upload-journal/upload-journal.component';
 
 export const routes: Routes = [
   {
@@ -227,6 +228,8 @@ export const routes: Routes = [
       },
       { path: 'settings/upload-excile', component: UploadExcileComponent },
       { path: 'settings/upload-accounts', component: UploadAccountsComponent },
+      { path: 'settings/upload-journal', component: UploadJournalComponent },
+
 
       {
         path: 'account-statement/:accountId',

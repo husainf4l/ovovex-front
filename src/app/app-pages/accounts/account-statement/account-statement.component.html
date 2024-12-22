@@ -1,43 +1,27 @@
+<!-- Account Selector -->
 <div *ngIf="!accountId" class="flex justify-center items-center mt-4">
-  <app-search-input
-    [items]="accounts"
-    [displayKey]="'name'"
-    [label]="'Select Account'"
-    placeholder="Search accounts..."
-    (selected)="onAccountSelected($event)"
-  >
-  </app-search-input>
+  <app-search-input [items]="accounts" [displayKey]="'name'" [label]="'Select Account'" placeholder="Search accounts..."
+    (selected)="onAccountSelected($event)"></app-search-input>
 </div>
 
-<!-- Filters -->
+<!-- Filters Section -->
 <div class="filters mb-6">
   <div class="flex items-center gap-4">
     <div class="flex-1">
-      <label for="startDate" class="block text-sm font-medium"
-        >Start Date</label
-      >
-      <input
-        id="startDate"
-        type="date"
-        [(ngModel)]="filters.startDate"
-        class="block w-full px-3 py-2 border-custom sm:text-sm"
-      />
+      <label for="startDate" class="block text-sm font-medium">Start Date</label>
+      <input id="startDate" type="date" [(ngModel)]="filters.startDate"
+        class="block w-full px-3 py-2 border-custom sm:text-sm" />
     </div>
     <div class="flex-1">
       <label for="endDate" class="block text-sm font-medium">End Date</label>
-      <input
-        id="endDate"
-        type="date"
-        [(ngModel)]="filters.endDate"
-        class="block w-full px-3 py-2 border-custom sm:text-sm"
-      />
+      <input id="endDate" type="date" [(ngModel)]="filters.endDate"
+        class="block w-full px-3 py-2 border-custom sm:text-sm" />
     </div>
-    <app-button [buttonText]="'Apply Filters'" (click)="applyFilters()">
-    </app-button>
+    <app-button [buttonText]="'Apply Filters'" (click)="applyFilters()"></app-button>
   </div>
 </div>
 
-<!-- Loading and Error -->
+<!-- Loading and Error Messages -->
 <div *ngIf="loading" class="text-center py-4">Loading...</div>
 <div *ngIf="error" class="text-center py-4 text-red-600">{{ error }}</div>
 
@@ -45,16 +29,19 @@
 <div *ngIf="!loading && transactions.length > 0" class="overflow-x-auto">
   <table class="w-full border-collapse text-sm">
     <thead>
-      <tr class="0">
+      <tr>
         <th class="px-4 py-2 text-left">Date</th>
+        <th class="px-4 py-2 text-left">Type/Notes</th>
         <th class="px-4 py-2 text-left">Debit</th>
         <th class="px-4 py-2 text-left">Credit</th>
         <th class="px-4 py-2 text-right">Running Balance</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="border-b bg-yellow-500" *ngIf="openingBalance != 0">
-        <td class="px-4 py-2 font-semibold">Cycle Balance</td>
+      <!-- Opening Balance Row -->
+      <tr *ngIf="openingBalance !== 0" class="border-b bg-yellow-500">
+        <td class="px-4 py-2 font-semibold">-</td>
+        <td class="px-4 py-2 font-semibold">Opening Balance</td>
         <td class="px-4 py-2">-</td>
         <td class="px-4 py-2">-</td>
         <td class="px-4 py-2 text-right font-semibold">
@@ -62,18 +49,19 @@
         </td>
       </tr>
 
-      <tr
-        *ngFor="let transaction of transactions"
-        class="hover:bg-gray-50 border-b last:border-none"
-      >
+      <!-- Transactions Rows -->
+      <tr *ngFor="let transaction of transactions" class="hover:bg-gray-50 border-b last:border-none">
         <td class="px-4 py-2">
-          {{ transaction?.journalEntry?.date | date : "dd/MM/yyyy" }}
+          {{ transaction?.journalEntry?.date ? (transaction?.journalEntry?.date | date : 'dd/MM/yyyy') : '-' }}
         </td>
         <td class="px-4 py-2">
-          {{ transaction?.debit || 0 | currency : "JOD" }}
+          {{ transaction?.type || transaction?.notes || '-' }}
         </td>
         <td class="px-4 py-2">
-          {{ transaction?.credit || 0 | currency : "JOD" }}
+          {{ transaction?.debit || '-' | currency : "JOD" }}
+        </td>
+        <td class="px-4 py-2">
+          {{ transaction?.credit || '-' | currency : "JOD" }}
         </td>
         <td class="px-4 py-2 text-right">
           {{ transaction?.runningBalance || 0 | currency : "JOD" }}
@@ -83,6 +71,7 @@
     <tfoot>
       <tr class="bg-gray-200">
         <td class="px-4 py-2 font-semibold">Totals</td>
+        <td class="px-4 py-2"></td>
         <td class="px-4 py-2 font-semibold">
           {{ totalDebits | currency : "JOD" }}
         </td>
@@ -97,42 +86,34 @@
   </table>
 </div>
 
+
 <!-- Empty State -->
 <div *ngIf="!loading && transactions.length === 0" class="text-center py-4">
   No transactions found for the selected filters.
 </div>
 
+<!-- Print Button -->
 <div class="text-right mt-4">
-  <app-button [buttonText]="'print'" (click)="printAccountStatement()">
-  </app-button>
+  <app-button [buttonText]="'Print'" (click)="printAccountStatement()"></app-button>
 </div>
 
 <!-- Pagination Controls -->
-<div
-  *ngIf="pagination.totalPages > 1"
-  class="pagination flex justify-center items-center mt-6 gap-4"
->
-  <button
-    (click)="goToPage(pagination.currentPage - 1)"
-    [disabled]="pagination.currentPage === 1"
-    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-  >
+<div *ngIf="pagination.totalPages > 1" class="pagination flex justify-center items-center mt-6 gap-4">
+  <button (click)="goToPage(pagination.currentPage - 1)" [disabled]="pagination.currentPage === 1"
+    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
     Previous
   </button>
   <span class="text-sm">
     Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
   </span>
-  <button
-    (click)="goToPage(pagination.currentPage + 1)"
-    [disabled]="pagination.currentPage === pagination.totalPages"
-    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-  >
+  <button (click)="goToPage(pagination.currentPage + 1)" [disabled]="pagination.currentPage === pagination.totalPages"
+    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
     Next
   </button>
 </div>
 
+<!-- Printable Section -->
 <div id="printableInvoice" class="hidden rounded-lg shadow-md p-6">
-  <!-- Printable Content -->
   <div class="mb-4 border-b pb-4">
     <h1 class="text-2xl font-bold">Account Statement</h1>
     <p class="text-sm">{{ accountDetails?.name }}</p>
@@ -143,6 +124,6 @@
   </div>
 
   <div class="filters-summary mb-6 text-sm">
-    <p>Statement Period: {{ filters.startDate }} to {{ filters.endDate }}</p>
+    <p>Statement Period: {{ filters.startDate || 'N/A' }} to {{ filters.endDate || 'N/A' }}</p>
   </div>
 </div>

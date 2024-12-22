@@ -1,0 +1,39 @@
+<div class="p-6 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Upload and Review Journal Entries</h2>
+
+    <!-- File Input -->
+    <input type="file" id="fileInput" (change)="onFileChange($event)" class="border border-gray-300 p-2 rounded-lg mb-4"
+        accept=".xlsx, .xls" />
+
+    <!-- Display Table -->
+    <div *ngIf="journalEntries.length > 0" class="mt-8">
+        <h3 class="text-lg font-semibold mb-4">Parsed Journal Entries</h3>
+        <table class="w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2">Account</th>
+                    <th class="border border-gray-300 p-2">Hierarchy Code</th>
+                    <th class="border border-gray-300 p-2">Debit</th>
+                    <th class="border border-gray-300 p-2">Credit</th>
+                    <th class="border border-gray-300 p-2">notes</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entry of journalEntries">
+                    <td class="border border-gray-300 p-2">{{ entry.account }}</td>
+                    <td class="border border-gray-300 p-2">{{ entry.hierarchyCode }}</td>
+                    <td class="border border-gray-300 p-2">{{ entry.debit }}</td>
+                    <td class="border border-gray-300 p-2">{{ entry.credit }}</td>
+                    <td class="border border-gray-300 p-2">{{ entry.notes }}</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="submitData()" class="mt-4 bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700">
+            Submit
+        </button>
+    </div>
+</div>

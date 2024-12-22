@@ -23,7 +23,7 @@ export class ChartOfAccountsComponent implements OnInit {
   loading: boolean = false;
   error: string | null = null;
 
-  constructor(private chartOfAccountsService: ChartOfAccountsService) {}
+  constructor(private chartOfAccountsService: ChartOfAccountsService) { }
 
   ngOnInit(): void {
     this.fetchChartOfAccounts();
@@ -123,4 +123,24 @@ export class ChartOfAccountsComponent implements OnInit {
       saveAs(blob, 'Chart_of_Accounts.xlsx');
     });
   }
+
+  reconsole(): void {
+    this.loading = true;
+    this.error = null;
+
+    this.chartOfAccountsService.reconsole().subscribe({
+      next: (data) => {
+        this.chartOfAccounts = data; // Flat structure
+        this.displayedAccounts = [...this.chartOfAccounts]; // Initially display all
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching accounts:', err);
+        this.error =
+          'Failed to load chart of accounts. Please try again later.';
+        this.loading = false;
+      },
+    });
+  }
+
 }
