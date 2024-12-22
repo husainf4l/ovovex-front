@@ -1,0 +1,54 @@
+<div class="p-4 bg-gray-100 rounded">
+  <h2 class="text-2xl font-bold mb-4">Preview Excel Data</h2>
+
+  <!-- File Input -->
+  <label for="fileInput" class="block text-sm font-medium mb-2">Select Excel File:</label>
+  <input
+    type="file"
+    id="fileInput"
+    (change)="onFileChange($event)"
+    accept=".xlsx, .xls"
+    class="w-full p-2 mb-4 border rounded"
+  />
+
+  <!-- Error Message -->
+  <p *ngIf="parseError" class="text-red-500 mb-4">{{ parseError }}</p>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="text-center my-4">
+    <p>Loading Excel data, please wait...</p>
+  </div>
+
+  <!-- No Data Indicator -->
+  <p *ngIf="!isLoading && (!headers.length || !excelData.length)" class="text-gray-500">
+    No data to display. Please upload a valid Excel file.
+  </p>
+
+  <!-- Preview Table -->
+  <div *ngIf="headers.length > 0 && excelData.length > 0" class="overflow-x-auto">
+    <h3 class="text-lg font-semibold mb-2">Excel Data Preview</h3>
+    <table class="table-auto w-full border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th *ngFor="let col of headers" class="px-4 py-2 border">{{ col }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelData">
+          <td *ngFor="let col of headers" class="px-4 py-2 border">
+            {{ row[col] || '-' }} <!-- Display a dash if value is missing -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    class="bg-blue-600 text-white px-4 py-2 mt-4 rounded hover:bg-blue-700"
+    (click)="submitData()"
+    [disabled]="excelData.length === 0 || isLoading"
+  >
+    Submit Data
+  </button>
+</div>

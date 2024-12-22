@@ -2,6 +2,8 @@ import { PreloadAllModules, Routes } from '@angular/router';
 import { WebsiteLayoutComponent } from './layouts/website-layout/website-layout.component';
 import { LayoutComponent } from './layouts/app-layout/layout/layout.component';
 import { AuthGuard } from './services/auth/auth.guard';
+import { UploadExcileComponent } from './app-pages/settings/upload-excile/upload-excile.component';
+import { UploadAccountsComponent } from './app-pages/settings/upload-accounts/upload-accounts.component';
 
 export const routes: Routes = [
   {
@@ -223,6 +225,9 @@ export const routes: Routes = [
             'Create an account with Ovovex to streamline your accounting process.',
         },
       },
+      { path: 'settings/upload-excile', component: UploadExcileComponent },
+      { path: 'settings/upload-accounts', component: UploadAccountsComponent },
+
       {
         path: 'account-statement/:accountId',
         loadComponent: () =>
@@ -263,9 +268,9 @@ export const routes: Routes = [
       {
         path: 'products/list',
         loadComponent: () =>
-          import('./app-pages/products/product-list/product-list.component').then(
-            (m) => m.ProductListComponent
-          ),
+          import(
+            './app-pages/products/product-list/product-list.component'
+          ).then((m) => m.ProductListComponent),
         data: {
           title: 'Account Statement - Ovovex',
           description:
@@ -275,9 +280,9 @@ export const routes: Routes = [
       {
         path: 'products',
         loadComponent: () =>
-          import('./app-pages/products/inventory-screen/inventory-screen.component').then(
-            (m) => m.InventoryScreenComponent
-          ),
+          import(
+            './app-pages/products/inventory-screen/inventory-screen.component'
+          ).then((m) => m.InventoryScreenComponent),
         data: {
           title: 'Account Statement - Ovovex',
           description:
@@ -309,7 +314,6 @@ export const routes: Routes = [
             'View your account statements with Ovovex to streamline your accounting process.',
         },
       },
-
 
       {
         path: 'employees/list',

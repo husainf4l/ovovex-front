@@ -294,7 +294,7 @@ export class SidebarComponent {
         {
           icon: 'build',
           label: 'General Settings',
-          routerLink: 'settings/general',
+          routerLink: 'settings',
         },
         {
           icon: 'build',

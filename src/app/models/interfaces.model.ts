@@ -28,6 +28,8 @@ export interface Account {
   name: string;
   accountType: string;
   openingBalance: number;
+  totalCredit?: number;
+  totalDebit?: number;
   currentBalance: number;
   parentAccountId: string | null;
   parentAccount?: Account | null; // Optional reference to parent account
@@ -135,4 +137,62 @@ export interface Invoice {
   updatedAt: string;
   qrCode: string | null;
   customer: Customer; // The customer object is nested inside the invoice object
+}
+
+export interface CreateProductDto {
+  barcode?: string; // Optional
+  name: string; // Required
+  companyId: string; // Required
+  description?: string; // Optional
+  costPrice?: string; // Optional
+  salesPrice?: string; // Optional
+  wholesalePrice?: string; // Optional
+  avgPrice?: string; // Optional
+  stock?: string; // Optional
+  reorderLevel?: string; // Optional
+  isActive?: string; // Optional
+  origin?: string; // Optional
+  family?: string; // Optional
+  subFamily?: string; // Optional
+  taxRate?: string; // Optional
+  discountRate?: string; // Optional
+  profitMargin?: string; // Optional
+  location?: string; // Optional
+  packaging?: string; // Optional
+  category?: string; // Optional
+  nrv?: string; // Optional
+  itemType?: string; // Optional
+  imageUrl?: string; // Optional
+}
+
+export interface BankDetailsDto {
+  bankName: string;
+  accountNumber: string;
+  companyId: string;
+}
+
+export interface CustomerDetailsDto {
+  name: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+}
+
+export interface CreateAccountDto {
+  hierarchyCode: string;
+  name: string;
+  companyId: string;
+  accountType:
+    | 'ASSET'
+    | 'LIABILITY'
+    | 'EQUITY'
+    | 'REVENUE'
+    | 'EXPENSE'
+    | 'TRADEEXPENSES';
+  parentAccountId?: string; // Optional for hierarchical accounts
+  openingBalance?: number; // Optional field
+  currentBalance: number; // Required field
+  mainAccount: boolean;
+  bankDetails?: BankDetailsDto; // Optional nested object for bank details
+  customerDetails?: CustomerDetailsDto; // Optional nested object for customer details
 }

@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { AccountAdd } from '../models/interfaces.model';
+import { AccountAdd, CreateAccountDto } from '../models/interfaces.model';
 import { formatISO } from 'date-fns';
-
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +11,13 @@ import { formatISO } from 'date-fns';
 export class AccountService {
   private apiUrl = `${environment.apiUrl}/accounts`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   token = localStorage.getItem('token');
 
+  bulkUpload(data: CreateAccountDto[]): Observable<any> {
+    const endpoint = `${this.apiUrl}/bulk`;
+    return this.http.post(endpoint, { data });
+  }
 
   getAccountStatement(
     accountId: string,

@@ -1,0 +1,115 @@
+<div class="p-4 bg-gray-100 rounded">
+  <h2 class="text-2xl font-bold mb-4">Upload and Edit Accounts</h2>
+
+  <!-- File Input -->
+  <label for="fileInput" class="block text-sm font-medium mb-2"
+    >Select Excel File:</label
+  >
+  <input
+    type="file"
+    id="fileInput"
+    (change)="onFileChange($event)"
+    accept=".xlsx, .xls"
+    class="w-full p-2 mb-4 border rounded"
+  />
+
+  <!-- Error Message -->
+  <p *ngIf="parseError" class="text-red-500 mb-4">{{ parseError }}</p>
+
+  <!-- Preview Table -->
+  <div *ngIf="excelData.length > 0" class="overflow-x-auto">
+    <h3 class="text-lg font-semibold mb-2">Edit Account Data</h3>
+    <table class="table-auto w-full border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2 border">Hierarchy Code</th>
+          <th class="px-4 py-2 border">Name</th>
+          <th class="px-4 py-2 border">Account Type</th>
+          <th class="px-4 py-2 border">Opening Balance</th>
+          <th class="px-4 py-2 border">Current Balance</th>
+          <th class="px-4 py-2 border">Main Account</th>
+          <th class="px-4 py-2 border">Bank Name</th>
+          <th class="px-4 py-2 border">Account Number</th>
+          <th class="px-4 py-2 border">companyId</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let account of excelData; let i = index">
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [(ngModel)]="account.hierarchyCode"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [(ngModel)]="account.name"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <select
+              [(ngModel)]="account.accountType"
+              class="w-full p-2 border rounded"
+            >
+              <option *ngFor="let type of accountTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="number"
+              [(ngModel)]="account.openingBalance"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="number"
+              [(ngModel)]="account.currentBalance"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input type="checkbox" [(ngModel)]="account.mainAccount" />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [value]="account.bankDetails?.bankName || ''"
+              (input)="updateBankDetails(i, 'bankName', $event)"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [value]="account.bankDetails?.accountNumber || ''"
+              (input)="updateBankDetails(i, 'accountNumber', $event)"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="companyId"
+              [(ngModel)]="account.companyId"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Submit Button -->
+  <button
+    class="bg-blue-600 text-white px-4 py-2 mt-4 rounded hover:bg-blue-700"
+    (click)="submitData()"
+    [disabled]="excelData.length === 0 || isLoading"
+  >
+    Submit Data
+  </button>
+</div>
