@@ -16,6 +16,7 @@
             "outputPath": "dist/nuvex-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "optimization": true,
             "polyfills": [
               "zone.js"
             ],
@@ -42,6 +43,7 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
               "fileReplacements": [
                 {
                   "replace": "src/app/environments/environment.ts",
