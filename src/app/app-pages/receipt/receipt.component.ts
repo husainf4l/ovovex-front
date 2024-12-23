@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cheque } from '../../models/interfaces.model';
 import { Router } from '@angular/router';
-import { ButtonComponent } from "../../components/shared/button/button.component";
+import { ButtonComponent } from '../../components/shared/button/button.component';
 
 @Component({
   selector: 'app-receipt',
@@ -19,7 +19,7 @@ import { ButtonComponent } from "../../components/shared/button/button.component
     DropdownComponent,
     CommonModule,
     FormsModule,
-    ButtonComponent
+    ButtonComponent,
   ],
 })
 export class ReceiptComponent implements OnInit {
@@ -28,16 +28,22 @@ export class ReceiptComponent implements OnInit {
   cashAccounts: any = [];
   cheques: Cheque[] = [];
   receiptNumber: number = 0;
-  paymentMode: string = 'CASH'; // Default payment mode
+  paymentMode: string = 'CASH';
   selectedClient: any = null;
   selectedAccountManager: any = null;
   selectedCashAccount: any = null;
-  cashAmount: number = 0; // Store cash amount for cash payments
+  cashAmount: number = 0;
+  chequeAccounts: any[] = [];
+  selectedChequeAccount: any = null;
 
-  constructor(private receiptService: ReceiptService, private router: Router) { }
+  constructor(private receiptService: ReceiptService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchData();
+  }
+
+  selectChequeAccount(account: any) {
+    this.selectedChequeAccount = account;
   }
 
   fetchData(): void {
@@ -47,6 +53,7 @@ export class ReceiptComponent implements OnInit {
         this.accountManagers = data.accountManagers;
         this.cashAccounts = data.cashAccounts;
         this.receiptNumber = data.receiptNumber;
+        this.chequeAccounts = data.chequeAccounts;
       },
       error: (err) => {
         console.error('Error fetching data:', err);
@@ -68,13 +75,13 @@ export class ReceiptComponent implements OnInit {
 
   updatePaymentMode() {
     if (this.paymentMode === 'CHEQUE') {
-      this.cheques = []; // Reset cheque list
+      this.cheques = [];
     }
   }
 
   addCheque() {
     const newCheque = {
-      number: '',
+      chequeNumber: '',
       bankName: '',
       date: '',
       amount: 0,
@@ -87,7 +94,10 @@ export class ReceiptComponent implements OnInit {
   }
 
   calculateTotalAmount(): number {
-    const chequeTotal = this.cheques.reduce((total, cheque) => total + cheque.amount, 0);
+    const chequeTotal = this.cheques.reduce(
+      (total, cheque) => total + cheque.amount,
+      0
+    );
     const cashTotal = this.paymentMode === 'CASH' ? this.cashAmount : 0;
     return chequeTotal + cashTotal;
   }
@@ -97,7 +107,10 @@ export class ReceiptComponent implements OnInit {
       clientId: this.selectedClient?.id,
       accountManagerId: this.selectedAccountManager?.id,
       paymentMode: this.paymentMode,
-      TransactionAccountId: this.selectedCashAccount?.id,
+      transactionAccountId:
+        this.paymentMode === 'CASH'
+          ? this.selectedCashAccount?.id
+          : this.selectedChequeAccount?.id, // Use selectedChequeAccount for CHEQUE mode
       cheques: this.cheques,
       receiptNumber: this.receiptNumber,
       totalAmount: this.calculateTotalAmount(),

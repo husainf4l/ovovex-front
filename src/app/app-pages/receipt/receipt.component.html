@@ -1,64 +1,116 @@
-<h1 class="text-xl font-semibold  mb-3">Receipt</h1>
+<h1 class="text-xl font-semibold mb-3">Receipt</h1>
 
 <!-- Client and Account Manager Selection -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
-    (selected)="selectClient($event)">
+  <app-search-input
+    [items]="clients"
+    [displayKey]="'name'"
+    placeholder="Search customer"
+    [label]="'Clients'"
+    (selected)="selectClient($event)"
+  >
   </app-search-input>
 
-  <app-search-input [items]="accountManagers" [displayKey]="'name'" [label]="'Account Manager'"
-    placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
+  <app-search-input
+    [items]="accountManagers"
+    [displayKey]="'name'"
+    [label]="'Account Manager'"
+    placeholder="Search Account Manager"
+    (selected)="selectAccountManager($event)"
+  >
   </app-search-input>
 
   <div>
-    <label class="block text-sm font-medium ">Receipt #</label>
-    <input type="text" [(ngModel)]="receiptNumber" readonly
-      class="w-full mt-1 px-3 py-1.5 border 0 rounded-md text-sm cursor-not-allowed" />
+    <label class="block text-sm font-medium">Receipt #</label>
+    <input
+      type="text"
+      [(ngModel)]="receiptNumber"
+      readonly
+      class="w-full mt-1 px-3 py-1.5 border 0 rounded-md text-sm cursor-not-allowed"
+    />
   </div>
 </div>
 
-<!-- Payment Mode -->
+<!-- Payment Mode and Account Selection -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-  <app-dropdown label="Payment Mode"
-    [options]="[ { value: 'CASH', label: 'Cash' }, { value: 'CHEQUE', label: 'Cheque' } ]"
-    [(selectedValue)]="paymentMode" (selectedValueChange)="updatePaymentMode()">
+  <app-dropdown
+    label="Payment Mode"
+    [options]="[
+      { value: 'CASH', label: 'Cash' },
+      { value: 'CHEQUE', label: 'Cheque' }
+    ]"
+    [(selectedValue)]="paymentMode"
+    (selectedValueChange)="updatePaymentMode()"
+  >
   </app-dropdown>
 
   <!-- Cash Accounts (Only for Cash Mode) -->
-  <app-search-input *ngIf="paymentMode === 'CASH'" [items]="cashAccounts" [displayKey]="'name'" [label]="'Cash Account'"
-    placeholder="Select cash account" (selected)="selectCashAccount($event)">
+  <app-search-input
+    *ngIf="paymentMode === 'CASH'"
+    [items]="cashAccounts"
+    [displayKey]="'name'"
+    [label]="'Cash Account'"
+    placeholder="Select cash account"
+    (selected)="selectCashAccount($event)"
+  >
   </app-search-input>
 
-  <div *ngIf="paymentMode === 'CASH'">
-    <label class="block text-sm font-medium ">Cash Amount</label>
-    <input type="number" [(ngModel)]="cashAmount" name="cashAmount"
-      class="w-full mt-1 px-3 py-1.5 border-custom text-sm" placeholder="Enter Cash Amount" />
-  </div>
-
+  <!-- Cheque Accounts (Only for Cheque Mode) -->
+  <app-search-input
+    *ngIf="paymentMode === 'CHEQUE'"
+    [items]="chequeAccounts"
+    [displayKey]="'name'"
+    [label]="'Cheque Account'"
+    placeholder="Select cheque account"
+    (selected)="selectChequeAccount($event)"
+  >
+  </app-search-input>
 </div>
 
 <!-- Cheque Details -->
 <div *ngIf="paymentMode === 'CHEQUE'" class="mt-4">
   <h2 class="text-lg font-semibold mb-2">Cheque Details</h2>
-  <button (click)="addCheque()" class="mb-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary">
+  <button
+    (click)="addCheque()"
+    class="mb-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary"
+  >
     Add Cheque
   </button>
-  <div *ngFor="let cheque of cheques; let i = index" class="flex items-center gap-4 mb-2 border-b pb-2">
+  <div
+    *ngFor="let cheque of cheques; let i = index"
+    class="flex items-center gap-4 mb-2 border-b pb-2"
+  >
     <div class="w-1/5">
-      <label class="block text-sm font-medium ">Cheque Number</label>
-      <input type="text" [(ngModel)]="cheque.number" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
+      <label class="block text-sm font-medium">Cheque Number</label>
+      <input
+        type="text"
+        [(ngModel)]="cheque.chequeNumber"
+        class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+      />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium ">Bank Name</label>
-      <input type="text" [(ngModel)]="cheque.bankName" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
+      <label class="block text-sm font-medium">Bank Name</label>
+      <input
+        type="text"
+        [(ngModel)]="cheque.bankName"
+        class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+      />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium ">Amount</label>
-      <input type="number" [(ngModel)]="cheque.amount" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
+      <label class="block text-sm font-medium">Amount</label>
+      <input
+        type="number"
+        [(ngModel)]="cheque.amount"
+        class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+      />
     </div>
     <div class="w-1/5">
-      <label class="block text-sm font-medium ">Cheque Date</label>
-      <input type="date" [(ngModel)]="cheque.date" class="w-full mt-1 px-3 py-1.5 border-custom text-sm" />
+      <label class="block text-sm font-medium">Cheque Date</label>
+      <input
+        type="date"
+        [(ngModel)]="cheque.date"
+        class="w-full mt-1 px-3 py-1.5 border-custom text-sm"
+      />
     </div>
     <div class="w-1/10 flex justify-center items-center">
       <button (click)="removeCheque(i)" class="text-red-500 hover:text-red-600">
@@ -69,7 +121,7 @@
 </div>
 
 <!-- Receipt Total -->
-<div *ngIf="paymentMode === 'CHEQUE'" class="mt-4">
+<div class="mt-4">
   <h3 class="text-lg font-semibold mb-2">Total Amount</h3>
   <p>{{ calculateTotalAmount() | currency }}</p>
 </div>
@@ -79,7 +131,11 @@
   <app-button [buttonText]="'Print'" (click)="printReceipt()">
     Print
   </app-button>
-  <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveReceipt()">
+  <app-button
+    [buttonText]="'Save'"
+    [buttonType]="'submit'"
+    (click)="saveReceipt()"
+  >
     Save
   </app-button>
 </div>

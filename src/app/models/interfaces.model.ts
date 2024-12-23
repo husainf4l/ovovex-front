@@ -94,10 +94,11 @@ export interface AccountAdd {
 }
 
 export interface Cheque {
-  number: string;
+  chequeNumber: string;
   bankName: string;
   amount: number;
   date: string;
+  accountId?: string; // New property for cheque account
 }
 
 export interface InvoiceData {

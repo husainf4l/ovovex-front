@@ -8,6 +8,7 @@ export interface ReceiptData {
   clients: any[];
   accountManagers: any[];
   receiptNumber: number;
+  chequeAccounts: any[];
 }
 
 @Injectable({
