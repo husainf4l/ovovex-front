@@ -22,6 +22,9 @@ export class ChartOfAccountsComponent implements OnInit {
   searchQuery: string = '';
   loading: boolean = false;
   error: string | null = null;
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  debouncedSearch: any;
 
   constructor(private chartOfAccountsService: ChartOfAccountsService) { }
 
@@ -35,14 +38,13 @@ export class ChartOfAccountsComponent implements OnInit {
 
     this.chartOfAccountsService.getAccounts().subscribe({
       next: (data) => {
-        this.chartOfAccounts = data; // Flat structure
-        this.displayedAccounts = [...this.chartOfAccounts]; // Initially display all
+        this.chartOfAccounts = data;
+        this.displayedAccounts = [...this.chartOfAccounts];
         this.loading = false;
       },
       error: (err) => {
         console.error('Error fetching accounts:', err);
-        this.error =
-          'Failed to load chart of accounts. Please try again later.';
+        this.error = 'Failed to load chart of accounts. Please try again later.';
         this.loading = false;
       },
     });
@@ -53,22 +55,22 @@ export class ChartOfAccountsComponent implements OnInit {
   }
 
   onSearch(query: string): void {
-    this.searchQuery = query.toLowerCase();
-    this.displayedAccounts = this.chartOfAccounts.filter((account) =>
-      account.name.toLowerCase().includes(this.searchQuery)
-    );
+    clearTimeout(this.debouncedSearch);
+    this.debouncedSearch = setTimeout(() => {
+      this.searchQuery = query.toLowerCase();
+      this.filterAndSort();
+    }, 300);
   }
 
   clearSearch(): void {
     this.searchQuery = '';
-    this.displayedAccounts = [...this.chartOfAccounts];
+    this.filterAndSort();
   }
 
   downloadAsExcel() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Chart of Accounts');
 
-    // Add header row
     worksheet.addRow([
       'Account Number',
       'Account Name',
@@ -79,7 +81,6 @@ export class ChartOfAccountsComponent implements OnInit {
       'Current Balance',
     ]);
 
-    // Add account data rows
     this.displayedAccounts.forEach((account) => {
       worksheet.addRow([
         account.hierarchyCode,
@@ -92,7 +93,6 @@ export class ChartOfAccountsComponent implements OnInit {
       ]);
     });
 
-    // Style the header row
     const headerRow = worksheet.getRow(1);
     headerRow.eachCell((cell) => {
       cell.font = { bold: true };
@@ -105,22 +105,17 @@ export class ChartOfAccountsComponent implements OnInit {
       };
     });
 
-    // Adjust column widths
     worksheet.columns.forEach((column) => {
-      if (column.header) {
-        column.width =
-          column.header.length < 12 ? 12 : column.header.length + 2;
-      } else {
-        column.width = 12; // Default width if the header is undefined
-      }
+      column.width = column.header
+        ? Math.max(column.header.toString().length + 2, 12)
+        : 12;
     });
 
-    // Generate Excel file and trigger download
     workbook.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Chart_of_Accounts.xlsx');
+      saveAs(blob, `Chart_of_Accounts_${new Date().toISOString().slice(0, 10)}.xlsx`);
     });
   }
 
@@ -130,17 +125,48 @@ export class ChartOfAccountsComponent implements OnInit {
 
     this.chartOfAccountsService.reconsole().subscribe({
       next: (data) => {
-        this.chartOfAccounts = data; // Flat structure
-        this.displayedAccounts = [...this.chartOfAccounts]; // Initially display all
+        this.chartOfAccounts = data;
+        this.displayedAccounts = [...this.chartOfAccounts];
         this.loading = false;
       },
       error: (err) => {
         console.error('Error fetching accounts:', err);
-        this.error =
-          'Failed to load chart of accounts. Please try again later.';
+        this.error = 'Failed to load chart of accounts. Please try again later.';
         this.loading = false;
       },
     });
   }
 
+  sort(column: string): void {
+    if (this.sortColumn === column) {
+      // Toggle sorting direction if the same column is clicked
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Set the new column for sorting
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.filterAndSort(); // Apply sorting
+  }
+
+  filterAndSort() {
+    let filtered = this.chartOfAccounts.filter(
+      (account) =>
+        account.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        account.hierarchyCode.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+
+    if (this.sortColumn) {
+      filtered = filtered.sort((a, b) => {
+        const valA = a[this.sortColumn as keyof Account] as string | number;
+        const valB = b[this.sortColumn as keyof Account] as string | number;
+
+        if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    this.displayedAccounts = filtered;
+  }
 }

@@ -8,11 +8,10 @@
       Download Excel
     </button>
     <button (click)="reconsole()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-      reconsole
+      Reconcile
     </button>
   </div>
 </div>
-
 
 <!-- Search Bar -->
 <div class="px-4 py-3 border-b flex items-center gap-2">
@@ -38,49 +37,94 @@
   <table class="w-full text-sm text-left border-t">
     <thead class="0 text-xs uppercase">
       <tr>
-        <th class="px-3 py-2">Account Number</th>
-        <th class="px-3 py-2">Account Name</th>
-        <th class="px-3 py-2">Account Type</th>
-        <th class="px-3 py-2">openingBalance</th>
-
-        <th class="px-3 py-2">Debit Transactions</th>
-        <th class="px-3 py-2">Credit Transactions</th>
-
-        <th class="px-3 py-2 text-right">Balance</th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('hierarchyCode')">
+          Account Number
+          <mat-icon *ngIf="sortColumn === 'hierarchyCode'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'hierarchyCode'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('name')">
+          Account Name
+          <mat-icon *ngIf="sortColumn === 'name'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'name'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('accountType')">
+          Account Type
+          <mat-icon *ngIf="sortColumn === 'accountType'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'accountType'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('openingBalance')">
+          Opening Balance
+          <mat-icon *ngIf="sortColumn === 'openingBalance'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'openingBalance'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('totalDebit')">
+          Debit Transactions
+          <mat-icon *ngIf="sortColumn === 'totalDebit'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'totalDebit'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 cursor-pointer" (click)="sort('totalCredit')">
+          Credit Transactions
+          <mat-icon *ngIf="sortColumn === 'totalCredit'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'totalCredit'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
+        <th class="px-3 py-2 text-right cursor-pointer" (click)="sort('currentBalance')">
+          Balance
+          <mat-icon *ngIf="sortColumn === 'currentBalance'" class="ml-1 text-gray-500">
+            {{ sortDirection === 'asc' ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+          <mat-icon *ngIf="sortColumn !== 'currentBalance'" class="ml-1 text-gray-300">
+            swap_vert
+          </mat-icon>
+        </th>
         <th class="px-3 py-2 text-center">Actions</th>
       </tr>
     </thead>
+
+
     <tbody>
       <ng-container *ngFor="let account of displayedAccounts">
-        <tr class="border-b border-gray-200 hover:bg-red-50">
-          <td class="px-3 py-2" [ngClass]="{ 'text-red-500': !!account.mainAccount }">
-            {{ account.hierarchyCode }}
-          </td>
+        <tr class="border-b border-gray-200 hover:bg-gray-50">
+          <td class="px-3 py-2">{{ account.hierarchyCode }}</td>
           <td class="px-3 py-2">{{ account.name }}</td>
           <td class="px-3 py-2">{{ account.accountType }}</td>
           <td class="px-3 py-2">{{ account.openingBalance }}</td>
           <td class="px-3 py-2">{{ account.totalDebit }}</td>
           <td class="px-3 py-2">{{ account.totalCredit }}</td>
-
-          <td class="px-3 py-2 text-right" [ngClass]="{ 'text-red-500': !!account.mainAccount }">
-            {{ account.currentBalance | currency : "JOD" }}
-          </td>
+          <td class="px-3 py-2 text-right">{{ account.currentBalance | currency : "JOD" }}</td>
           <td class="px-3 py-2 text-center">
-            <span *ngIf="account.mainAccount">-</span>
-
-            <button *ngIf="!account.mainAccount" class="text-primary hover:underline mr-2"
-              [routerLink]="['../account-statement', account.id]">
+            <button class="text-primary hover:underline mr-2" [routerLink]="['../account-statement', account.id]">
               View Statement
+            </button>
+            <button class="text-blue-600 hover:underline" [routerLink]="['../edit-account', account.id]">
+              Edit
             </button>
           </td>
         </tr>
       </ng-container>
     </tbody>
   </table>
-  <div class="flex justify-center m-10">
-    <button (click)="initialize()" *ngIf="chartOfAccounts.length == 0"
-      class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-green-700">
-      initialize
-    </button>
-  </div>
 </div>
