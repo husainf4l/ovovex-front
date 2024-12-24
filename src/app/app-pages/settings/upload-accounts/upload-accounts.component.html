@@ -22,15 +22,13 @@
     <table class="table-auto w-full border">
       <thead class="bg-gray-200">
         <tr>
-          <th class="px-4 py-2 border">Hierarchy Code</th>
-          <th class="px-4 py-2 border">Name</th>
-          <th class="px-4 py-2 border">Account Type</th>
-          <th class="px-4 py-2 border">Opening Balance</th>
-          <th class="px-4 py-2 border">Current Balance</th>
-          <th class="px-4 py-2 border">Main Account</th>
-          <th class="px-4 py-2 border">Bank Name</th>
-          <th class="px-4 py-2 border">Account Number</th>
-          <th class="px-4 py-2 border">companyId</th>
+          <th class="px-4 py-2 border">code</th>
+          <th class="px-4 py-2 border">parentCode</th>
+          <th class="px-4 py-2 border">mainAcctount</th>
+          <th class="px-4 py-2 border">level</th>
+          <th class="px-4 py-2 border">name</th>
+          <th class="px-4 py-2 border">nameAr</th>
+          <th class="px-4 py-2 border">accountType</th>
         </tr>
       </thead>
       <tbody>
@@ -38,7 +36,24 @@
           <td class="px-4 py-2 border">
             <input
               type="text"
-              [(ngModel)]="account.hierarchyCode"
+              [(ngModel)]="account.code"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [(ngModel)]="account.parentCode"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input type="checkbox" [(ngModel)]="account.mainAccount" />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [(ngModel)]="account.level"
               class="w-full p-2 border rounded"
             />
           </td>
@@ -46,6 +61,13 @@
             <input
               type="text"
               [(ngModel)]="account.name"
+              class="w-full p-2 border rounded"
+            />
+          </td>
+          <td class="px-4 py-2 border">
+            <input
+              type="text"
+              [(ngModel)]="account.nameAr"
               class="w-full p-2 border rounded"
             />
           </td>
@@ -58,46 +80,6 @@
                 {{ type }}
               </option>
             </select>
-          </td>
-          <td class="px-4 py-2 border">
-            <input
-              type="number"
-              [(ngModel)]="account.openingBalance"
-              class="w-full p-2 border rounded"
-            />
-          </td>
-          <td class="px-4 py-2 border">
-            <input
-              type="number"
-              [(ngModel)]="account.currentBalance"
-              class="w-full p-2 border rounded"
-            />
-          </td>
-          <td class="px-4 py-2 border">
-            <input type="checkbox" [(ngModel)]="account.mainAccount" />
-          </td>
-          <td class="px-4 py-2 border">
-            <input
-              type="text"
-              [value]="account.bankDetails?.bankName || ''"
-              (input)="updateBankDetails(i, 'bankName', $event)"
-              class="w-full p-2 border rounded"
-            />
-          </td>
-          <td class="px-4 py-2 border">
-            <input
-              type="text"
-              [value]="account.bankDetails?.accountNumber || ''"
-              (input)="updateBankDetails(i, 'accountNumber', $event)"
-              class="w-full p-2 border rounded"
-            />
-          </td>
-          <td class="px-4 py-2 border">
-            <input
-              type="companyId"
-              [(ngModel)]="account.companyId"
-              class="w-full p-2 border rounded"
-            />
           </td>
         </tr>
       </tbody>

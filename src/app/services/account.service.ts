@@ -15,8 +15,11 @@ export class AccountService {
   token = localStorage.getItem('token');
 
   bulkUpload(data: CreateAccountDto[]): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
     const endpoint = `${this.apiUrl}/bulk`;
-    return this.http.post(endpoint, { data });
+    return this.http.post(endpoint, { data }, { headers });
   }
 
   getAccountStatement(

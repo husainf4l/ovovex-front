@@ -26,7 +26,7 @@ export class ChartOfAccountsComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
   debouncedSearch: any;
 
-  constructor(private chartOfAccountsService: ChartOfAccountsService) { }
+  constructor(private chartOfAccountsService: ChartOfAccountsService) {}
 
   ngOnInit(): void {
     this.fetchChartOfAccounts();
@@ -44,7 +44,8 @@ export class ChartOfAccountsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching accounts:', err);
-        this.error = 'Failed to load chart of accounts. Please try again later.';
+        this.error =
+          'Failed to load chart of accounts. Please try again later.';
         this.loading = false;
       },
     });
@@ -73,6 +74,8 @@ export class ChartOfAccountsComponent implements OnInit {
 
     worksheet.addRow([
       'Account Number',
+      'Parent Account',
+      'mainAccount',
       'Account Name',
       'Account Type',
       'Opening Balance',
@@ -83,7 +86,9 @@ export class ChartOfAccountsComponent implements OnInit {
 
     this.displayedAccounts.forEach((account) => {
       worksheet.addRow([
-        account.hierarchyCode,
+        account.code,
+        account.parentCode,
+        account.mainAccount,
         account.name,
         account.accountType,
         account.openingBalance,
@@ -115,7 +120,10 @@ export class ChartOfAccountsComponent implements OnInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, `Chart_of_Accounts_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      saveAs(
+        blob,
+        `Chart_of_Accounts_${new Date().toISOString().slice(0, 10)}.xlsx`
+      );
     });
   }
 
@@ -131,7 +139,8 @@ export class ChartOfAccountsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching accounts:', err);
-        this.error = 'Failed to load chart of accounts. Please try again later.';
+        this.error =
+          'Failed to load chart of accounts. Please try again later.';
         this.loading = false;
       },
     });
@@ -153,7 +162,9 @@ export class ChartOfAccountsComponent implements OnInit {
     let filtered = this.chartOfAccounts.filter(
       (account) =>
         account.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        account.hierarchyCode.toLowerCase().includes(this.searchQuery.toLowerCase())
+        account.code
+          .toLowerCase()
+          .includes(this.searchQuery.toLowerCase())
     );
 
     if (this.sortColumn) {

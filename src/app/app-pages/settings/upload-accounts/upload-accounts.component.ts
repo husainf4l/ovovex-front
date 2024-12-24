@@ -25,7 +25,7 @@ export class UploadAccountsComponent {
     'EQUITY',
     'REVENUE',
     'EXPENSE',
-    'TRADEEXPENSES',
+    'CONTRA_ASSET',
   ];
 
   constructor(private accountService: AccountService) {}
@@ -64,13 +64,13 @@ export class UploadAccountsComponent {
   }
   getRows(worksheet: ExcelJS.Worksheet): CreateAccountDto[] {
     const rows: CreateAccountDto[] = [];
-  
+
     worksheet.eachRow((row, rowIndex) => {
       if (rowIndex > 1) {
         // Skip header row
         const rowValues = Array.isArray(row.values) ? row.values.slice(1) : [];
         const rowData: { [key: string]: string | undefined } = {};
-  
+
         this.headers.forEach((header, index) => {
           if (header && index < rowValues.length) {
             const value = rowValues[index];
@@ -80,65 +80,26 @@ export class UploadAccountsComponent {
                 : undefined;
           }
         });
-  
+
         const account: CreateAccountDto = {
-          hierarchyCode: rowData['hierarchyCode'] || '',
-          name: rowData['name'] || '',
-          companyId: rowData['companyId'] || '',
-          accountType:
-            (rowData['accountType'] as CreateAccountDto['accountType']) || 'ASSET',
-          parentAccountId: rowData['parentAccountId'] || undefined,
-          openingBalance: rowData['openingBalance']
-            ? parseFloat(rowData['openingBalance'])
-            : undefined,
-          currentBalance: rowData['currentBalance']
-            ? parseFloat(rowData['currentBalance'])
-            : 0,
+          code: rowData['code'] || '',
+          parentCode: rowData['parentCode'] || '',
           mainAccount: rowData['mainAccount'] === 'true',
-          bankDetails: rowData['bankName'] || rowData['accountNumber'] // Initialize only if relevant fields exist
-            ? {
-                bankName: rowData['bankName'] || '',
-                accountNumber: rowData['accountNumber'] || '',
-                companyId: rowData['companyId'] || 'd6663167-e873-4ab3-87de-6ec72595005d',
-              }
-            : undefined,
-          customerDetails: rowData['customerName'] || rowData['customerPhone'] || rowData['customerEmail'] || rowData['customerAddress'] // Initialize only if relevant fields exist
-            ? {
-                name: rowData['customerName'] || '',
-                phone: rowData['customerPhone'] || '',
-                email: rowData['customerEmail'] || '',
-                address: rowData['customerAddress'] || '',
-              }
-            : undefined,
+          level: rowData['level'] ? parseFloat(rowData['level']) : 0,
+          name: rowData['name'] || '',
+          nameAr: rowData['nameAr'] || '',
+          accountType:
+            (rowData['accountType'] as CreateAccountDto['accountType']) ||
+            'ASSET',
         };
-  
         rows.push(account);
       }
     });
-  
+
     return rows;
   }
-  
-  updateBankDetails(
-    index: number,
-    field: keyof BankDetailsDto,
-    event: Event
-  ): void {
-    const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
-    const value = input?.value || '';
 
-    // Ensure bankDetails is initialized
-    if (!this.excelData[index].bankDetails) {
-      this.excelData[index].bankDetails = {
-        bankName: '',
-        accountNumber: '',
-        companyId: 'd6663167-e873-4ab3-87de-6ec72595005d',
-      };
-    }
-
-    // Update the specific field
-    this.excelData[index].bankDetails[field] = value;
-  }
+ 
 
   submitData() {
     if (this.excelData.length === 0) {

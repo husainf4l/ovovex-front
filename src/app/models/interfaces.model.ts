@@ -24,7 +24,8 @@ export interface Client {
 
 export interface Account {
   id: string;
-  hierarchyCode: string;
+  parentCode?: string;
+  code: string;
   name: string;
   accountType: string;
   openingBalance: number;
@@ -180,9 +181,12 @@ export interface CustomerDetailsDto {
 }
 
 export interface CreateAccountDto {
-  hierarchyCode: string;
+  code: string;
+  parentCode?: string;
+  mainAccount: boolean;
+  level: number;
   name: string;
-  companyId: string;
+  nameAr: string;
   accountType:
     | 'ASSET'
     | 'LIABILITY'
@@ -190,10 +194,4 @@ export interface CreateAccountDto {
     | 'REVENUE'
     | 'EXPENSE'
     | 'TRADEEXPENSES';
-  parentAccountId?: string; // Optional for hierarchical accounts
-  openingBalance?: number; // Optional field
-  currentBalance: number; // Required field
-  mainAccount: boolean;
-  bankDetails?: BankDetailsDto; // Optional nested object for bank details
-  customerDetails?: CustomerDetailsDto; // Optional nested object for customer details
 }
