@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as ExcelJS from 'exceljs'; // Use Excel.js for Excel file handling
+import * as ExcelJS from 'exceljs';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { ClientsService } from '../../../services/clients.service';
 @Component({
   selector: 'app-upload-clients',
   templateUrl: './upload-clients.component.html',
-  styleUrl: './upload-clients.component.css',
+  styleUrls: ['./upload-clients.component.css'],
   imports: [CommonModule, FormsModule],
 })
 export class UploadClientsComponent {
@@ -17,7 +17,7 @@ export class UploadClientsComponent {
   constructor(private clientsService: ClientsService) { }
 
   // Handle file upload
-  onFileChange(event: any) {
+  onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -28,12 +28,13 @@ export class UploadClientsComponent {
         const data: any[] = [];
 
         worksheet.eachRow((row, rowIndex) => {
-          if (rowIndex > 1) { // Skip header
+          if (rowIndex > 1) {
             const client = {
               name: row.getCell(1).value,
-              email: row.getCell(2).value,
-              phone: row.getCell(3).value,
-              balance: row.getCell(4).value,
+              taxId: row.getCell(2).value,
+              email: row.getCell(3).value,
+              phone: row.getCell(4).value,
+              openingBalance: row.getCell(5).value || 0,
             };
             data.push(client);
           }
@@ -46,12 +47,12 @@ export class UploadClientsComponent {
   }
 
   // Download template
-  async downloadTemplate() {
+  async downloadTemplate(): Promise<void> {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Clients');
 
     // Add headers
-    worksheet.addRow(['Client Name', 'Email', 'Phone', 'Balance']);
+    worksheet.addRow(['Client Name', 'Tax ID', 'Email', 'Phone', 'Opening Balance']);
 
     // Create a downloadable file
     const buffer = await workbook.xlsx.writeBuffer();
@@ -62,15 +63,13 @@ export class UploadClientsComponent {
     link.click();
   }
 
-
-
   // Delete a client row
-  deleteClient(index: number) {
+  deleteClient(index: number): void {
     this.clients.splice(index, 1);
   }
 
   // Upload clients to backend
-  uploadClients() {
+  uploadClients(): void {
     this.clientsService.bulkUploadClients(this.clients).subscribe(
       (response) => {
         alert('Clients uploaded successfully!');
@@ -81,5 +80,4 @@ export class UploadClientsComponent {
       }
     );
   }
-
 }

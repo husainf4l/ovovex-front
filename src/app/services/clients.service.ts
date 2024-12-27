@@ -32,7 +32,7 @@ export class ClientsService {
   }
 
   bulkUploadClients(clients: any[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/bulk-upload`, { clients });
+    return this.http.post(`${this.apiUrl}/bulk`, { clients });
   }
 
 
