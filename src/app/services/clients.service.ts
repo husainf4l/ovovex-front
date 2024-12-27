@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ClientsService {
   private apiUrl = `${environment.apiUrl}/clients`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   token = localStorage.getItem('token');
 
   createClient(data: {
@@ -30,4 +30,10 @@ export class ClientsService {
     });
     return this.http.get<any[]>(`${this.apiUrl}/all-clients`, { headers });
   }
+
+  bulkUploadClients(clients: any[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/bulk-upload`, { clients });
+  }
+
+
 }

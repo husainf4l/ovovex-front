@@ -1,0 +1,35 @@
+<div class="upload-client-container">
+    <h2>Upload Clients from Excel</h2>
+    <form>
+        <input type="file" (change)="onFileChange($event)" accept=".xlsx" />
+        <button type="button" (click)="downloadTemplate()">Download Template</button>
+        <button type="button" (click)="uploadClients()">Upload Clients</button>
+    </form>
+
+    <div *ngIf="clients && clients.length > 0">
+        <h3>Editable Clients</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Balance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clients; let i = index">
+                    <td><input [(ngModel)]="clients[i].name" /></td>
+                    <td><input [(ngModel)]="clients[i].email" /></td>
+                    <td><input [(ngModel)]="clients[i].phone" /></td>
+                    <td><input [(ngModel)]="clients[i].balance" type="number" /></td>
+                    <td>
+                        <button (click)="deleteClient(i)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button (click)="uploadClients()">Save Changes</button>
+    </div>
+</div>
