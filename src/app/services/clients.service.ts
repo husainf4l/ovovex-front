@@ -32,7 +32,10 @@ export class ClientsService {
   }
 
   bulkUploadClients(clients: any[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/bulk`, { clients });
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+    return this.http.post(`${this.apiUrl}/bulk`, { clients }, { headers });
   }
 
 
