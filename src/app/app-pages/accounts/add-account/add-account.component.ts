@@ -14,10 +14,13 @@ import { Router } from '@angular/router';
 export class AddAccountComponent {
   account: AccountAdd = {
     name: '',
+    nameAr: '',
     accountType: 'ASSET',
     openingBalance: 0,
     mainAccount: false,
     parentAccountId: null,
+    level: null,
+    ifrcClassification: null,
   };
 
   mainAccounts: AccountAdd[] = []; // Main accounts loaded from the backend
@@ -27,8 +30,6 @@ export class AddAccountComponent {
   ngOnInit(): void {
     this.loadMainAccounts();
   }
-
-
 
   loadMainAccounts(): void {
     this.accountService.getMainAccounts().subscribe({
@@ -45,6 +46,11 @@ export class AddAccountComponent {
     if (!this.account.parentAccountId) {
       alert('Please select a parent account.');
       return;
+    }
+
+    // Ensure the "Is Main Account?" flag is correctly set
+    if (this.account.parentAccountId) {
+      this.account.mainAccount = false; // Sub-accounts cannot be main accounts
     }
 
     this.accountService.createAccount(this.account).subscribe({

@@ -85,14 +85,18 @@ export interface Journals {
 }
 
 export interface AccountAdd {
-  id?: string;
-  name: string;
-  accountType: 'ASSET' | 'LIABILITY' | 'EQUITY' | 'REVENUE' | 'EXPENSE'; // Adjust based on your schema
-  openingBalance?: number;
-  parentAccountId?: string | null; // Nullable for main accounts
-  mainAccount: boolean;
-  currentBalance?: number; // Automatically calculated, but can be included
+  id?: string; // Optional, used when editing existing accounts
+  name: string; // Account name
+  nameAr?: string; // Arabic account name, optional
+  accountType: 'ASSET' | 'LIABILITY' | 'EQUITY' | 'REVENUE' | 'EXPENSE'; // Main account types
+  openingBalance?: number; // Optional opening balance
+  parentAccountId?: string | null; // Allow null for main accounts
+  mainAccount: boolean; // Indicates whether the account is a main account
+  currentBalance?: number; // Calculated balance, optional for display
+  level?: number | null; // Allow null for top-level accounts
+  ifrcClassification?: string | null; // Optional, for IFRS classification
 }
+
 
 export interface Cheque {
   chequeNumber: string;
@@ -188,10 +192,10 @@ export interface CreateAccountDto {
   name: string;
   nameAr: string;
   accountType:
-    | 'ASSET'
-    | 'LIABILITY'
-    | 'EQUITY'
-    | 'REVENUE'
-    | 'EXPENSE'
-    | 'TRADEEXPENSES';
+  | 'ASSET'
+  | 'LIABILITY'
+  | 'EQUITY'
+  | 'REVENUE'
+  | 'EXPENSE'
+  | 'TRADEEXPENSES';
 }
