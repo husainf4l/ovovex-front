@@ -6,6 +6,7 @@ import { UploadExcileComponent } from './app-pages/settings/upload-excile/upload
 import { UploadAccountsComponent } from './app-pages/settings/upload-accounts/upload-accounts.component';
 import { UploadJournalComponent } from './app-pages/settings/upload-journal/upload-journal.component';
 import { UploadClientsComponent } from './app-pages/settings/upload-clients/upload-clients.component';
+import { ClientDetailsComponent } from './app-pages/clients/client-details/client-details.component';
 
 export const routes: Routes = [
   {
@@ -231,6 +232,7 @@ export const routes: Routes = [
       { path: 'settings/upload-accounts', component: UploadAccountsComponent },
       { path: 'settings/upload-journal', component: UploadJournalComponent },
       { path: 'settings/upload-clients', component: UploadClientsComponent },
+      { path: 'client-details/:id', component: ClientDetailsComponent },
 
 
 
