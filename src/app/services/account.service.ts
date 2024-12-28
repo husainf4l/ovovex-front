@@ -11,7 +11,7 @@ import { formatISO } from 'date-fns';
 export class AccountService {
   private apiUrl = `${environment.apiUrl}/accounts`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   token = localStorage.getItem('token');
 
   bulkUpload(data: CreateAccountDto[]): Observable<any> {
@@ -73,7 +73,7 @@ export class AccountService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
     });
-    return this.http.get<AccountAdd[]>(`${this.apiUrl}`, { headers });
+    return this.http.get<AccountAdd[]>(`${this.apiUrl}/all-accounts`, { headers });
   }
 
   getMainAccounts(): Observable<AccountAdd[]> {

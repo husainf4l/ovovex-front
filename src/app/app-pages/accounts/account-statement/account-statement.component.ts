@@ -1,3 +1,4 @@
+// account-statement.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,7 @@ import { ButtonComponent } from "../../../components/shared/button/button.compon
   selector: 'app-account-statement',
   templateUrl: './account-statement.component.html',
   styleUrls: ['./account-statement.component.css'],
-  imports: [CommonModule, FormsModule, SearchInputComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ButtonComponent],
 })
 export class AccountStatementComponent implements OnInit {
   accountId: string | null = null;
@@ -34,8 +35,6 @@ export class AccountStatementComponent implements OnInit {
   ) {
     const today = new Date();
     const startOfYear = new Date(today.getFullYear(), 0, 1);
-
-    // Initialize filters
     this.filters.startDate = this.formatDate(startOfYear);
     this.filters.endDate = this.formatDate(today);
   }
@@ -49,7 +48,6 @@ export class AccountStatementComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.accountId = params['accountId'] || null;
-
       if (!this.accountId) {
         this.fetchAccounts();
       } else {
@@ -60,7 +58,6 @@ export class AccountStatementComponent implements OnInit {
 
   fetchAccounts(): void {
     this.loading = true;
-
     this.chartOfAccountsService.getAccounts().subscribe({
       next: (data) => {
         this.accounts = data.map((account: any) => ({
@@ -83,12 +80,9 @@ export class AccountStatementComponent implements OnInit {
       this.error = 'Account ID is missing.';
       return;
     }
-
     this.loading = true;
-    this.error = '';
-
     this.accountService
-      .getAccountStatement(this.accountId, page, 10, this.filters)
+      .getAccountStatement(this.accountId!, page, 10, this.filters)
       .subscribe({
         next: (data) => {
           this.accountDetails = data.accountDetails || {};
@@ -100,19 +94,15 @@ export class AccountStatementComponent implements OnInit {
           };
           this.openingBalance = this.accountDetails.openingBalance || 0;
 
-          // Add the "Opening Balance" as a pseudo-transaction
-          if (this.openingBalance !== 0) {
-            this.transactions.unshift({
-              journalEntry: { date: null },
-              debit: null,
-              credit: null,
-              runningBalance: this.openingBalance,
-              notes: 'Opening Balance', // Add a note for Opening Balance
-              type: 'Opening Balance',
-            });
-          }
+          this.transactions.unshift({
+            journalEntry: { date: null },
+            debit: null,
+            credit: null,
+            runningBalance: this.openingBalance,
+            notes: 'Opening Balance',
+            type: 'Opening Balance',
+          });
 
-          // Calculate totals
           this.totalDebits = this.transactions.reduce(
             (sum, t) => sum + (t.debit || 0),
             0
@@ -132,10 +122,8 @@ export class AccountStatementComponent implements OnInit {
       });
   }
 
-
-
   applyFilters(): void {
-    this.pagination.currentPage = 1; // Reset to the first page when applying filters
+    this.pagination.currentPage = 1;
     this.fetchAccountStatement();
   }
 
@@ -158,39 +146,8 @@ export class AccountStatementComponent implements OnInit {
       const printWindow = window.open('', '_blank', 'width=800,height=600');
       printWindow?.document.write(`
         <html>
-          <head>
-            <title>Account Statement</title>
-            <style>
-              @media print {
-                body {
-                  font-family: Arial, sans-serif;
-                  margin: 20px;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                th, td {
-                  border: 1px solid #ddd;
-                  padding: 8px;
-                }
-                th {
-                  background-color: #f4f4f4;
-                }
-                footer {
-                  position: fixed;
-                  bottom: 0;
-                  text-align: center;
-                  font-size: 0.8rem;
-                  width: 100%;
-                }
-              }
-            </style>
-          </head>
-          <body>
-            ${printContents}
-            <footer>Company Address: 123 Business Street, City, Country</footer>
-          </body>
+          <head><title>Account Statement</title></head>
+          <body>${printContents}</body>
         </html>
       `);
       printWindow?.document.close();

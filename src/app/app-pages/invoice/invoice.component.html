@@ -1,84 +1,70 @@
-<h1 class="text-xl font-semibold mb-3">Invoice</h1>
+<h1 class="text-2xl font-bold mb-4">Invoice</h1>
 
-<div class="bg-foreground p-4 border-custom">
-  <button class="mt-1 bg-primary text-white px-3 py-1 text-sm rounded" (click)="openAddCustomerDialog()">
+<div class="bg-white shadow rounded p-6">
+
+  <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openAddCustomerDialog()">
     Add New Customer
   </button>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class=" ">
-      <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search customer" [label]="'Clients'"
-        (selected)="selectClient($event)"></app-search-input>
-    </div>
 
-    <app-search-input [items]="accountManagers" [displayKey]="'name'" [label]="'Account Manager'"
-      placeholder="Search Account Manager" (selected)="selectAccountManager($event)">
-    </app-search-input>
-
-    <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate">
-    </app-date-selector>
+    <app-search-input [items]="clients" [displayKey]="'name'" placeholder="Search Customer" [label]="'Customer'"
+      (selected)="selectClient($event)"></app-search-input>
+    <app-search-input [items]="accountManagers" [displayKey]="'name'" placeholder="Search Account Manager"
+      [label]="'Account Manager'" (selected)="selectAccountManager($event)"></app-search-input>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-1">
-    <!-- Invoice Number -->
-    <div>
-      <label class="block text-sm font-medium">Invoice #</label>
-      <input type="text" [(ngModel)]="number" readonly
-        class="w-full mt-1 px-3 py-1.5 border-custom text-sm cursor-not-allowed" />
-    </div>
-
-    <!-- Payment Mode -->
-    <app-dropdown label="Payment" [options]="[
-        { value: '012', label: 'Cash' },
-        { value: '022', label: 'Accounts Receivable' }
-      ]" [(selectedValue)]="InvoiceTypeCodeName"></app-dropdown>
-
-    <!-- Tax Section -->
-    <app-dropdown label="Tax" [options]="[
-        { value: 16, label: '16%' },
-        { value: 0, label: '0%' }
-      ]" [(selectedValue)]="taxRate" (selectedValueChange)="updateTotals()">
-    </app-dropdown>
-    <app-dropdown *ngIf="InvoiceTypeCodeName == '012'" label="Cash Accounts" [options]="cashAccounts"
-      [(selectedValue)]="selectedCashAccountId" (selectedValueChange)="updateCashAccountId($event)">
-    </app-dropdown>
+  <!-- Invoice Details -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+    <app-date-selector [label]="'Invoice Date'" [(selectedDate)]="invoiceDate"></app-date-selector>
+    <input type="text" [(ngModel)]="number" readonly class="border px-4 py-2 rounded" placeholder="Invoice Number" />
+    <app-dropdown label="Payment Mode"
+      [options]="[{ value: '012', label: 'Cash' }, { value: '022', label: 'Accounts Receivable' }]"
+      [(selectedValue)]="InvoiceTypeCodeName"></app-dropdown>
+    <app-dropdown *ngIf="InvoiceTypeCodeName === '012'" label="Cash Accounts" [options]="cashAccounts"
+      [(selectedValue)]="selectedCashAccountId"></app-dropdown>
   </div>
 
-  <div class="mb-3 mt-6">
-    <app-search-input [items]="products" [displayKey]="'name'" placeholder="Search Product by barcode or name"
-      [clearOnSelect]="true" [label]="'Add Product'" (selected)="selectProduct($event)">
-    </app-search-input>
+  <!-- Products -->
+  <app-search-input [items]="products" [displayKey]="'name'" placeholder="Add Products" [clearOnSelect]="true"
+    (selected)="addProductToInvoice($event)"></app-search-input>
+
+  <div class="overflow-x-auto mt-6">
+    <table class="min-w-full border border-gray-200">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="text-left px-4 py-2">Barcode</th>
+          <th class="text-left px-4 py-2">Product Name</th>
+          <th class="text-center px-4 py-2">Quantity</th>
+          <th class="text-right px-4 py-2">Unit Price</th>
+          <th class="text-right px-4 py-2">Total</th>
+          <th class="text-center px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of invoiceProducts">
+          <td class="px-4 py-2">{{ product.barcode }}</td>
+          <td class="px-4 py-2">{{ product.name }}</td>
+          <td class="px-4 py-2 text-center">
+            <input type="number" [(ngModel)]="product.quantity" (change)="updateProductQuantity(product)"
+              class="w-16 px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500" />
+          </td>
+          <td class="px-4 py-2 text-right">{{ product.salesPrice | currency }}</td>
+          <td class="px-4 py-2 text-right">{{ product.total | currency }}</td>
+          <td class="px-4 py-2 text-center">
+            <button class="text-red-500 hover:underline" (click)="removeProduct(product.id)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- Totals and Actions -->
+  <app-invoice-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal"
+    [taxRate]="taxRate"></app-invoice-totals>
+
+  <div class="mt-6 flex justify-end space-x-4">
+    <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="printInvoice()">Print</button>
+    <button class="bg-green-500 text-white px-4 py-2 rounded" (click)="saveInvoice()">Save</button>
   </div>
 </div>
-
-<div class="mt-6">
-  <app-data-table [columns]="[
-      { label: 'Barcode', key: 'barcode' },
-      { label: 'name', key: 'name' },
-      { label: 'Quantity', key: 'quantity' },
-      { label: 'Price', key: 'salesPrice' },
-      { label: 'Total', key: 'total' }
-    ]" [data]="invoiceProducts"></app-data-table>
-</div>
-
-<app-invoice-totals [subtotal]="subtotal" [vatAmount]="vatAmount" [grandTotal]="grandTotal" [taxRate]="taxRate">
-</app-invoice-totals>
-
-<!-- Actions -->
-<div class="flex justify-end gap-4">
-  <app-button [buttonText]="'Print'" (click)="printInvoice()"></app-button>
-
-  <app-button [buttonText]="'Save'" [buttonType]="'submit'" (click)="saveInvoice()"></app-button>
-</div>
-
-<app-invoice-print class="hidden" [invoiceData]="{
-    customerName: selectedClient?.name,
-    accountManagerName: selectedAccountManager?.name,
-    InvoiceTypeCodeName: InvoiceTypeCodeName,
-    date: invoiceDate,
-    invoiceNumber: number,
-    invoiceItems: invoiceProducts,
-    subtotal: subtotal,
-    vatAmount: vatAmount,
-    grandTotal: grandTotal,
-    taxRate: taxRate
-  }" [companyData]="userData.company"></app-invoice-print>

@@ -7,6 +7,7 @@ import { UploadAccountsComponent } from './app-pages/settings/upload-accounts/up
 import { UploadJournalComponent } from './app-pages/settings/upload-journal/upload-journal.component';
 import { UploadClientsComponent } from './app-pages/settings/upload-clients/upload-clients.component';
 import { ClientDetailsComponent } from './app-pages/clients/client-details/client-details.component';
+import { LinkingAccountsComponent } from './app-pages/settings/linkingaccounts/linkingaccounts.component';
 
 export const routes: Routes = [
   {
@@ -234,6 +235,7 @@ export const routes: Routes = [
       { path: 'settings/upload-clients', component: UploadClientsComponent },
       { path: 'client-details/:id', component: ClientDetailsComponent },
 
+      { path: 'settings/LinkingAccounts', component: LinkingAccountsComponent },
 
 
       {

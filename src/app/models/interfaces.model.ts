@@ -22,6 +22,14 @@ export interface Client {
   currentBalance: number;
 }
 
+export interface AccountManager {
+  id: string;
+  name: string;
+  phone: string;
+  currentBalance: number;
+}
+
+
 export interface Account {
   id: string;
   parentCode?: string;

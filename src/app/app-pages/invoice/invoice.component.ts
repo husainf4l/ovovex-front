@@ -1,102 +1,78 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  accountManagers,
-  Client,
-  InvoiceProduct,
-  Product,
-} from '../../models/interfaces.model';
+import { AccountManager, Client, InvoiceProduct, Product } from '../../models/interfaces.model';
 import { InvoiceService } from '../../services/invoice.service';
 import { AddCustomerDialogComponent } from '../../components/dialogs/add-customer-dialog/add-customer-dialog.component';
 import { InvoicePrintComponent } from '../../components/print/invoice-print/invoice-print.component';
-import { SearchInputComponent } from '../../components/shared/search-input/search-input.component';
-import { DropdownComponent } from '../../components/shared/dropdown/dropdown.component';
-import { TableComponent } from '../../components/shared/table/table.component';
-import { TotalsComponent } from '../../components/shared/totals/totals.component';
-import { DateSelectorComponent } from '../../components/shared/date-selector/date-selector.component';
-import { ButtonComponent } from '../../components/shared/button/button.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TotalsComponent } from "../../components/shared/totals/totals.component";
+import { SearchInputComponent } from "../../components/shared/search-input/search-input.component";
+import { DropdownComponent } from "../../components/shared/dropdown/dropdown.component";
+import { DateSelectorComponent } from "../../components/shared/date-selector/date-selector.component";
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css'],
-  imports: [
-    FormsModule,
-    CommonModule,
-    InvoicePrintComponent,
-    SearchInputComponent,
-    DropdownComponent,
-    TotalsComponent,
-    DateSelectorComponent,
-    TableComponent,
-    ButtonComponent,
-  ],
+  imports: [CommonModule, FormsModule, TotalsComponent, SearchInputComponent, DropdownComponent, DateSelectorComponent],
 })
 export class InvoiceComponent implements OnInit {
-  @ViewChild(InvoicePrintComponent)
-  invoicePrintComponent!: InvoicePrintComponent; // Declare ViewChild
+  @ViewChild(InvoicePrintComponent) invoicePrintComponent!: InvoicePrintComponent;
 
   clients: Client[] = [];
   filteredClients: Client[] = [];
-  selectedClient: Client | null = null;
-  searchQuery: string = '';
   products: Product[] = [];
-  filteredProducts: Product[] = [];
-  productSearchQuery: string = '';
-  accountManagers: accountManagers[] = [];
-  filteredAccountManagers: accountManagers[] = [];
-  selectedAccountManager: accountManagers | null = null;
-  accountManagerSearchQuery: string = '';
   invoiceProducts: InvoiceProduct[] = [];
+  accountManagers: AccountManager[] = [];
+  cashAccounts: any[] = [];
+  selectedClient: Client | null = null;
+  selectedAccountManager: AccountManager | null = null;
+  selectedCashAccountId: string = '';
+  number: number = 0;
+  taxRate: number = 16;
   subtotal: number = 0;
   vatAmount: number = 0;
   grandTotal: number = 0;
-  taxRate: number = 16;
-  bonus: number = 0;
-  InvoiceTypeCodeName: string = '011';
-  customerName: string = '';
   invoiceDate: string = new Date().toISOString();
-  number: number = 0;
+  InvoiceTypeCodeName: any = '012';
+  searchQuery: string = '';
+  productSearchQuery: string = '';
+  accountManagerSearchQuery: string = '';
   userData: any;
-  cashAccounts: any = [];
-  selectedCashAccountId: string = '';
 
-  constructor(
-    private dialog: MatDialog,
-    private invoiceService: InvoiceService
-  ) {}
+  constructor(private dialog: MatDialog, private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    this.fetchData();
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      try {
+    this.loadUserData();
+    this.fetchInitialData();
+  }
+
+  private loadUserData(): void {
+    try {
+      const userDataString = localStorage.getItem('userData');
+      if (userDataString) {
         this.userData = JSON.parse(userDataString);
-      } catch (error) {
-        console.error('Error parsing userData:', error);
       }
+    } catch (error) {
+      console.error('Error loading user data:', error);
     }
   }
 
-  fetchData(): void {
+  private fetchInitialData(): void {
     this.invoiceService.getInvoiceData().subscribe({
       next: (data) => {
-        this.products = data.products;
         this.clients = data.clients;
+        this.products = data.products;
         this.accountManagers = data.accountManagers;
-        this.filteredClients = [...this.clients];
-        this.filteredProducts = [...this.products];
-        this.filteredAccountManagers = [...this.accountManagers];
-        this.number = data.number;
         this.cashAccounts = data.cashAccounts.map((account: any) => ({
           value: account.id,
           label: account.name,
         }));
+        this.number = data.number;
       },
       error: (err) => {
-        console.error('Error fetching data:', err);
+        console.error('Error fetching invoice data:', err);
       },
     });
   }
@@ -116,85 +92,50 @@ export class InvoiceComponent implements OnInit {
 
   filterProducts(): void {
     const query = this.productSearchQuery.toLowerCase().trim();
-    this.filteredProducts = this.products.filter(
+    this.products = this.products.filter(
       (product) =>
         product.name?.toLowerCase().includes(query) ||
         product.barcode.includes(query)
     );
   }
 
-  selectProduct(product: Product): void {
-    this.invoiceProducts.push({
-      id: product.id,
-      barcode: product.barcode,
-      name: product.name,
-      quantity: 1,
-      salesPrice: product.salesPrice,
-      total: product.salesPrice,
-    });
-    this.productSearchQuery = '';
-    this.filteredProducts = [];
-    this.updateTotals();
+  addProductToInvoice(product: Product): void {
+    const existingProduct = this.invoiceProducts.find((p) => p.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity += 1; // Increment quantity if product already exists
+      existingProduct.total = existingProduct.quantity * existingProduct.salesPrice;
+    } else {
+      this.invoiceProducts.push({
+        id: product.id,
+        barcode: product.barcode,
+        name: product.name,
+        quantity: 1,
+        salesPrice: product.salesPrice,
+        total: product.salesPrice,
+      });
+    }
+    this.updateTotals(); // Update totals after adding a product
+  }
+  updateProductQuantity(product: InvoiceProduct): void {
+    product.total = product.quantity * product.salesPrice; // Update total for the product
+    this.updateTotals(); // Recalculate totals for the invoice
   }
 
   removeProduct(id: string): void {
-    this.invoiceProducts = this.invoiceProducts.filter(
-      (product) => product.id !== id
-    );
-    this.updateTotals();
+    this.invoiceProducts = this.invoiceProducts.filter((product) => product.id !== id);
+    this.updateTotals(); // Recalculate totals after removing the product
   }
 
-  updateTotal(product: InvoiceProduct): void {
-    product.total = product.quantity * product.salesPrice;
-    this.updateTotals();
-  }
 
-  updateCashAccountId(newAccountId: any) {
-    console.log('Selected Cash Account ID:', newAccountId);
-    this.selectedCashAccountId = newAccountId;
-  }
 
   updateTotals(): void {
-    this.subtotal = this.invoiceProducts.reduce(
-      (sum, product) => sum + product.total,
-      0
-    );
+    this.subtotal = this.invoiceProducts.reduce((sum, item) => sum + item.total, 0);
     this.vatAmount = (this.subtotal * this.taxRate) / 100;
     this.grandTotal = this.subtotal + this.vatAmount;
   }
 
-  filterAccountManagers(): void {
-    const query = this.accountManagerSearchQuery.toLowerCase().trim();
-    this.filteredAccountManagers = this.accountManagers.filter(
-      (manager) =>
-        manager.name.toLowerCase().includes(query) || manager.id.includes(query)
-    );
-  }
-
-  selectAccountManager(accountManager: accountManagers): void {
-    this.selectedAccountManager = accountManager;
-    this.accountManagerSearchQuery = accountManager.name;
-    this.filteredAccountManagers = [];
-  }
-
-  openAddCustomerDialog(): void {
-    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
-      width: '400px',
-      disableClose: true,
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Customer added:', result);
-        this.clients.push(result.client.account);
-        this.selectClient(result.client.account);
-      }
-    });
-  }
-
   saveInvoice(): void {
-    if (!this.selectedClient || this.invoiceProducts.length === 0) {
+    if (!this.selectedClient || !this.invoiceProducts.length) {
       alert('Please complete all required fields before saving the invoice.');
       return;
     }
@@ -206,37 +147,49 @@ export class InvoiceComponent implements OnInit {
       issueDate: this.invoiceDate,
       number: this.number,
       cashAccountId: this.selectedCashAccountId,
-
       items: this.invoiceProducts.map((product) => ({
         name: product.name,
         productId: product.id,
         quantity: product.quantity,
         unitPrice: product.salesPrice,
-        taxAmount: 16,
-        discount: 0,
         totalAmount: product.total,
       })),
-
       taxExclusiveAmount: this.subtotal,
       taxAmount: this.vatAmount,
       taxInclusiveAmount: this.grandTotal,
-      InvoiceTypeCodeName: this.InvoiceTypeCodeName,
-      bonus: this.bonus,
     };
 
     this.invoiceService.createInvoice(invoiceData).subscribe({
-      next: (response) => {
-        console.log('Invoice submitted successfully:', response);
+      next: () => {
         alert('Invoice saved successfully.');
-        // Optionally clear the form or navigate to another page
         window.location.reload();
       },
       error: (err) => {
         console.error('Error saving invoice:', err);
-        alert('Failed to save the invoice. Please try again.');
+        alert('Failed to save the invoice.');
       },
     });
   }
+
+  openAddCustomerDialog(): void {
+    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
+      width: '400px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Assuming the result contains the added customer
+        this.clients.push(result.client.account);
+        this.selectClient(result.client.account);
+      }
+    });
+  }
+  selectAccountManager(accountManager: AccountManager): void {
+    this.selectedAccountManager = accountManager;
+    this.accountManagerSearchQuery = accountManager.name; // Update search input for account managers
+  }
+
 
   printInvoice(): void {
     this.invoicePrintComponent.printInvoice();

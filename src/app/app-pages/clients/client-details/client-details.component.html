@@ -1,28 +1,31 @@
-<div class="client-details-container bg-gray-50 p-6 rounded-lg shadow-md">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Client Details</h1>
+<div class="client-details-container p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6">Client Details</h1>
 
-    <div *ngIf="client" class="bg-white p-4 rounded-lg shadow-sm">
-        <h2 class="text-xl font-semibold text-blue-600 mb-2">{{ client.name }}</h2>
+    <!-- Client Summary -->
+    <div *ngIf="client" class="p-4 rounded-lg shadow-sm">
+        <h2 class="text-xl font-semibold mb-2">{{ client.name }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
             <p><strong>Tax ID:</strong> {{ client.taxId || 'N/A' }}</p>
             <p><strong>Email:</strong> {{ client.email || 'N/A' }}</p>
             <p><strong>Phone:</strong> {{ client.phone || 'N/A' }}</p>
             <p><strong>Address:</strong> {{ client.address || 'N/A' }}</p>
-            <p><strong>Current Balance:</strong> <span class="text-green-600">{{ client.currentBalance | currency
-                    }}</span></p>
+            <p><strong>Current Balance:</strong>
+                <span class="text-green-600">{{ client.currentBalance | currency }}</span>
+            </p>
             <p><strong>Created At:</strong> {{ client.createdAt | date }}</p>
             <p><strong>Updated At:</strong> {{ client.updatedAt | date }}</p>
         </div>
     </div>
 
-    <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Account Statement</h2>
+    <!-- Unified Account Statement -->
+    <h2 class="text-2xl font-bold mt-8 mb-4">Account Statement</h2>
 
-    <div *ngIf="isLoading" class="text-center text-gray-500">Loading...</div>
+    <div *ngIf="isLoading" class="text-center">Loading...</div>
 
     <div *ngIf="!isLoading" class="overflow-x-auto">
-        <table class="table-auto w-full bg-white rounded-lg shadow-md">
+        <table class="table-auto w-full rounded-lg shadow-md">
             <thead>
-                <tr class=" text-left">
+                <tr class="text-left">
                     <th class="px-4 py-3">Date</th>
                     <th class="px-4 py-3">Description</th>
                     <th class="px-4 py-3">Debit</th>
@@ -32,16 +35,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let entry of accountStatement" class="border-b hover:bg-gray-100">
-                    <td class="px-4 py-2 text-gray-700">{{ entry.date | date }}</td>
-                    <td class="px-4 py-2 text-gray-700">{{ entry.description }}</td>
+                <tr *ngFor="let entry of unifiedStatement" class="border-b hover:bg-gray-100">
+                    <td class="px-4 py-2">{{ entry.date | date }}</td>
+                    <td class="px-4 py-2">{{ entry.description }}</td>
                     <td class="px-4 py-2 text-green-600">{{ entry.debit | currency }}</td>
                     <td class="px-4 py-2 text-red-600">{{ entry.credit | currency }}</td>
                     <td class="px-4 py-2 font-semibold text-blue-600">{{ entry.runningBalance | currency }}</td>
                     <td class="px-4 py-2 text-gray-600">{{ entry.notes }}</td>
                 </tr>
-                <tr *ngIf="accountStatement.length === 0" class="text-center">
-                    <td colspan="6" class="px-4 py-6 text-gray-500">No transactions available.</td>
+                <tr *ngIf="unifiedStatement.length === 0" class="text-center">
+                    <td colspan="6" class="px-4 py-6">No transactions available.</td>
                 </tr>
             </tbody>
         </table>

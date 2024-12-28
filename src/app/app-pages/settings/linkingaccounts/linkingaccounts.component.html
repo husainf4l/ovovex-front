@@ -1,0 +1,50 @@
+<div class="container">
+    <h2 class="text-xl font-bold mb-4">Link Accounts</h2>
+
+    <!-- Search Bar -->
+    <div class="mb-4">
+        <input type="text" placeholder="Search accounts..." class="border px-4 py-2 rounded w-full"
+            [(ngModel)]="searchTerm" (input)="filterAccounts()" />
+    </div>
+
+    <h3 class="text-lg font-bold mb-4">Roles and Accounts</h3>
+
+    <table class="table-auto w-full border-collapse">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Role</th>
+                <th class="px-4 py-2">Currently Linked Account</th>
+                <th class="px-4 py-2">Select Account</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let role of roles">
+                <td class="px-4 py-2">{{ role.name }}</td>
+                <td class="px-4 py-2">
+                    <span *ngIf="role.currentLinkedAccount">
+                        {{ role.currentLinkedAccount.name }}
+                    </span>
+                    <span *ngIf="!role.currentLinkedAccount">Not linked</span>
+                </td>
+                <td class="px-4 py-2">
+                    <select [(ngModel)]="role.selectedAccountId" class="border px-4 py-2 rounded w-full">
+                        <option *ngFor="let account of filteredAccounts" [value]="account.id">
+                            {{ account.name }}
+                        </option>
+                    </select>
+                </td>
+                <td class="px-4 py-2">
+                    <button *ngIf="!role.currentLinkedAccount" class="bg-blue-500 text-white px-4 py-2 rounded"
+                        (click)="linkAccount(role)">
+                        Link
+                    </button>
+                    <button *ngIf="role.currentLinkedAccount" class="bg-red-500 text-white px-4 py-2 rounded"
+                        (click)="unlinkAccount(role)">
+                        Unlink
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

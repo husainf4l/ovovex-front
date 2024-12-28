@@ -3,24 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { ClientsService } from '../../../services/clients.service';
 import { CommonModule } from '@angular/common';
 
-
-interface Transaction {
-  createdAt: Date;
-  debit: number;
-  credit: number;
-  notes: string;
-}
-
 @Component({
   selector: 'app-client-details',
   templateUrl: './client-details.component.html',
   styleUrls: ['./client-details.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class ClientDetailsComponent implements OnInit {
   clientId: string | null = null;
   client: any = null;
-  accountStatement: any[] = [];
+  unifiedStatement: any[] = [];
   isLoading: boolean = true;
 
   constructor(
@@ -35,57 +27,59 @@ export class ClientDetailsComponent implements OnInit {
     }
   }
 
-
-  loadClientDetails(clientId: string): void {
+  private loadClientDetails(clientId: string): void {
     this.clientsService.getClientDetails(clientId).subscribe({
       next: (data) => {
         this.client = data.clientDetails;
 
-        // Calculate the cycle balance (sum of transactions before the earliest transaction date)
-        const startDate = new Date(); // Example: you can define this dynamically
-        let cycleBalance = 0;
+        // Combine invoices (as debit) and transactions (as credit)
+        const invoices = (data.clientDetails.invoices || []).map((invoice: any) => ({
+          date: new Date(invoice.issueDate),
+          description: `Invoice #${invoice.number}`,
+          debit: invoice.taxInclusiveAmount,
+          credit: null,
+          runningBalance: 0, // Placeholder
+          notes: invoice.note || 'N/A',
+        }));
 
-        const previousTransactions = (data.clientDetails.Transaction || []).filter(
-          (transaction: any) => new Date(transaction.createdAt) < startDate
+        const transactions = (data.clientDetails.Transaction || []).map((transaction: any) => ({
+          date: new Date(transaction.createdAt),
+          description: 'Payment',
+          debit: null,
+          credit: transaction.debit,
+          runningBalance: 0, // Placeholder
+          notes: transaction.notes,
+        }));
+
+        // Merge and sort by date
+        const combinedEntries = [...invoices, ...transactions].sort(
+          (a, b) => a.date.getTime() - b.date.getTime()
         );
 
-        previousTransactions.forEach((transaction: any) => {
-          cycleBalance += transaction.debit - transaction.credit;
+        // Calculate running balance
+        let runningBalance = this.client.openingBalance || 0;
+        const unifiedStatement = combinedEntries.map((entry) => {
+          if (entry.debit) {
+            runningBalance += entry.debit; // Increase balance
+          }
+          if (entry.credit) {
+            runningBalance -= entry.credit; // Decrease balance
+          }
+          return { ...entry, runningBalance };
         });
 
-        // Add a cycle balance entry
-        this.accountStatement = [
+        // Add opening balance as the first entry
+        this.unifiedStatement = [
           {
-            date: startDate.toISOString(), // Represents the start of the new cycle
-            description: 'Cycle Balance',
-            debit: null,
+            date: new Date(this.client.createdAt),
+            description: 'Opening Balance',
+            debit: this.client.openingBalance || 0,
             credit: null,
-            runningBalance: cycleBalance,
-            notes: 'Balance carried forward from previous transactions',
+            runningBalance: this.client.openingBalance || 0,
+            notes: 'Initial account balance',
           },
+          ...unifiedStatement,
         ];
-
-        // Process transactions within the period and calculate running balance
-        let runningBalance = cycleBalance;
-
-        const filteredTransactions = (data.clientDetails.Transaction || []).filter(
-          (transaction: any) => new Date(transaction.createdAt) >= startDate
-        );
-
-        const transactions = filteredTransactions.map((transaction: any) => {
-          runningBalance += transaction.debit - transaction.credit;
-          return {
-            date: transaction.createdAt,
-            description: 'Transaction',
-            debit: transaction.debit,
-            credit: transaction.credit,
-            runningBalance: runningBalance,
-            notes: transaction.notes,
-          };
-        });
-
-        // Combine the cycle balance with the filtered transactions
-        this.accountStatement = [...this.accountStatement, ...transactions];
 
         this.isLoading = false;
       },
@@ -95,7 +89,4 @@ export class ClientDetailsComponent implements OnInit {
       },
     });
   }
-
-
-
 }

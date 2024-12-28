@@ -1,10 +1,4 @@
-<!-- Account Selector -->
-<div *ngIf="!accountId" class="flex justify-center items-center mt-4">
-  <app-search-input [items]="accounts" [displayKey]="'name'" [label]="'Select Account'" placeholder="Search accounts..."
-    (selected)="onAccountSelected($event)"></app-search-input>
-</div>
-
-<!-- Filters Section -->
+<!-- account-statement.component.html -->
 <div class="filters mb-6">
   <div class="flex items-center gap-4">
     <div class="flex-1">
@@ -21,11 +15,9 @@
   </div>
 </div>
 
-<!-- Loading and Error Messages -->
 <div *ngIf="loading" class="text-center py-4">Loading...</div>
 <div *ngIf="error" class="text-center py-4 text-red-600">{{ error }}</div>
 
-<!-- Transactions Table -->
 <div *ngIf="!loading && transactions.length > 0" class="overflow-x-auto">
   <table class="w-full border-collapse text-sm">
     <thead>
@@ -38,18 +30,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Opening Balance Row -->
-      <tr *ngIf="openingBalance !== 0" class="border-b bg-yellow-500">
-        <td class="px-4 py-2 font-semibold">-</td>
-        <td class="px-4 py-2 font-semibold">Opening Balance</td>
-        <td class="px-4 py-2">-</td>
-        <td class="px-4 py-2">-</td>
-        <td class="px-4 py-2 text-right font-semibold">
-          {{ openingBalance | currency : "JOD" }}
-        </td>
-      </tr>
-
-      <!-- Transactions Rows -->
       <tr *ngFor="let transaction of transactions" class="hover:bg-gray-50 border-b last:border-none">
         <td class="px-4 py-2">
           {{ transaction?.journalEntry?.date ? (transaction?.journalEntry?.date | date : 'dd/MM/yyyy') : '-' }}
@@ -58,72 +38,22 @@
           {{ transaction?.type || transaction?.notes || '-' }}
         </td>
         <td class="px-4 py-2">
-          {{ transaction?.debit || '-' | currency : "JOD" }}
+          {{ transaction?.debit ? (transaction?.debit | currency : "JOD") : '-' }}
         </td>
         <td class="px-4 py-2">
-          {{ transaction?.credit || '-' | currency : "JOD" }}
+          {{ transaction?.credit ? (transaction?.credit | currency : "JOD") : '-' }}
         </td>
         <td class="px-4 py-2 text-right">
-          {{ transaction?.runningBalance || 0 | currency : "JOD" }}
+          {{ transaction?.runningBalance ? (transaction?.runningBalance | currency : "JOD") : '-' }}
         </td>
       </tr>
     </tbody>
-    <tfoot>
-      <tr class="bg-gray-200">
-        <td class="px-4 py-2 font-semibold">Totals</td>
-        <td class="px-4 py-2"></td>
-        <td class="px-4 py-2 font-semibold">
-          {{ totalDebits | currency : "JOD" }}
-        </td>
-        <td class="px-4 py-2 font-semibold">
-          {{ totalCredits | currency : "JOD" }}
-        </td>
-        <td class="px-4 py-2 text-right font-semibold">
-          {{ accountDetails?.currentBalance || 0 | currency : "JOD" }}
-        </td>
-      </tr>
-    </tfoot>
   </table>
 </div>
-
-
-<!-- Empty State -->
 <div *ngIf="!loading && transactions.length === 0" class="text-center py-4">
   No transactions found for the selected filters.
 </div>
 
-<!-- Print Button -->
 <div class="text-right mt-4">
   <app-button [buttonText]="'Print'" (click)="printAccountStatement()"></app-button>
-</div>
-
-<!-- Pagination Controls -->
-<div *ngIf="pagination.totalPages > 1" class="pagination flex justify-center items-center mt-6 gap-4">
-  <button (click)="goToPage(pagination.currentPage - 1)" [disabled]="pagination.currentPage === 1"
-    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
-    Previous
-  </button>
-  <span class="text-sm">
-    Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
-  </span>
-  <button (click)="goToPage(pagination.currentPage + 1)" [disabled]="pagination.currentPage === pagination.totalPages"
-    class="px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
-    Next
-  </button>
-</div>
-
-<!-- Printable Section -->
-<div id="printableInvoice" class="hidden rounded-lg shadow-md p-6">
-  <div class="mb-4 border-b pb-4">
-    <h1 class="text-2xl font-bold">Account Statement</h1>
-    <p class="text-sm">{{ accountDetails?.name }}</p>
-    <p class="text-sm">Account Type: {{ accountDetails?.accountType }}</p>
-    <p class="text-lg font-semibold text-green-600">
-      Current Balance: {{ accountDetails?.currentBalance | currency : "JOD" }}
-    </p>
-  </div>
-
-  <div class="filters-summary mb-6 text-sm">
-    <p>Statement Period: {{ filters.startDate || 'N/A' }} to {{ filters.endDate || 'N/A' }}</p>
-  </div>
 </div>
