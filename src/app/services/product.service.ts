@@ -15,17 +15,12 @@ export class ProductService {
   token = localStorage.getItem('token');
 
   getProducts(): Observable<any[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-    });
+    const headers = this.createAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/all-products`, { headers });
   }
 
   addProduct(product: Product): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-    });
-
+    const headers = this.createAuthHeaders();
     return this.http.post(`${this.apiUrl}/products`, product, { headers });
   }
 
@@ -33,10 +28,7 @@ export class ProductService {
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate);
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-    });
+    const headers = this.createAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/inventory`, {
       params,
       headers,
@@ -44,6 +36,24 @@ export class ProductService {
   }
 
   bulkUpload(products: CreateProductDto[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/bulk`, { data: products });
+    const headers = this.createAuthHeaders();
+    return this.http.post(
+      `${this.apiUrl}/bulk`,
+      { data: products },
+      { headers }
+    );
+  }
+
+  updateInventory(updates: any[]): Observable<any> {
+    const headers = this.createAuthHeaders();
+    return this.http.post(`${this.apiUrl}/update-inventory`, updates, {
+      headers,
+    });
+  }
+
+  private createAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
   }
 }

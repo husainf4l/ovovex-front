@@ -1,77 +1,118 @@
 <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">IFRS-Compliant Inventory Report</h1>
+  <h1 class="text-2xl font-bold mb-4">IFRS-Compliant Inventory Report</h1>
 
-    <!-- Date Range Selection -->
-    <div class="mb-6 flex items-center gap-4">
-        <label>
-            Start Date:
-            <input type="date" [(ngModel)]="startDate" (change)="updateDateRange(startDate, endDate)"
-                class="p-2 border border-gray-300 rounded" />
-        </label>
-        <label>
-            End Date:
-            <input type="date" [(ngModel)]="endDate" (change)="updateDateRange(startDate, endDate)"
-                class="p-2 border border-gray-300 rounded" />
-        </label>
-    </div>
+  <!-- Date Range Selection -->
+  <div class="mb-6 flex items-center gap-4">
+    <label>
+      Start Date:
+      <input
+        type="date"
+        [(ngModel)]="startDate"
+        (change)="updateDateRange(startDate, endDate)"
+        class="p-2 border border-gray-300 rounded"
+      />
+    </label>
+    <label>
+      End Date:
+      <input
+        type="date"
+        [(ngModel)]="endDate"
+        (change)="updateDateRange(startDate, endDate)"
+        class="p-2 border border-gray-300 rounded"
+      />
+    </label>
+  </div>
 
-    <!-- Loading Indicator -->
-    <div *ngIf="loading" class="text-center my-4">
-        Loading inventory data...
-    </div>
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center my-4">Loading inventory data...</div>
 
-    <!-- Inventory Table -->
-    <div id="print-area" *ngIf="!loading && inventoryItems.length > 0" class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-4 py-2">Name</th>
-                    <th class="border border-gray-300 px-4 py-2">SKU</th>
-                    <th class="border border-gray-300 px-4 py-2">Category</th>
-                    <th class="border border-gray-300 px-4 py-2">Opening Balance</th>
-                    <th class="border border-gray-300 px-4 py-2">Closing Balance</th>
-                    <th class="border border-gray-300 px-4 py-2">Cost/Unit</th>
-                    <th class="border border-gray-300 px-4 py-2">Total Cost</th>
-                    <th class="border border-gray-300 px-4 py-2">NRV</th>
-                    <th class="border border-gray-300 px-4 py-2">Validation</th>
-                    <th class="border border-gray-300 px-4 py-2">Valuation Method</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of inventoryItems" class="hover:bg-gray-50">
-                    <td class="border border-gray-300 px-4 py-2">{{ item.name }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.sku }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.category }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.openingBalance }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.closingBalance }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.totalCost / item.closingBalance | currency }}
-                    </td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.totalCost | currency }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.nrv | currency }}</td>
-                    <td class="border border-gray-300 px-4 py-2" [class.text-red-500]="item.costValidationError">
-                        {{ item.costValidationError ? 'Needs Adjustment' : 'Valid' }}
-                    </td>
-                    <td class="border border-gray-300 px-4 py-2">{{ item.valuationMethod }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <!-- Inventory Table -->
+  <div
+    id="print-area"
+    *ngIf="!loading && inventoryItems.length > 0"
+    class="overflow-x-auto"
+  >
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2">Name</th>
+          <th class="border border-gray-300 px-4 py-2">SKU</th>
+          <th class="border border-gray-300 px-4 py-2">Category</th>
+          <th class="border border-gray-300 px-4 py-2">Opening Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Closing Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Cost/Unit</th>
+          <th class="border border-gray-300 px-4 py-2">Total Cost</th>
+          <th class="border border-gray-300 px-4 py-2">NRV</th>
+          <th class="border border-gray-300 px-4 py-2">Validation</th>
+          <th class="border border-gray-300 px-4 py-2">Valuation Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inventoryItems" class="hover:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2">{{ item.name }}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.sku || "N/A" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.category || "N/A" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.openingBalance || 0 }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.closingBalance || 0 }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ calculateCostPerUnit(item.totalCost, item.closingBalance) }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.totalCost !== null ? (item.totalCost | currency) : "N/A" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.nrv !== null ? (item.nrv | currency) : "N/A" }}
+          </td>
+          <td
+            class="border border-gray-300 px-4 py-2"
+            [class.text-red-500]="item.costValidationError"
+          >
+            {{ item.costValidationError ? "Needs Adjustment" : "Valid" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.valuationMethod || "N/A" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- No Data Message -->
-    <div *ngIf="!loading && inventoryItems.length === 0" class="text-center my-4">
-        No inventory data found for the selected date range.
-    </div>
+  <!-- No Data Message -->
+  <div *ngIf="!loading && inventoryItems.length === 0" class="text-center my-4">
+    No inventory data found for the selected date range.
+  </div>
 
-    <!-- Action Buttons -->
-    <div class="mt-4 flex justify-end gap-4">
-        <button (click)="exportToExcel()" class="px-4 py-2 bg-blue-500 text-white rounded">
-            Export to Excel
-        </button>
-        <button (click)="printPage()" class="px-4 py-2 bg-green-500 text-white rounded">
-            Print
-        </button>
-        <button (click)="handleJournalEntry()" class="px-4 py-2 bg-yellow-500 text-white rounded">
-            Add Journal Entry
-        </button>
-    </div>
+  <!-- Action Buttons -->
+  <div class="mt-4 flex justify-end gap-4">
+    <button
+      (click)="exportToExcel()"
+      class="px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      Export Template
+    </button>
+    <button
+      (click)="printPage()"
+      class="px-4 py-2 bg-green-500 text-white rounded"
+    >
+      Print
+    </button>
+    <label class="cursor-pointer bg-gray-200 px-4 py-2 rounded">
+      Upload Updated Inventory
+      <input
+        type="file"
+        (change)="handleExcelFileUpload($event)"
+        accept=".xlsx"
+        hidden
+      />
+    </label>
+  </div>
+  <div *ngIf="uploadStatus" class="mt-2 text-blue-500">{{ uploadStatus }}</div>
 </div>

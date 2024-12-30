@@ -237,7 +237,6 @@ export const routes: Routes = [
 
       { path: 'settings/LinkingAccounts', component: LinkingAccountsComponent },
 
-
       {
         path: 'account-statement/:accountId',
         loadComponent: () =>
@@ -276,7 +275,7 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'products/list',
+        path: 'products/listOld',
         loadComponent: () =>
           import(
             './app-pages/products/product-list/product-list.component'
@@ -288,7 +287,7 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'products',
+        path: 'products/list',
         loadComponent: () =>
           import(
             './app-pages/products/inventory-screen/inventory-screen.component'

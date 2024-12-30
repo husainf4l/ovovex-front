@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { MetaService } from './services/meta.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { ThemeService } from './services/theme.service';
+import { DynamicLoaderComponent } from "./dynamic-loader/dynamic-loader.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, DynamicLoaderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

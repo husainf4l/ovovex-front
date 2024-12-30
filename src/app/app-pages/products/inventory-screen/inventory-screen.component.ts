@@ -9,15 +9,16 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-inventory-screen',
   templateUrl: './inventory-screen.component.html',
   styleUrls: ['./inventory-screen.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
 })
 export class InventoryScreenComponent implements OnInit {
-  startDate = new Date('2024-12-01').toISOString().split('T')[0];
-  endDate = new Date('2024-12-31').toISOString().split('T')[0];
+  startDate: string = new Date('2024-12-01').toISOString().split('T')[0];
+  endDate: string = new Date('2024-12-31').toISOString().split('T')[0];
   inventoryItems: any[] = [];
-  loading = false;
+  loading: boolean = false;
+  uploadStatus: string = '';
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.fetchInventory();
@@ -27,20 +28,7 @@ export class InventoryScreenComponent implements OnInit {
     this.loading = true;
     this.productService.fetchInventory(this.startDate, this.endDate).subscribe({
       next: (data) => {
-        console.log('Raw Data:', data); // Debugging
-
-        this.inventoryItems = data.map((item) => {
-          // Ensure `movements` is an array
-          const movements = Array.isArray(item.movements) ? item.movements : [];
-          console.log('Movements for item:', item.name, movements); // Debugging
-
-          return {
-            ...item,
-            totalCost: this.calculateFIFO(movements, item.closingBalance),
-            costValidationError: this.isCostAboveNRV(item.totalCost, item.nrv),
-          };
-        });
-
+        this.inventoryItems = data;
         this.loading = false;
       },
       error: (error) => {
@@ -50,61 +38,82 @@ export class InventoryScreenComponent implements OnInit {
     });
   }
 
-
   updateDateRange(start: string, end: string): void {
     this.startDate = start;
     this.endDate = end;
     this.fetchInventory();
   }
 
-  calculateFIFO(movements: any[], closingBalance: number): number {
-    let remainingBalance = closingBalance;
-    let totalCost = 0;
+  async handleExcelFileUpload(event: Event): Promise<void> {
+    const target = event.target as HTMLInputElement;
+    if (!target.files || target.files.length === 0) return;
 
-    for (const movement of movements) {
-      if (remainingBalance <= 0) break;
+    const file = target.files[0];
+    const workbook = new ExcelJS.Workbook();
 
-      const usedQuantity = Math.min(remainingBalance, movement.quantity);
-      totalCost += usedQuantity * movement.costPerUnit;
-      remainingBalance -= usedQuantity;
+    try {
+      await workbook.xlsx.load(await file.arrayBuffer());
+      const worksheet = workbook.getWorksheet(1);
+
+      if (!worksheet) {
+        this.uploadStatus = 'No valid worksheet found in the uploaded file.';
+        return;
+      }
+
+      const updates: any[] = [];
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber === 1) return; // Skip header row
+
+        const sku = row.getCell(1).value?.toString() || '';
+        const updatedQuantity = Number(row.getCell(2).value) || 0;
+        const fifoLayers = JSON.parse(row.getCell(3).value?.toString() || '[]');
+
+        if (!sku || updatedQuantity <= 0 || !Array.isArray(fifoLayers)) {
+          this.uploadStatus = `Invalid data at row ${rowNumber}`;
+          return;
+        }
+
+        updates.push({ sku, updatedQuantity, fifoLayers });
+      });
+
+      this.updateInventory(updates);
+    } catch (error) {
+      console.error('Error reading Excel file:', error);
+      this.uploadStatus = 'Failed to read Excel file.';
     }
-
-    return totalCost;
   }
 
-  isCostAboveNRV(totalCost: number, nrv: number): boolean {
-    return totalCost > nrv;
+  updateInventory(updates: any[]): void {
+    this.uploadStatus = 'Uploading inventory updates...';
+    this.productService.updateInventory(updates).subscribe({
+      next: () => {
+        this.uploadStatus = 'Inventory updated successfully!';
+        this.fetchInventory();
+      },
+      error: (error) => {
+        console.error('Error updating inventory:', error);
+        this.uploadStatus = 'Error updating inventory. Please try again.';
+      },
+    });
   }
 
   exportToExcel(): void {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Inventory Report');
+    const worksheet = workbook.addWorksheet('Inventory Template');
 
     worksheet.columns = [
-      { header: 'Name', key: 'name', width: 20 },
-      { header: 'SKU', key: 'sku', width: 15 },
-      { header: 'Category', key: 'category', width: 20 },
-      { header: 'Opening Balance', key: 'openingBalance', width: 20 },
-      { header: 'Closing Balance', key: 'closingBalance', width: 20 },
-      { header: 'Cost/Unit', key: 'costPerUnit', width: 15 },
-      { header: 'Total Cost', key: 'totalCost', width: 15 },
-      { header: 'NRV', key: 'nrv', width: 15 },
-      { header: 'Validation', key: 'validation', width: 20 },
-      { header: 'Valuation Method', key: 'valuationMethod', width: 20 },
+      { header: 'SKU', key: 'sku', width: 20 },
+      { header: 'Updated Quantity', key: 'updatedQuantity', width: 20 },
+      { header: 'FIFO Layers', key: 'fifoLayers', width: 50 },
     ];
 
     this.inventoryItems.forEach((item) => {
       worksheet.addRow({
-        name: item.name,
         sku: item.sku,
-        category: item.category,
-        openingBalance: item.openingBalance,
-        closingBalance: item.closingBalance,
-        costPerUnit: item.totalCost / item.closingBalance || 0,
-        totalCost: item.totalCost,
-        nrv: item.nrv,
-        validation: item.costValidationError ? 'Needs Adjustment' : 'Valid',
-        valuationMethod: item.valuationMethod,
+        updatedQuantity: item.stock,
+        fifoLayers: JSON.stringify([
+          { quantity: item.stock, costPerUnit: item.costPrice },
+        ]),
       });
     });
 
@@ -112,8 +121,14 @@ export class InventoryScreenComponent implements OnInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Inventory_Report.xlsx');
+      saveAs(blob, 'Inventory_Template.xlsx');
     });
+  }
+
+  calculateCostPerUnit(totalCost: number, closingBalance: number): string {
+    return closingBalance && totalCost
+      ? (totalCost / closingBalance).toFixed(2)
+      : 'N/A';
   }
 
   printPage(): void {
@@ -125,21 +140,10 @@ export class InventoryScreenComponent implements OnInit {
           <head>
             <title>Print Inventory Report</title>
             <style>
-              body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-              }
-              table {
-                border-collapse: collapse;
-                width: 100%;
-              }
-              th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-              }
-              th {
-                background-color: #f2f2f2;
-              }
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              table { border-collapse: collapse; width: 100%; }
+              th, td { border: 1px solid #ddd; padding: 8px; }
+              th { background-color: #f2f2f2; }
             </style>
           </head>
           <body>${printContent}</body>
@@ -148,9 +152,5 @@ export class InventoryScreenComponent implements OnInit {
       newWindow.document.close();
       newWindow.print();
     }
-  }
-
-  handleJournalEntry(): void {
-    alert('Journal Entry functionality will be implemented soon!');
   }
 }
