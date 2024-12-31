@@ -18,10 +18,11 @@ export class ClientsListComponent implements OnInit {
   filteredClients: any[] = [];
   searchQuery: string = '';
   currentPage: number = 1;
-  itemsPerPage: number = 100;
+  itemsPerPage: number = 10;
   totalPages: number = 0;
+  sortDirection: 'asc' | 'desc' = 'asc'; // Default sort direction
 
-  constructor(private clientsService: ClientsService, private router: Router) { }
+  constructor(private clientsService: ClientsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -46,8 +47,6 @@ export class ClientsListComponent implements OnInit {
       },
     });
   }
-
-
 
   searchClients(): void {
     const query = this.searchQuery.toLowerCase();
@@ -77,5 +76,21 @@ export class ClientsListComponent implements OnInit {
 
   viewClientDetails(clientId: string): void {
     this.router.navigate(['app/client-details', clientId]);
+  }
+
+  sortByBalance(): void {
+    this.filteredClients = this.filteredClients.sort((a, b) => {
+      const balanceA = a.currentBalance || 0;
+      const balanceB = b.currentBalance || 0;
+
+      if (this.sortDirection === 'asc') {
+        return balanceA - balanceB;
+      } else {
+        return balanceB - balanceA;
+      }
+    });
+
+    // Toggle the sort direction for next click
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
   }
 }

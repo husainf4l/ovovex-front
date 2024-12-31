@@ -8,7 +8,7 @@
       <input
         type="date"
         [(ngModel)]="startDate"
-        (change)="updateDateRange(startDate, endDate)"
+        (change)="fetchInventory()"
         class="p-2 border border-gray-300 rounded"
       />
     </label>
@@ -17,14 +17,16 @@
       <input
         type="date"
         [(ngModel)]="endDate"
-        (change)="updateDateRange(startDate, endDate)"
+        (change)="fetchInventory()"
         class="p-2 border border-gray-300 rounded"
       />
     </label>
   </div>
 
   <!-- Loading Indicator -->
-  <div *ngIf="loading" class="text-center my-4">Loading inventory data...</div>
+  <div *ngIf="loading" class="text-center my-4 text-gray-500">
+    Loading inventory data...
+  </div>
 
   <!-- Inventory Table -->
   <div
@@ -39,12 +41,15 @@
           <th class="border border-gray-300 px-4 py-2">SKU</th>
           <th class="border border-gray-300 px-4 py-2">Category</th>
           <th class="border border-gray-300 px-4 py-2">Opening Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Total In</th>
+          <th class="border border-gray-300 px-4 py-2">Total Out</th>
           <th class="border border-gray-300 px-4 py-2">Closing Balance</th>
+          <th class="border border-gray-300 px-4 py-2">Available Stock</th>
           <th class="border border-gray-300 px-4 py-2">Cost/Unit</th>
           <th class="border border-gray-300 px-4 py-2">Total Cost</th>
           <th class="border border-gray-300 px-4 py-2">NRV</th>
-          <th class="border border-gray-300 px-4 py-2">Validation</th>
           <th class="border border-gray-300 px-4 py-2">Valuation Method</th>
+          <th class="border border-gray-300 px-4 py-2">Validation</th>
         </tr>
       </thead>
       <tbody>
@@ -60,25 +65,34 @@
             {{ item.openingBalance || 0 }}
           </td>
           <td class="border border-gray-300 px-4 py-2">
+            {{ item.totalIn || 0 }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.totalOut || 0 }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
             {{ item.closingBalance || 0 }}
           </td>
           <td class="border border-gray-300 px-4 py-2">
-            {{ calculateCostPerUnit(item.totalCost, item.closingBalance) }}
+            {{ item.availableStock || 0 }}
           </td>
           <td class="border border-gray-300 px-4 py-2">
-            {{ item.totalCost !== null ? (item.totalCost | currency) : "N/A" }}
+            {{ item.costPerUnit }}
           </td>
           <td class="border border-gray-300 px-4 py-2">
-            {{ item.nrv !== null ? (item.nrv | currency) : "N/A" }}
+            {{ item.totalCost || 0 }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.nrv || "N/A" }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ item.valuationMethod || "FIFO" }}
           </td>
           <td
-            class="border border-gray-300 px-4 py-2"
+            class="border border-gray-300 px-4 py-2 text-center"
             [class.text-red-500]="item.costValidationError"
           >
             {{ item.costValidationError ? "Needs Adjustment" : "Valid" }}
-          </td>
-          <td class="border border-gray-300 px-4 py-2">
-            {{ item.valuationMethod || "N/A" }}
           </td>
         </tr>
       </tbody>
@@ -86,33 +100,42 @@
   </div>
 
   <!-- No Data Message -->
-  <div *ngIf="!loading && inventoryItems.length === 0" class="text-center my-4">
+  <div
+    *ngIf="!loading && inventoryItems.length === 0"
+    class="text-center my-4 text-gray-500"
+  >
     No inventory data found for the selected date range.
   </div>
 
   <!-- Action Buttons -->
-  <div class="mt-4 flex justify-end gap-4">
+  <div class="mt-4 flex flex-wrap justify-end gap-4">
     <button
       (click)="exportToExcel()"
       class="px-4 py-2 bg-blue-500 text-white rounded"
     >
-      Export Template
+      Export Inventory Report
     </button>
     <button
-      (click)="printPage()"
-      class="px-4 py-2 bg-green-500 text-white rounded"
+      (click)="exportTemplate()"
+      class="px-4 py-2 bg-purple-500 text-white rounded"
     >
-      Print
+      Export Template for Upload
     </button>
-    <label class="cursor-pointer bg-gray-200 px-4 py-2 rounded">
+    <label
+      for="file-upload"
+      class="cursor-pointer bg-gray-200 px-4 py-2 rounded"
+    >
       Upload Updated Inventory
       <input
         type="file"
+        id="file-upload"
         (change)="handleExcelFileUpload($event)"
         accept=".xlsx"
         hidden
       />
     </label>
+    <div *ngIf="uploadStatus" class="mt-2 text-blue-500">
+      {{ uploadStatus }}
+    </div>
   </div>
-  <div *ngIf="uploadStatus" class="mt-2 text-blue-500">{{ uploadStatus }}</div>
 </div>

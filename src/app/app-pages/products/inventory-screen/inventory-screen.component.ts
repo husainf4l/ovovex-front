@@ -24,26 +24,6 @@ export class InventoryScreenComponent implements OnInit {
     this.fetchInventory();
   }
 
-  fetchInventory(): void {
-    this.loading = true;
-    this.productService.fetchInventory(this.startDate, this.endDate).subscribe({
-      next: (data) => {
-        this.inventoryItems = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching inventory:', error);
-        this.loading = false;
-      },
-    });
-  }
-
-  updateDateRange(start: string, end: string): void {
-    this.startDate = start;
-    this.endDate = end;
-    this.fetchInventory();
-  }
-
   async handleExcelFileUpload(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     if (!target.files || target.files.length === 0) return;
@@ -62,24 +42,37 @@ export class InventoryScreenComponent implements OnInit {
 
       const updates: any[] = [];
       worksheet.eachRow((row, rowNumber) => {
-        if (rowNumber === 1) return; // Skip header row
+        if (rowNumber === 1) return;
 
         const sku = row.getCell(1).value?.toString() || '';
-        const updatedQuantity = Number(row.getCell(2).value) || 0;
-        const fifoLayers = JSON.parse(row.getCell(3).value?.toString() || '[]');
+        const name = row.getCell(2).value?.toString() || '';
+        const availableQuantity = Number(row.getCell(3).value) || 0;
+        const updatedQuantity = Number(row.getCell(4).value) || 0;
+        const quantityToEdit = Number(row.getCell(5).value) || 0;
+        const costPerUnit = Number(row.getCell(6).value) || 0;
 
-        if (!sku || updatedQuantity <= 0 || !Array.isArray(fifoLayers)) {
+        if (!sku || costPerUnit <= 0) {
           this.uploadStatus = `Invalid data at row ${rowNumber}`;
           return;
         }
 
-        updates.push({ sku, updatedQuantity, fifoLayers });
+        const fifoLayers = [];
+        if (quantityToEdit > 0) {
+          fifoLayers.push({ quantity: quantityToEdit, costPerUnit });
+        }
+
+        updates.push({
+          sku,
+          updatedQuantity: updatedQuantity || availableQuantity,
+          fifoLayers,
+        });
       });
 
       this.updateInventory(updates);
     } catch (error) {
       console.error('Error reading Excel file:', error);
-      this.uploadStatus = 'Failed to read Excel file.';
+      this.uploadStatus =
+        'Failed to read Excel file. Please ensure it is properly formatted.';
     }
   }
 
@@ -97,23 +90,87 @@ export class InventoryScreenComponent implements OnInit {
     });
   }
 
+  fetchInventory(): void {
+    this.loading = true;
+    this.productService.fetchInventory(this.startDate, this.endDate).subscribe({
+      next: (data) => {
+        // Directly assign the data without recalculating
+        this.inventoryItems = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching inventory:', error);
+        this.loading = false;
+      },
+    });
+  }
+  
+  calculateOpeningBalance(movements: any[]): number {
+    if (!movements || !Array.isArray(movements)) return 0;
+    return movements
+      .filter(
+        (movement) => new Date(movement.createdAt) < new Date(this.startDate)
+      )
+      .reduce(
+        (sum, movement) =>
+          movement.type === 'IN' ? sum + movement.quantity : sum,
+        0
+      );
+  }
+
+  calculateTotalIn(movements: any[]): number {
+    if (!movements || !Array.isArray(movements)) return 0;
+    return movements
+      .filter(
+        (movement) =>
+          new Date(movement.createdAt) >= new Date(this.startDate) &&
+          movement.type === 'IN'
+      )
+      .reduce((sum, movement) => sum + movement.quantity, 0);
+  }
+
+  calculateTotalOut(movements: any[]): number {
+    if (!movements || !Array.isArray(movements)) return 0;
+    return movements
+      .filter(
+        (movement) =>
+          new Date(movement.createdAt) >= new Date(this.startDate) &&
+          movement.type === 'OUT'
+      )
+      .reduce((sum, movement) => sum + movement.quantity, 0);
+  }
+
   exportToExcel(): void {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Inventory Template');
+    const worksheet = workbook.addWorksheet('Inventory Report');
 
     worksheet.columns = [
-      { header: 'SKU', key: 'sku', width: 20 },
-      { header: 'Updated Quantity', key: 'updatedQuantity', width: 20 },
-      { header: 'FIFO Layers', key: 'fifoLayers', width: 50 },
+      { header: 'Name', key: 'name', width: 20 },
+      { header: 'SKU', key: 'sku', width: 15 },
+      { header: 'Category', key: 'category', width: 20 },
+      { header: 'Opening Balance', key: 'openingBalance', width: 20 },
+      { header: 'Total In', key: 'totalIn', width: 15 },
+      { header: 'Total Out', key: 'totalOut', width: 15 },
+      { header: 'Closing Balance', key: 'closingBalance', width: 20 },
+      { header: 'Available Stock', key: 'availableStock', width: 20 },
+      { header: 'Cost/Unit', key: 'costPerUnit', width: 15 },
+      { header: 'Total Cost', key: 'totalCost', width: 15 },
+      { header: 'Valuation Method', key: 'valuationMethod', width: 20 },
     ];
 
     this.inventoryItems.forEach((item) => {
       worksheet.addRow({
-        sku: item.sku,
-        updatedQuantity: item.stock,
-        fifoLayers: JSON.stringify([
-          { quantity: item.stock, costPerUnit: item.costPrice },
-        ]),
+        name: item.name,
+        sku: item.sku || 'N/A',
+        category: item.category || 'N/A',
+        openingBalance: item.openingBalance || 0,
+        totalIn: item.totalIn || 0,
+        totalOut: item.totalOut || 0,
+        closingBalance: item.closingBalance || 0,
+        availableStock: item.availableStock || 0,
+        costPerUnit: item.costPerUnit || '0.00',
+        totalCost: item.totalCost || 0,
+        valuationMethod: item.valuationMethod || 'FIFO',
       });
     });
 
@@ -121,36 +178,46 @@ export class InventoryScreenComponent implements OnInit {
       const blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
-      saveAs(blob, 'Inventory_Template.xlsx');
+      saveAs(blob, 'Inventory_Report.xlsx');
     });
   }
 
-  calculateCostPerUnit(totalCost: number, closingBalance: number): string {
-    return closingBalance && totalCost
-      ? (totalCost / closingBalance).toFixed(2)
-      : 'N/A';
-  }
+  exportTemplate(): void {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Inventory Template');
 
-  printPage(): void {
-    const printContent = document.getElementById('print-area')?.innerHTML;
-    const newWindow = window.open('', '_blank');
-    if (newWindow && printContent) {
-      newWindow.document.write(`
-        <html>
-          <head>
-            <title>Print Inventory Report</title>
-            <style>
-              body { font-family: Arial, sans-serif; margin: 20px; }
-              table { border-collapse: collapse; width: 100%; }
-              th, td { border: 1px solid #ddd; padding: 8px; }
-              th { background-color: #f2f2f2; }
-            </style>
-          </head>
-          <body>${printContent}</body>
-        </html>
-      `);
-      newWindow.document.close();
-      newWindow.print();
-    }
+    worksheet.columns = [
+      { header: 'SKU', key: 'sku', width: 20 },
+      { header: 'Name', key: 'name', width: 30 },
+      { header: 'Available Quantity', key: 'availableQuantity', width: 20 },
+      { header: 'Updated Quantity', key: 'updatedQuantity', width: 20 },
+      { header: 'Quantity to Edit', key: 'quantityToEdit', width: 20 },
+      { header: 'Cost Per Unit', key: 'costPerUnit', width: 15 },
+    ];
+
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        products.forEach((product) => {
+          worksheet.addRow({
+            sku: product.barcode,
+            name: product.name,
+            availableQuantity: product.stock || 0,
+            updatedQuantity: product.stock || 0,
+            quantityToEdit: 0,
+            costPerUnit: product.costPrice || 0,
+          });
+        });
+
+        workbook.xlsx.writeBuffer().then((data) => {
+          const blob = new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+          saveAs(blob, 'Inventory_Template.xlsx');
+        });
+      },
+      error: (err) => {
+        console.error('Error fetching products for template:', err);
+      },
+    });
   }
 }
