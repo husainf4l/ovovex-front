@@ -1,4 +1,6 @@
 export interface Product {
+  discountType: any;
+  discount: any;
   id: string;
   barcode: string;
   name: string;
@@ -7,11 +9,15 @@ export interface Product {
 
 export interface InvoiceProduct {
   id: string;
-  name: string;
   barcode: string;
+  name: string;
   quantity: number;
+  taxPercent: number;
   salesPrice: number;
   total: number;
+  discountAmount: number; // This can be percentage or amount
+  lineExtensionAmount: string;
+  taxAmount:string; // To differentiate between a percentage and amount discount
 }
 
 export interface Client {
@@ -28,7 +34,6 @@ export interface AccountManager {
   phone: string;
   currentBalance: number;
 }
-
 
 export interface Account {
   id: string;
@@ -104,7 +109,6 @@ export interface AccountAdd {
   level?: number | null; // Allow null for top-level accounts
   ifrcClassification?: string | null; // Optional, for IFRS classification
 }
-
 
 export interface Cheque {
   chequeNumber: string;
@@ -200,10 +204,10 @@ export interface CreateAccountDto {
   name: string;
   nameAr: string;
   accountType:
-  | 'ASSET'
-  | 'LIABILITY'
-  | 'EQUITY'
-  | 'REVENUE'
-  | 'EXPENSE'
-  | 'TRADEEXPENSES';
+    | 'ASSET'
+    | 'LIABILITY'
+    | 'EQUITY'
+    | 'REVENUE'
+    | 'EXPENSE'
+    | 'TRADEEXPENSES';
 }

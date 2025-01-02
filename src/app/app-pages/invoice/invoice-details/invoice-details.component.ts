@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { InvoiceService } from '../../../services/invoice.service';
 import { CommonModule } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { InvoicePrintComponent } from '../../../components/print/invoice-print/invoice-print.component';
+import { PrintService } from '../../../services/PrintService';
 
 @Component({
   selector: 'app-invoice-details',
@@ -26,8 +28,9 @@ export class InvoiceDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private invoiceService: InvoiceService
-  ) { }
+    private invoiceService: InvoiceService,
+    private printService: PrintService
+  ) {}
 
   ngOnInit(): void {
     this.loadCompanyData();
@@ -71,12 +74,23 @@ export class InvoiceDetailsComponent implements OnInit {
       },
     });
   }
-  eInvoice() { this.invoiceService.submiteInvoice(this.invoiceDetails).subscribe() }
 
+  eInvoice() {
+    this.invoiceService.submiteInvoice(this.invoiceDetails).subscribe();
+  }
 
   generateQRCode() {
     if (this.invoiceId) {
       this.qrCodeUrl = `https://ovovex.com/verify/${this.invoiceId}`;
     }
+  }
+
+  // Trigger the printing functionality
+  printInvoice() {
+    this.printService.printInvoice(
+      'printableInvoice',
+      this.companyData,
+      this.invoiceDetails
+    );
   }
 }

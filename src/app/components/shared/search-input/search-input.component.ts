@@ -1,4 +1,3 @@
-// components/invoice/search-input/search-input.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +6,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-search-input',
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.css'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule],
 })
 export class SearchInputComponent {
   @Input() items: any[] = [];
@@ -20,8 +19,13 @@ export class SearchInputComponent {
   filteredItems: any[] = [];
 
   onSearch() {
-    this.filteredItems = this.items.filter(item =>
-      item[this.displayKey]?.toLowerCase().includes(this.query.toLowerCase())
+    // Modify the filter to check both `name` and `stock`
+    this.filteredItems = this.items.filter(
+      (item) =>
+        item[this.displayKey]
+          ?.toLowerCase()
+          .includes(this.query.toLowerCase()) ||
+        item['stock']?.toString().includes(this.query) // Include stock in the search criteria
     );
   }
 

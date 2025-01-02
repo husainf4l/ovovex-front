@@ -1,132 +1,121 @@
-<div id="printableInvoice">
-  <div
-    class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6"
-  >
-    <!-- Header -->
-    <div class="invoice-header flex justify-between items-center mb-4">
-      <div class="logo-title flex items-center">
-        <img
-          [src]="companyData.logoImage"
-          alt="Company Logo"
-          class="w-36 mr-4"
-        />
-      </div>
-
-      <p class="text-3xl font-bold text-right">INVOICE</p>
-      <button
-        (click)="eInvoice()"
-        [ngClass]="invoiceDetails.isSubmitted ? 'bg-green-400' : 'bg-red-400'"
-        class="p-4 rounded-md"
-      >
-        {{ invoiceDetails.isSubmitted ? "Submitted" : "Not Submitted" }}
-      </button>
+<div
+  id="printableInvoice"
+  class="invoice-container border border-gray-300 shadow-lg rounded-lg p-6"
+>
+  <div class="invoice-header flex justify-between items-center mb-4">
+    <div class="logo-title flex items-center">
+      <img [src]="companyData.logoImage" alt="Company Logo" class="w-36 mr-4" />
     </div>
-    <hr class="my-4" />
 
-    <div class="invoice-info grid grid-cols-3 gap-4 text-sm">
-      <div>
-        <p><strong>Customer:</strong> {{ invoiceDetails?.customer?.name }}</p>
-        <p>
-          <strong>Account Manager:</strong> {{ invoiceDetails?.employee?.name }}
-        </p>
-        <p>
-          <strong>Payment Mode:</strong>
-          {{
-            invoiceDetails?.InvoiceTypeCodeName == "011"
-              ? "CASH INVOICE"
-              : "RECEIVABLE INVOICE"
-          }}
-        </p>
-      </div>
-      <div>
-        <p>
-          <strong>Invoice Date:</strong> {{ invoiceDetails?.issueDate | date }}
-        </p>
-        <p><strong>Invoice #:</strong> {{ invoiceDetails?.number }}</p>
-        <p><strong>Tax Number:</strong> {{ companyData.taxNumber }}</p>
-      </div>
-      <div class="justify-end flex">
-        <qrcode
-          *ngIf="qrCodeUrl"
-          [qrdata]="qrCodeUrl"
-          [width]="60"
-          class="border border-gray-200"
-        >
-        </qrcode>
-      </div>
-    </div>
-    <hr class="my-4" />
-
-    <!-- Product Table -->
-    <table
-      class="invoice-table w-full border-collapse border border-gray-200 text-sm mb-4"
+    <p class="text-3xl font-bold text-right">INVOICE</p>
+    <button
+      (click)="eInvoice()"
+      [ngClass]="invoiceDetails.isSubmitted ? 'bg-green-400' : 'bg-red-400'"
+      class="p-4 rounded-md"
     >
-      <thead class="0">
-        <tr>
-          <th class="border border-gray-300 px-4 py-2 text-left">
-            Product Name
-          </th>
-          <th class="border border-gray-300 px-4 py-2 text-center">Quantity</th>
-          <th class="border border-gray-300 px-4 py-2 text-center">
-            Unit Price
-          </th>
-          <th class="border border-gray-300 px-4 py-2 text-left">
-            Tax Percent
-          </th>
-          <th class="border border-gray-300 px-4 py-2 text-left">discount</th>
+      {{ invoiceDetails.isSubmitted ? "Submitted" : "Not Submitted" }}
+    </button>
+  </div>
+  <hr class="my-4" />
 
-          <th class="border border-gray-300 px-4 py-2 text-center">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of invoiceDetails?.items">
-          <td class="border border-gray-300 px-4 py-2">{{ product.name }}</td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            {{ product.quantity }}
-          </td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            {{ product.unitPrice | currency }}
-          </td>
-          <td class="border border-gray-300 px-4 py-2">
-            {{ product.taxPercent }}
-          </td>
-          <td class="border border-gray-300 px-4 py-2">
-            {{ product.discountAmount }}
-          </td>
-
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            {{ product.lineExtensionAmount | currency }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Totals -->
-    <div class="totals text-sm justify-end items-end flex flex-col p-10">
-      <div class="flex flex-col">
-        <p>
-          <strong>Tax Exclusive Amount:</strong>
-          {{ invoiceDetails?.taxExclusiveAmount | currency }}
-        </p>
-        <p>
-          <strong>Tax Amount ({{ invoiceDetails?.taxRate }}%):</strong>
-          {{
-            invoiceDetails?.taxInclusiveAmount -
-              invoiceDetails?.taxExclusiveAmount | currency
-          }}
-        </p>
-        <p>
-          <strong>Tax Inclusive Amount:</strong>
-          {{ invoiceDetails?.taxInclusiveAmount | currency }}
-        </p>
-      </div>
+  <div class="invoice-info grid grid-cols-3 gap-4 text-sm">
+    <div>
+      <p><strong>Customer:</strong> {{ invoiceDetails?.customer?.name }}</p>
+      <p>
+        <strong>Account Manager:</strong> {{ invoiceDetails?.employee?.name }}
+      </p>
+      <p>
+        <strong>Payment Mode:</strong>
+        {{
+          invoiceDetails?.InvoiceTypeCodeName == "011"
+            ? "CASH INVOICE"
+            : "RECEIVABLE INVOICE"
+        }}
+      </p>
     </div>
-
-    <!-- Footer -->
-    <div class="footer text-center mt-6 text-sm">
-      <p class="font-semibold">{{ companyData.name }}</p>
-      <p>Address: {{ companyData.address }}</p>
-      <p>Phone: {{ companyData.phone }} | Email: {{ companyData.email }}</p>
+    <div>
+      <p>
+        <strong>Invoice Date:</strong> {{ invoiceDetails?.issueDate | date }}
+      </p>
+      <p><strong>Invoice #:</strong> {{ invoiceDetails?.number }}</p>
+      <p><strong>Tax Number:</strong> {{ companyData.taxNumber }}</p>
+    </div>
+    <div class="justify-end flex">
+      <qrcode
+        *ngIf="qrCodeUrl"
+        [qrdata]="qrCodeUrl"
+        [width]="60"
+        class="border border-gray-200"
+      ></qrcode>
     </div>
   </div>
+  <hr class="my-4" />
+
+  <!-- Product Table -->
+  <table
+    class="invoice-table w-full border-collapse border border-gray-200 text-sm mb-4"
+  >
+    <thead>
+      <tr>
+        <th class="border border-gray-300 px-4 py-2 text-left">Product Name</th>
+        <th class="border border-gray-300 px-4 py-2 text-center">Quantity</th>
+        <th class="border border-gray-300 px-4 py-2 text-center">Unit Price</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Tax Percent</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Discount</th>
+        <th class="border border-gray-300 px-4 py-2 text-center">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of invoiceDetails?.items">
+        <td class="border border-gray-300 px-4 py-2">{{ product.name }}</td>
+        <td class="border border-gray-300 px-4 py-2 text-center">
+          {{ product.quantity }}
+        </td>
+        <td class="border border-gray-300 px-4 py-2 text-center">
+          {{ product.unitPrice | currency : "JOD" }}
+        </td>
+        <td class="border border-gray-300 px-4 py-2">
+          {{ product.taxPercent }}
+        </td>
+        <td class="border border-gray-300 px-4 py-2">
+          {{ product.discountAmount }}
+        </td>
+        <td class="border border-gray-300 px-4 py-2 text-center">
+          {{ product.lineExtensionAmount | currency : "JOD" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  <div class="totals text-sm justify-end items-end flex flex-col p-10">
+    <div class="flex flex-col">
+      <p>
+        <strong>Tax Exclusive Amount:</strong>
+        {{ invoiceDetails?.taxExclusiveAmount | currency : "JOD" }}
+      </p>
+      <p>
+        <strong>Tax Amount ({{ invoiceDetails?.taxRate }}%):</strong>
+        {{
+          invoiceDetails?.taxInclusiveAmount -
+            invoiceDetails?.taxExclusiveAmount | currency : "JOD"
+        }}
+      </p>
+      <p>
+        <strong>Tax Inclusive Amount:</strong>
+        {{ invoiceDetails?.taxInclusiveAmount | currency : "JOD" }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer text-center mt-6 text-sm">
+    <p class="font-semibold">{{ companyData.name }}</p>
+    <p>Address: {{ companyData.address }}</p>
+    <p>Phone: {{ companyData.phone }} | Email: {{ companyData.email }}</p>
+  </div>
+
+  <!-- Print Button (Triggers the printing) -->
+  <button (click)="printInvoice()" class="bg-blue-500 text-white p-2 rounded-md mt-4">Print Invoice</button>
+
 </div>
